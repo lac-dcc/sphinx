@@ -51,8 +51,6 @@ Located in `mlir-to-programl/`. This tool reads MLIR files and outputs the corre
       ./mlir-to-programl <dataset_folder>
       ```
    
----
-
 ### 2. The Experiments (Python)
 
 Located in `ml-experiments/`. Contains GNN models and training/evaluation scripts.
