@@ -1,0 +1,55 @@
+# Model architecture parameters (Reference: ProGraML paper)
+# ProGraML: A Graph-based Program Representation for Data Flow Analysis and Compiler Optimizations
+# Cummins, Chris and Fisches, Zacharias V. and Ben-Nun, Tal and Hoefler, Torsten and O'Boyle, Michael F P and Leather, Hugh
+# Proceedings of the 38th International Conference on Machine Learning
+# 2021
+# http://proceedings.mlr.press/v139/cummins21a/cummins21a.pdf
+# https://proceedings.mlr.press/v139/cummins21a.html
+
+model:
+  node_embedding_dim: 32 # d=32 (ProGraML paper, Page 6, Sec 5.2)
+  node_selector_dim: 2 # Example: [is_root, is_not_root] (ProGraML paper, Page 6, Sec 5.2 "binary one-hot vectors")
+  positional_embedding_dim: 32 # Same as node_embedding_dim
+  num_edge_types: 6 # 3 types * 2 for backward counterparts
+  max_edge_position: 355 # Max operand/argument position (ProGraML paper, Page 12, Appendix B)
+  ggnn_iterations: 30 # T=30 for training (ProGraML paper, Page 6, Sec 5.2)
+
+# Training hyperparameters (ProGraML paper)
+training:
+  learning_rate: 2.5e-4 # (ProGraML paper, Page 13, Appendix C.2)
+  batch_size_vertices: 10000 # Target combined batch size in vertices (ProGraML paper, Page 12, Appendix C.1)
+  graph_level_batch_size: 32 # Number of graphs per batch for PyG DataLoader
+  num_train_samples: 2000000 # Number of training samples
+  validation_interval_samples: 10000 # Validation every 10k samples
+  max_sample_size_mb: 1 # Max sample size in MB
+
+# Execution environment
+environment:
+  device: cuda # 'cpu' or 'cuda'
+  num_workers: 16 # Number of workers for DataLoader
+
+# Paths
+paths:
+  vocab: utils/programl_vocab.csv
+  logs: logs/ggnn_run_info.log
+
+  base: /home/douglasvc/Desktop # Configure this for your system
+  dataset: ${paths.base}/ProGraML_Dataset # Configure this for your system
+
+  graphs: ${paths.dataset}/graphs/dataflow
+
+  train_graphs: ${paths.dataset}/graphs/dataflow/train
+  train_graphs_txt: datasets/train_files.txt
+
+  validation_graphs: ${paths.dataset}/graphs/dataflow/validation
+  validation_graphs_txt: datasets/validation_files.txt
+
+  test_graphs: ${paths.dataset}/graphs/dataflow/test
+  test_graphs_txt: datasets/test_files.txt
+
+  labels: ${paths.dataset}/labels_liveness/dataflow/labels/liveness
+  processed: ${paths.dataset}/processed
+#  labels: /home/douglasvc/Desktop/LivenessTest/labels/liveness # Temporary for testing
+#  processed: /home/douglasvc/Desktop/LivenessTest/processed # Temporary for testing
+
+  checkpoint: ${paths.dataset}/checkpoints/best_model.pt
