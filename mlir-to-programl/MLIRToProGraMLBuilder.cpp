@@ -10,8 +10,6 @@
 
 #include "create_features.h"
 
-#include "mlir/Analysis/Liveness.h"
-
 
 namespace {
     std::string TypeToString(const mlir::Type &type) {
@@ -234,24 +232,6 @@ programl::ProgramGraph MLIRToProGraMLBuilder::VisitModule(mlir::ModuleOp module)
             CreateCallEdges(callSite.first, calledFunctionEntryExits);
         }
     }
-
-    // ############### Liveness Testing ###############
-
-    // We use the 'module' op as the top-level operation
-    llvm::outs() << "--- Starting Liveness Analysis ---\n";
-    mlir::Operation *topLevelOp = module.getOperation();
-
-    llvm::outs() << "Running mlir::Liveness on the top-level operation...\n";
-    mlir::Liveness liveness(topLevelOp);
-    llvm::outs() << "Liveness analysis complete. Printing results:\n";
-
-    // Print all liveness information
-    liveness.print(llvm::outs());
-
-    llvm::outs() << "--- Liveness Analysis Finished ---\n";
-
-
-    // ############### Liveness Testing ###############
 
     return ProgramGraphBuilder::Build().ValueOrDie();
 }

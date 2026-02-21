@@ -11,6 +11,9 @@
 
 #include "MLIRToProGraMLBuilder.h"
 
+#ifdef USE_STABLEHLO
+    #include "stablehlo/dialect/StablehloOps.h"
+#endif
 
 mlir::OwningOpRef<mlir::ModuleOp> parseMlirFile(
     mlir::MLIRContext &context,
@@ -60,6 +63,9 @@ bool serializeGraphToFile(
 bool convertMlirToGraph(const std::filesystem::path &inputPath, const std::filesystem::path &outputPath) {
     mlir::DialectRegistry registry;
     mlir::registerAllDialects(registry);
+    #ifdef USE_STABLEHLO
+        registry.insert<mlir::stablehlo::StablehloDialect>();
+    #endif
     mlir::MLIRContext context {registry};
 
     const mlir::OwningOpRef module {parseMlirFile(context, inputPath)};
