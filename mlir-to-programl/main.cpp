@@ -94,7 +94,7 @@ bool convertMlirToGraph(const std::filesystem::path &inputPath, const std::files
 }
 
 
-void processDataset(const std::filesystem::path& datasetPath) {
+void processDataset(const std::filesystem::path& datasetPath, bool createAllGraphs) {
     const auto mlirSourcePath {datasetPath / "mlir"};
     const auto graphsDestPath {datasetPath / "graphs"};
     const auto allGraphsPath {graphsDestPath / "all_graphs"};
@@ -104,7 +104,8 @@ void processDataset(const std::filesystem::path& datasetPath) {
         exit(4);
     }
 
-    std::filesystem::create_directories(allGraphsPath);
+    if (createAllGraphs)
+        std::filesystem::create_directories(allGraphsPath);
 
     std::cout << "Collecting files from " << mlirSourcePath << "...\n";
 
@@ -149,14 +150,16 @@ void processDataset(const std::filesystem::path& datasetPath) {
             if (convertMlirToGraph(input, output)) {
                 ++successCount;
 
-                try {
-                    const auto allGraphsDest {allGraphsPath / output.filename()};
-                    std::filesystem::copy_file(output, allGraphsDest, std::filesystem::copy_options::overwrite_existing);
-                } catch (const std::filesystem::filesystem_error& e) {
-                    std::lock_guard<std::mutex> lock {coutMutex};
-                    std::cerr << "-> [POST-PROCESS] Failed to copy " << output.filename().string()
-                              << " to all_graphs: " << e.what() << "\n";
-                    ++copyFailureCount;
+                if (createAllGraphs) {
+                    try {
+                        const auto allGraphsDest {allGraphsPath / output.filename()};
+                        std::filesystem::copy_file(output, allGraphsDest, std::filesystem::copy_options::overwrite_existing);
+                    } catch (const std::filesystem::filesystem_error& e) {
+                        std::lock_guard<std::mutex> lock {coutMutex};
+                        std::cerr << "-> [POST-PROCESS] Failed to copy " << output.filename().string()
+                                  << " to all_graphs: " << e.what() << "\n";
+                        ++copyFailureCount;
+                    }
                 }
             } else {
                 ++failureCount;
@@ -179,19 +182,32 @@ void processDataset(const std::filesystem::path& datasetPath) {
     std::cout << "Processing complete.\n";
     std::cout << "Successfully converted: " << successCount << "\n";
     std::cout << "Failed to convert: " << failureCount << "\n";
-    std::cout << "Failed to copy: " << copyFailureCount << "\n";
+    if (createAllGraphs)
+        std::cout << "Failed to copy: " << copyFailureCount << "\n";
 }
 
 
 int main(const int argc, char **argv) {
-    if (argc < 2) {
+    bool createAllGraphs {false};
+    std::vector<std::string> positionalArgs;
+
+    for (int i = 1; i < argc; ++i) {
+        std::string arg {argv[i]};
+        if (arg == "--all-graphs-folder") {
+            createAllGraphs = true;
+        } else {
+            positionalArgs.push_back(arg);
+        }
+    }
+
+    if (positionalArgs.empty()) {
         std::cerr << "Usage:\n"
                   << "  Single file mode: mlir-to-programl <input.mlir> [output.ProgramGraph.pb]\n"
-                  << "  Dataset mode:     mlir-to-programl <dataset_folder>\n";
+                  << "  Dataset mode:     mlir-to-programl [--all-graphs-folder] <dataset_folder>\n";
         return 1;
     }
 
-    const std::filesystem::path pathArg {argv[1]};
+    const std::filesystem::path pathArg {positionalArgs[0]};
 
     if (!std::filesystem::exists(pathArg)) {
         std::cerr << "Error: Provided path does not exist: " << pathArg << "\n";
@@ -201,13 +217,13 @@ int main(const int argc, char **argv) {
     if (std::filesystem::is_directory(pathArg)) {
         // --- Dataset Mode ---
         std::cout << "Dataset mode activated.\n";
-        processDataset(pathArg);
+        processDataset(pathArg, createAllGraphs);
     } else if (std::filesystem::is_regular_file(pathArg)) {
         // --- Single File Mode ---
         std::cout << "Single file mode activated.\n";
         std::filesystem::path outputPath {};
         if (argc >= 3) {
-            outputPath = argv[2];
+            outputPath = positionalArgs[1];
         } else {
             outputPath = pathArg;
             outputPath.replace_extension(".ProgramGraph.pb");
