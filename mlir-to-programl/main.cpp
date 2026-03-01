@@ -122,6 +122,7 @@ bool convertMlirToGraph(
 
 void processDataset(const std::filesystem::path& datasetPath, bool createAllGraphs) {
     const auto startTime {std::chrono::steady_clock::now()};
+    std::cout << "Dataset mode activated\n";
 
     const auto mlirSourcePath {datasetPath / "mlir"};
     const auto graphsDestPath {datasetPath / "graphs"};
@@ -161,7 +162,7 @@ void processDataset(const std::filesystem::path& datasetPath, bool createAllGrap
     }
 
     const size_t totalFiles {filesToProcess.size()};
-    std::cout << "Found " << totalFiles << " files. Detailed logs will be written to " << logFilePath << "\n";
+    std::cout << "Found " << totalFiles << " files. Detailed error logs will be written to " << logFilePath << "\n";
 
     std::atomic<size_t> fileIndex {0};
     std::atomic<size_t> completedCount {0};
@@ -239,6 +240,30 @@ void processDataset(const std::filesystem::path& datasetPath, bool createAllGrap
 }
 
 
+int processSingleFile(const std::filesystem::path& inputPath, const std::filesystem::path& optionalOutputPath) {
+    std::filesystem::path outputPath {optionalOutputPath};
+    if (outputPath.empty()) {
+        outputPath = inputPath;
+        outputPath.replace_extension(".ProgramGraph.pb");
+    }
+
+    std::filesystem::path logPath {inputPath.parent_path() / "conversion.log"};
+    std::ofstream logFile(logPath, std::ios::out | std::ios::trunc);
+    std::mutex logMutex;
+
+    std::cout << "Processing: " << inputPath << " -> " << outputPath << "\n";
+    std::cout << "Error logs will be written to: " << logPath << "\n";
+
+    if (!convertMlirToGraph(inputPath, outputPath, logFile, logMutex, inputPath.filename().string())) {
+        std::cerr << "Error converting file. Check the log file for details\n";
+        return 3;
+    }
+
+    std::cout << "Successfully wrote MLIR ProgramGraph to " << outputPath << "\n";
+    return 0;
+}
+
+
 int main(const int argc, char **argv) {
     bool createAllGraphs {false};
     std::vector<std::string> positionalArgs;
@@ -268,32 +293,14 @@ int main(const int argc, char **argv) {
 
     if (std::filesystem::is_directory(pathArg)) {
         // --- Dataset Mode ---
-        std::cout << "Dataset mode activated\n";
         processDataset(pathArg, createAllGraphs);
     } else if (std::filesystem::is_regular_file(pathArg)) {
         // --- Single File Mode ---
-        std::cout << "Single file mode activated\n";
         std::filesystem::path outputPath {};
-        if (argc >= 3) {
+        if (positionalArgs.size() >= 2) {
             outputPath = positionalArgs[1];
-        } else {
-            outputPath = pathArg;
-            outputPath.replace_extension(".ProgramGraph.pb");
         }
-
-        std::filesystem::path logPath {pathArg.parent_path() / "conversion.log"};
-        std::ofstream logFile(logPath, std::ios::out | std::ios::trunc);
-        std::mutex logMutex;
-
-        std::cout << "Processing: " << pathArg << " -> " << outputPath << "\n";
-        std::cout << "Logs will be written to: " << logPath << "\n";
-
-        if (!convertMlirToGraph(pathArg, outputPath, logFile, logMutex, pathArg.filename().string())) {
-            std::cerr << "Error converting file. Check the log file for details\n";
-            return 3;
-        }
-
-        std::cout << "Successfully wrote MLIR ProgramGraph to " << outputPath << "\n";
+        return processSingleFile(pathArg, outputPath);
     } else {
         std::cerr << "Error: Input path is not a regular file or a directory: " << pathArg << "\n";
         return 2;
