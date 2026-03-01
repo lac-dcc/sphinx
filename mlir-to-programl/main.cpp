@@ -2,12 +2,19 @@
 #include <iostream>
 #include <filesystem>
 #include <thread>
+#include <atomic>
+#include <mutex>
+#include <vector>
+#include <format>
+#include <chrono>
 
 #include "llvm/Support/SourceMgr.h"
+#include "llvm/Support/raw_ostream.h"
 
 #include "mlir/Parser/Parser.h"
 #include "mlir/InitAllDialects.h"
 #include "mlir/IR/Verifier.h"
+#include "mlir/IR/Diagnostics.h"
 
 #include "MLIRToProGraMLBuilder.h"
 
@@ -17,19 +24,14 @@
 
 mlir::OwningOpRef<mlir::ModuleOp> parseMlirFile(
     mlir::MLIRContext &context,
-    const std::filesystem::path &inputPath
+    const std::filesystem::path &inputPath,
+    std::string &localLog
 ) {
     llvm::SourceMgr sourceMgr;
 
-    #ifdef NDEBUG
-        mlir::ScopedDiagnosticHandler silenceHandler {&context, [](mlir::Diagnostic &){}};
-    #else
-        mlir::SourceMgrDiagnosticHandler sourceMgrHandler {sourceMgr, &context};
-    #endif
-
     auto buffer {llvm::MemoryBuffer::getFile(inputPath.string())};
     if (!buffer) {
-        std::cerr << "Failed to read input file: " << inputPath << "\n";
+        localLog += "Failed to read input file: " + inputPath.string() + "\n";
         return nullptr;
     }
     sourceMgr.AddNewSourceBuffer(std::move(*buffer), llvm::SMLoc());
@@ -40,19 +42,20 @@ mlir::OwningOpRef<mlir::ModuleOp> parseMlirFile(
 
 bool serializeGraphToFile(
     const programl::ProgramGraph &graph,
-    const std::filesystem::path &outputPath
+    const std::filesystem::path &outputPath,
+    std::string &localLog
 ) {
     if (outputPath.has_parent_path())
         std::filesystem::create_directories(outputPath.parent_path());
 
     std::ofstream ofs {outputPath, std::ios::binary};
     if (!ofs.is_open()) {
-        std::cerr << "Failed to open output file: " << outputPath << "\n";
+        localLog += "Failed to open output file: " + outputPath.string() + "\n";
         return false;
     }
 
     if (!graph.SerializeToOstream(&ofs)) {
-        std::cerr << "Failed to serialize ProgramGraph to: " << outputPath << "\n";
+        localLog += "Failed to serialize ProgramGraph to: " + outputPath.string() + "\n";
         return false;
     }
 
@@ -60,7 +63,13 @@ bool serializeGraphToFile(
 }
 
 
-bool convertMlirToGraph(const std::filesystem::path &inputPath, const std::filesystem::path &outputPath) {
+bool convertMlirToGraph(
+    const std::filesystem::path &inputPath,
+    const std::filesystem::path &outputPath,
+    std::ofstream &globalLogFile,
+    std::mutex &logMutex,
+    const std::string &logHeaderName
+) {
     mlir::DialectRegistry registry;
     mlir::registerAllDialects(registry);
     #ifdef USE_STABLEHLO
@@ -68,36 +77,56 @@ bool convertMlirToGraph(const std::filesystem::path &inputPath, const std::files
     #endif
     mlir::MLIRContext context {registry};
 
-    const mlir::OwningOpRef module {parseMlirFile(context, inputPath)};
+    std::string localLog;
+    llvm::raw_string_ostream logStream(localLog);
+
+    mlir::ScopedDiagnosticHandler diagHandler(&context, [&](const mlir::Diagnostic &diag) {
+        std::string severity;
+        switch (diag.getSeverity()) {
+            case mlir::DiagnosticSeverity::Note: severity = "NOTE"; break;
+            case mlir::DiagnosticSeverity::Warning: severity = "WARNING"; break;
+            case mlir::DiagnosticSeverity::Error: severity = "ERROR"; break;
+            case mlir::DiagnosticSeverity::Remark: severity = "REMARK"; break;
+        }
+        logStream << "  [" << severity << "] " << diag << "\n";
+        return mlir::success();
+    });
+
+    bool success {true};
+    const mlir::OwningOpRef module {parseMlirFile(context, inputPath, localLog)};
+
     if (!module) {
-        std::cerr << "Failed to parse MLIR file: " << inputPath << "\n";
-        return false;
+        localLog += "Failed to parse MLIR file\n";
+        success = false;
+    } else if (mlir::failed(mlir::verify(*module))) {
+        localLog += "MLIR failed to verify the file\n";
+        success = false;
+    } else {
+        MLIRToProGraMLBuilder builder;
+        const programl::ProgramGraph &graph {builder.Build(*module)};
+
+        if (!serializeGraphToFile(graph, outputPath, localLog)) {
+            success = false;
+        }
     }
 
-    if (failed(mlir::verify(*module)))
-        return false;
-
-    if (llvm::failed(mlir::verify(*module))) {
-        std::cerr << "MLIR failed to verify the file: " << inputPath << "\n";
-        return false;
+    if (!localLog.empty()) {
+        std::lock_guard<std::mutex> lock(logMutex);
+        globalLogFile << "=== " << logHeaderName << " ===\n"
+                      << localLog << "\n";
     }
 
-    MLIRToProGraMLBuilder builder;
-    const programl::ProgramGraph &graph {builder.Build(*module)};
-
-    if (!serializeGraphToFile(graph, outputPath)) {
-        std::cerr << "Error writing output file, exiting.\n";
-        return false;
-    }
-
-    return true;
+    return success;
 }
 
 
 void processDataset(const std::filesystem::path& datasetPath, bool createAllGraphs) {
+    const auto startTime {std::chrono::steady_clock::now()};
+
     const auto mlirSourcePath {datasetPath / "mlir"};
     const auto graphsDestPath {datasetPath / "graphs"};
     const auto allGraphsPath {graphsDestPath / "all_graphs"};
+    const auto logFilePath {datasetPath / "conversion.log"};
 
     if (!std::filesystem::exists(mlirSourcePath) || !std::filesystem::is_directory(mlirSourcePath)) {
         std::cerr << "Error: 'mlir' subdirectory not found in " << datasetPath << "\n";
@@ -106,6 +135,12 @@ void processDataset(const std::filesystem::path& datasetPath, bool createAllGrap
 
     if (createAllGraphs)
         std::filesystem::create_directories(allGraphsPath);
+
+    std::ofstream logFile(logFilePath, std::ios::out | std::ios::trunc);
+    if (!logFile.is_open()) {
+        std::cerr << "Error: Could not open log file at " << logFilePath << "\n";
+        exit(5);
+    }
 
     std::cout << "Collecting files from " << mlirSourcePath << "...\n";
 
@@ -121,18 +156,21 @@ void processDataset(const std::filesystem::path& datasetPath, bool createAllGrap
     }
 
     if (filesToProcess.empty()) {
-        std::cout << "No files found to process.\n";
+        std::cout << "No files found to process\n";
         return;
     }
 
     const size_t totalFiles {filesToProcess.size()};
-    std::cout << "Found " << totalFiles << " files. Starting parallel conversion...\n";
+    std::cout << "Found " << totalFiles << " files. Detailed logs will be written to " << logFilePath << "\n";
 
     std::atomic<size_t> fileIndex {0};
+    std::atomic<size_t> completedCount {0};
     std::atomic<int> successCount {0};
     std::atomic<int> failureCount {0};
     std::atomic<int> copyFailureCount {0};
-    std::mutex coutMutex;
+
+    std::mutex terminalMutex;
+    std::mutex logMutex;
 
     auto worker_fn = [&]() {
         while (true) {
@@ -141,36 +179,44 @@ void processDataset(const std::filesystem::path& datasetPath, bool createAllGrap
                 break;
 
             const auto& [input, output] {filesToProcess[currentIndex]};
+            std::string relativePathStr {std::filesystem::relative(input, mlirSourcePath).string()};
 
-            {
-                std::lock_guard<std::mutex> lock {coutMutex};
-                std::cout << "Processing [" << currentIndex + 1 << "/" << totalFiles << "]: " << input.filename().string() << "\n";
-            }
-
-            if (convertMlirToGraph(input, output)) {
+            if (convertMlirToGraph(input, output, logFile, logMutex, relativePathStr)) {
                 ++successCount;
-
                 if (createAllGraphs) {
                     try {
                         const auto allGraphsDest {allGraphsPath / output.filename()};
                         std::filesystem::copy_file(output, allGraphsDest, std::filesystem::copy_options::overwrite_existing);
                     } catch (const std::filesystem::filesystem_error& e) {
-                        std::lock_guard<std::mutex> lock {coutMutex};
-                        std::cerr << "-> [POST-PROCESS] Failed to copy " << output.filename().string()
-                                  << " to all_graphs: " << e.what() << "\n";
+                        std::lock_guard<std::mutex> lock {logMutex};
+                        logFile << "=== " << relativePathStr << " ===\n"
+                                << "  [POST-PROCESS ERROR] Failed to copy to all_graphs: " << e.what() << "\n\n";
                         ++copyFailureCount;
                     }
                 }
             } else {
                 ++failureCount;
-                std::lock_guard<std::mutex> lock {coutMutex};
-                std::cerr << "-> Failed to convert " << input << "\n";
+            }
+
+            {
+                const size_t completed {completedCount.fetch_add(1) + 1};
+                const double percentage {static_cast<double>(completed) * 100.0 / static_cast<double>(totalFiles)};
+
+                std::lock_guard<std::mutex> lock {terminalMutex};
+                std::cout << std::format(
+                    "\rProgress: [{}/{}] ({:.2f}%) | Success: {} | Failed: {}",
+                    completed,
+                    totalFiles,
+                    percentage,
+                    successCount.load(),
+                    failureCount.load()
+                ) << std::flush;
             }
         }
     };
 
-    const unsigned int numThreads {std::max(1u, std::thread::hardware_concurrency())};
-    std::cout << "Using " << numThreads << " threads.\n";
+    const unsigned int numThreads {std::max(1u, std::thread::hardware_concurrency() - 1)};
+    std::cout << "Using " << numThreads << " threads\n";
     std::vector<std::thread> threads;
     for (unsigned int i = 0; i < numThreads; ++i)
         threads.emplace_back(worker_fn);
@@ -178,12 +224,18 @@ void processDataset(const std::filesystem::path& datasetPath, bool createAllGrap
     for (auto& thread : threads)
         thread.join();
 
-    std::cout << "----------------------------------------\n";
-    std::cout << "Processing complete.\n";
-    std::cout << "Successfully converted: " << successCount << "\n";
-    std::cout << "Failed to convert: " << failureCount << "\n";
-    if (createAllGraphs)
-        std::cout << "Failed to copy: " << copyFailureCount << "\n";
+    const auto endTime {std::chrono::steady_clock::now()};
+    const std::chrono::duration<double> elapsedSeconds {endTime - startTime};
+    const double totalSecondsPrecise {elapsedSeconds.count()};
+    const auto totalSecondsInt {static_cast<long long>(totalSecondsPrecise)};
+    const auto hours {totalSecondsInt / 3600};
+    const auto minutes {(totalSecondsInt % 3600) / 60};
+    const auto seconds {totalSecondsInt % 60};
+
+    std::cout << std::format("\nProcessing complete in {}h {}m {}s ({:.3f} s)\n",
+                             hours, minutes, seconds, totalSecondsPrecise);
+    if (createAllGraphs && copyFailureCount.load() > 0)
+        std::cout << "Failed to copy to all_graphs folder: " << copyFailureCount.load() << "\n";
 }
 
 
@@ -216,11 +268,11 @@ int main(const int argc, char **argv) {
 
     if (std::filesystem::is_directory(pathArg)) {
         // --- Dataset Mode ---
-        std::cout << "Dataset mode activated.\n";
+        std::cout << "Dataset mode activated\n";
         processDataset(pathArg, createAllGraphs);
     } else if (std::filesystem::is_regular_file(pathArg)) {
         // --- Single File Mode ---
-        std::cout << "Single file mode activated.\n";
+        std::cout << "Single file mode activated\n";
         std::filesystem::path outputPath {};
         if (argc >= 3) {
             outputPath = positionalArgs[1];
@@ -229,10 +281,15 @@ int main(const int argc, char **argv) {
             outputPath.replace_extension(".ProgramGraph.pb");
         }
 
-        std::cout << "Processing: " << pathArg << " -> " << outputPath << "\n";
+        std::filesystem::path logPath {pathArg.parent_path() / "conversion.log"};
+        std::ofstream logFile(logPath, std::ios::out | std::ios::trunc);
+        std::mutex logMutex;
 
-        if (!convertMlirToGraph(pathArg, outputPath)) {
-            std::cerr << "Error converting file, exiting.\n";
+        std::cout << "Processing: " << pathArg << " -> " << outputPath << "\n";
+        std::cout << "Logs will be written to: " << logPath << "\n";
+
+        if (!convertMlirToGraph(pathArg, outputPath, logFile, logMutex, pathArg.filename().string())) {
+            std::cerr << "Error converting file. Check the log file for details\n";
             return 3;
         }
 
