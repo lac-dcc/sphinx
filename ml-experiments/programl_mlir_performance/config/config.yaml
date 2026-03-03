@@ -1,0 +1,59 @@
+# Model architecture parameters (Reference: ProGraML paper)
+# ProGraML: A Graph-based Program Representation for Data Flow Analysis and Compiler Optimizations
+# Cummins, Chris and Fisches, Zacharias V. and Ben-Nun, Tal and Hoefler, Torsten and O'Boyle, Michael F P and Leather, Hugh
+# Proceedings of the 38th International Conference on Machine Learning
+# 2021
+# http://proceedings.mlr.press/v139/cummins21a/cummins21a.pdf
+# https://proceedings.mlr.press/v139/cummins21a.html
+
+model:
+  node_embedding_dim: 64
+  positional_embedding_dim: 32
+  num_edge_types: 6 # 3 types * 2 for backward counterparts
+  max_edge_position: 8 # Max operand/argument position (from MLIR graphs)
+  ggnn_iterations: 30 # T=30 for training (ProGraML paper, Page 6, Sec 5.2)
+#  expected_vocab_size: 59
+  expected_vocab_size: 85
+#  target_performance_metric: test_accuracy
+  target_performance_metric: training_time
+
+# Training hyperparameters (ProGraML paper)
+training:
+  learning_rate: 2.5e-4 # (ProGraML paper, Page 13, Appendix C.2)
+  graph_level_batch_size: 32 # Number of graphs per batch for PyG DataLoader
+  epochs: 50 # Max number of epochs to run
+
+# Execution environment
+environment:
+  device: cuda # 'cpu' or 'cuda'
+  num_workers: 12 # Number of workers for DataLoader/preprocessing
+
+# Paths
+paths:
+#  vocab: vocab/programl_mlir_vocab_stablehlo.csv
+  vocab: vocab/programl_mlir_vocab_linalg.csv
+
+  base: /home/douglasvc/Desktop # Configure this for your system
+  dataset: ${paths.base}/NASBench_Dataset # Configure this for your system
+
+#  graphs: ${paths.dataset}/graphs
+  graphs: ${paths.dataset}/graphs_linalg
+
+  splits_txt: splits
+#  train_graphs_txt: splits/train_files.txt
+#  validation_graphs_txt: splits/validation_files.txt
+#  test_graphs_txt: splits/test_files.txt
+#  train_graphs_txt: splits/train_files_stablehlo.txt
+#  validation_graphs_txt: splits/validation_files_stablehlo.txt
+#  test_graphs_txt: splits/test_files_stablehlo.txt
+  train_graphs_txt: splits/train_files_linalg.txt
+  validation_graphs_txt: splits/validation_files_linalg.txt
+  test_graphs_txt: splits/test_files_linalg.txt
+
+#  processed: ${paths.dataset}/processed
+#  processed: ${paths.dataset}/processed_training_time_stablehlo
+  processed: ${paths.dataset}/processed_training_time_linalg
+  labels: ${paths.dataset}/all_metrics.json
+
+  checkpoint: ${paths.dataset}/checkpoints/best_model.pt
+  logs: ${paths.dataset}/checkpoints/ggnn_run_info.log
