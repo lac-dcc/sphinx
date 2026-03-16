@@ -1,13 +1,14 @@
 # SPHINX: Transferring Optimization Predictors Across MLIR Dialects Using Program Graphs
 
-**SPHINX** is a research project focused on transferring machine learning-based optimization predictors across **MLIR** dialects by representing programs as **ProGraML** graphs. This repository contains both the core C++ graph generation infrastructure and the Python-based machine learning experiments.
+**SPHINX** is a research project focused on transferring machine learning-based optimization predictors across [**MLIR**](https://mlir.llvm.org/) dialects by representing programs as [**ProGraML**](https://proceedings.mlr.press/v139/cummins21a.html) graphs. This repository contains both the core C++ graph generation infrastructure and the Python-based machine learning experiments.
 
 ## Repository Structure
 
-This monorepo is divided into two main components:
+This monorepo is divided into three main components:
 
 - **`mlir-to-programl/`** (C++): The core tool that translates MLIR code into ProGraML graph representations.
-- **`ml-experiments/`** (Python): Machine learning models, training scripts, and reproduction experiments.
+- **`ml-experiments/`** (Python): Machine learning models, training pipelines, and experiment scripts used in our evaluation.
+- **`sample_programs/`**: A small collection of MLIR programs derived from the NASBench dataset, provided for testing and demonstration purposes.
 
 ---
 
@@ -17,11 +18,12 @@ This monorepo is divided into two main components:
 Located in `mlir-to-programl/`. This tool reads MLIR files and outputs the corresponding graphs.
 
 **Prerequisites:**
+
 - **CMake >= 3.20**
-- **C++20 Compiler** (GCC 10+ or Clang 10+)
-- **LLVM/MLIR** (Installed and configured)
+- **C++20 compiler** (GCC 10+ or Clang 10+)
+- **LLVM/MLIR >= 20.0** (Installed and configured)
 - **Google Protobuf**
-- **Google Abseil (Abseil-cpp)**
+- **Abseil (abseil-cpp)**
 
 **Build Instructions:**
    1. **Configure LLVM Path:** The build system expects to find your LLVM installation. By default, it looks in `$HOME/llvm_install`. If your LLVM is installed elsewhere, export the path before building:
@@ -52,7 +54,9 @@ Located in `mlir-to-programl/`. This tool reads MLIR files and outputs the corre
       ```
    
 ### 2. The Experiments (Python)
-
+programl/
+   	  model_1.ProgramGraph.pb
+   	  model_2.ProgramGraph.pb
 Located in `ml-experiments/`. Contains GNN models and training/evaluation scripts.
 
 **Prerequisites:**
@@ -75,3 +79,36 @@ We provide a unified environment for all experiments:
    ```
 
 ---
+
+### 3. Sample Programs
+
+Located in `sample_programs/`. These files are provided for testing and demonstration purposes. The programs originate from architectures in the NASBench dataset and were converted into MLIR as part of our experimental pipeline. They include programs represented in different MLIR dialects used throughout the project.
+
+Example structure:
+
+```
+sample_programs/
+  stablehlo/
+    mlir/
+      model_1.mlir
+      model_2.mlir
+    programl/
+   	  model_1.ProgramGraph.pb
+   	  model_2.ProgramGraph.pb
+  linalg/
+    mlir/
+      model_1.mlir
+      model_2.mlir
+    programl/
+   	  model_1.ProgramGraph.pb
+   	  model_2.ProgramGraph.pb
+```
+
+You can use these programs to quickly test the graph generator:
+
+```bash
+cd mlir-to-programl/build
+./mlir-to-programl ../../sample_programs/linalg/mlir
+```
+
+This will generate the corresponding ProGraML graphs for all MLIR files in the directory.
