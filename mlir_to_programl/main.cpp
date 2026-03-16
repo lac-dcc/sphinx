@@ -279,8 +279,8 @@ int main(const int argc, char **argv) {
 
     if (positionalArgs.empty()) {
         std::cerr << "Usage:\n"
-                  << "  Single file mode: mlir-to-programl <input.mlir> [output.ProgramGraph.pb]\n"
-                  << "  Dataset mode:     mlir-to-programl [--all-graphs-folder] <dataset_folder>\n";
+                  << "  Single file mode: mlir_to_programl <input.mlir> [output.ProgramGraph.pb]\n"
+                  << "  Dataset mode:     mlir_to_programl [--all-graphs-folder] <dataset_folder>\n";
         return 1;
     }
 

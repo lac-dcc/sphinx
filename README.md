@@ -6,8 +6,8 @@
 
 This monorepo is divided into three main components:
 
-- **`mlir-to-programl/`** (C++): The core tool that translates MLIR code into ProGraML graph representations.
-- **`ml-experiments/`** (Python): Machine learning models, training pipelines, and experiment scripts used in our evaluation.
+- **`mlir_to_programl/`** (C++): The core tool that translates MLIR code into ProGraML graph representations.
+- **`ml_experiments/`** (Python): Machine learning models, training pipelines, and experiment scripts used in our evaluation.
 - **`sample_programs/`**: A small collection of MLIR programs derived from the NASBench dataset, provided for testing and demonstration purposes.
 
 ---
@@ -15,7 +15,7 @@ This monorepo is divided into three main components:
 ## Getting Started
 
 ### 1. The Graph Generator (C++)
-Located in `mlir-to-programl/`. This tool reads MLIR files and outputs the corresponding graphs.
+Located in `mlir_to_programl/`. This tool reads MLIR files and outputs the corresponding graphs.
 
 **Prerequisites:**
 
@@ -34,7 +34,7 @@ Located in `mlir-to-programl/`. This tool reads MLIR files and outputs the corre
      
    2. **Build:**
       ```bash
-      cd mlir-to-programl
+      cd mlir_to_programl
       mkdir build && cd build
       cmake ..
       make -j8
@@ -44,20 +44,20 @@ Located in `mlir-to-programl/`. This tool reads MLIR files and outputs the corre
    1. **Single File Mode:** Converts a single MLIR file. If the output path is omitted, it defaults to replacing the extension with `.ProgramGraph.pb`.
       
       ```bash
-      ./mlir-to-programl <input.mlir> [output.ProgramGraph.pb]
+      ./mlir_to_programl <input.mlir> [output.ProgramGraph.pb]
       ```
      
    2. **Dataset Mode:** Processes an entire directory. It detects if the input is a folder and automatically converts all contained MLIR files.
       
       ```bash
-      ./mlir-to-programl <dataset_folder>
+      ./mlir_to_programl <dataset_folder>
       ```
    
 ### 2. The Experiments (Python)
 programl/
    	  model_1.ProgramGraph.pb
    	  model_2.ProgramGraph.pb
-Located in `ml-experiments/`. Contains GNN models and training/evaluation scripts.
+Located in `ml_experiments/`. Contains GNN models and training/evaluation scripts.
 
 **Prerequisites:**
 - **Python 3.8+**
@@ -68,7 +68,7 @@ Located in `ml-experiments/`. Contains GNN models and training/evaluation script
 We provide a unified environment for all experiments:
 
    ```bash
-   cd ml-experiments
+   cd ml_experiments
   
    # 1. Create a virtual environment
    python3 -m venv venv
@@ -77,8 +77,6 @@ We provide a unified environment for all experiments:
    # 2. Install dependencies (PyTorch, PyG, etc.)
    pip install -r requirements.txt
    ```
-
----
 
 ### 3. Sample Programs
 
@@ -107,8 +105,8 @@ sample_programs/
 You can use these programs to quickly test the graph generator:
 
 ```bash
-cd mlir-to-programl/build
-./mlir-to-programl ../../sample_programs/linalg/mlir
+cd mlir_to_programl/build
+./mlir_to_programl ../../sample_programs/linalg/mlir
 ```
 
 This will generate the corresponding ProGraML graphs for all MLIR files in the directory.

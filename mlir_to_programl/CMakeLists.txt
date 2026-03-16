@@ -7,7 +7,7 @@ if(CCACHE_PROGRAM)
     message(STATUS "Using ccache: ${CCACHE_PROGRAM}")
 endif()
 
-project(mlir-to-programl CXX)
+project(mlir_to_programl CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -58,7 +58,7 @@ if(STABLEHLO_FOUND)
     file(GLOB STABLEHLO_ALL_LIBS "${STABLEHLO_ROOT}/build/lib/libStablehlo*.a")
 endif()
 
-add_executable(mlir-to-programl
+add_executable(mlir_to_programl
     main.cpp
     MLIRToProGraMLBuilder.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/third_party/program_graph_builder.cc
@@ -67,7 +67,7 @@ add_executable(mlir-to-programl
     ${LABM8_SRCS}
 )
 
-target_include_directories(mlir-to-programl PRIVATE
+target_include_directories(mlir_to_programl PRIVATE
     ${PROTOBUF_INCLUDE_DIRS}
     ${PROTO_CPP_DIR}
 
@@ -81,11 +81,11 @@ target_include_directories(mlir-to-programl PRIVATE
 )
 
 if(STABLEHLO_FOUND)
-    target_include_directories(mlir-to-programl PRIVATE
+    target_include_directories(mlir_to_programl PRIVATE
         "${STABLEHLO_ROOT}"
         "${STABLEHLO_ROOT}/build"
     )
-    target_compile_definitions(mlir-to-programl PRIVATE USE_STABLEHLO)
+    target_compile_definitions(mlir_to_programl PRIVATE USE_STABLEHLO)
 endif()
 
 get_property(dialect_libs GLOBAL PROPERTY MLIR_DIALECT_LIBS)
@@ -101,7 +101,7 @@ set(MLIR_LIBRARIES
 
 add_subdirectory(third_party/fmt)
 
-target_link_libraries(mlir-to-programl PRIVATE
+target_link_libraries(mlir_to_programl PRIVATE
     ${PROTOBUF_LIBRARIES}
     ${MLIR_LIBRARIES}
     absl::flat_hash_map
@@ -110,7 +110,7 @@ target_link_libraries(mlir-to-programl PRIVATE
 )
 
 if(STABLEHLO_FOUND)
-    target_link_libraries(mlir-to-programl PRIVATE
+    target_link_libraries(mlir_to_programl PRIVATE
         "-Wl,--start-group"
         ${STABLEHLO_ALL_LIBS}
         "-Wl,--end-group"
