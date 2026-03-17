@@ -54,29 +54,27 @@ Located in `mlir_to_programl/`. This tool reads MLIR files and outputs the corre
       ```
    
 ### 2. The Experiments (Python)
-programl/
-   	  model_1.ProgramGraph.pb
-   	  model_2.ProgramGraph.pb
-Located in `ml_experiments/`. Contains GNN models and training/evaluation scripts.
+
+Located in `ml_experiments/`. Contains GNN models along with training and evaluation scripts.
 
 **Prerequisites:**
 - **Python 3.8+**
-- **CUDA (optional but recommended for training)**
+- **CUDA (optional, but recommended for training)**
 
 **Setup:**
 
 We provide a unified environment for all experiments:
 
-   ```bash
-   cd ml_experiments
-  
-   # 1. Create a virtual environment
-   python3 -m venv venv
-   source venv/bin/activate
-   
-   # 2. Install dependencies (PyTorch, PyG, etc.)
-   pip install -r requirements.txt
-   ```
+```bash
+cd ml_experiments
+
+# 1. Create a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# 2. Install dependencies (PyTorch, PyG, etc.)
+pip install -r requirements.txt
+```
 
 ### 3. Sample Programs
 
