@@ -10,7 +10,7 @@ This monorepo is divided into three main components:
 
 - **`mlir_to_programl/`** (C++): The core tool that translates MLIR code into ProGraML graph representations.
 - **`ml_experiments/`** (Python): Machine learning models, training pipelines, and experiment scripts used in our evaluation.
-- **`sample_programs/`**: A small collection of MLIR programs derived from the NASBench dataset, provided for testing and demonstration purposes.
+- **`sample_programs/`** (MLIR / ProGraML): A small collection of MLIR programs derived from the NASBench dataset, provided for testing and demonstration purposes.
 
 ---
 
