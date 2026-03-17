@@ -104,7 +104,7 @@ You can use these programs to quickly test the graph generator:
 
 ```bash
 cd mlir_to_programl/build
-./mlir_to_programl ../../sample_programs/linalg/mlir
+./mlir_to_programl ../../sample_programs/linalg
 ```
 
 This will generate the corresponding ProGraML graphs for all MLIR files in the directory.
