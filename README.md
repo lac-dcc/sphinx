@@ -1,4 +1,6 @@
-# SPHINX: Transferring Optimization Predictors Across MLIR Dialects Using Program Graphs
+<p align="center">
+  <img alt="Project Banner" src="assets/img/ProjSphinx.png" width="100%" height="auto"/></br>
+</p>
 
 **SPHINX** is a research project focused on transferring machine learning-based optimization predictors across [**MLIR**](https://mlir.llvm.org/) dialects by representing programs as [**ProGraML**](https://proceedings.mlr.press/v139/cummins21a.html) graphs. This repository contains both the core C++ graph generation infrastructure and the Python-based machine learning experiments.
 
