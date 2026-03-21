@@ -5,14 +5,11 @@ import torch
 import logging
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MultipleLocator
-import seaborn as sns
 from functools import partial
 from tqdm import tqdm
 from scipy.stats import kendalltau, spearmanr
 import torch.nn.functional as functional
 from torch_geometric.loader import DataLoader as PygDataLoader
-import glob
 
 import GGNN_train
 from config.params import params

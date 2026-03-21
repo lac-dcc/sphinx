@@ -1,11 +1,9 @@
 import torch
 import os
-import sys
 import glob
 import logging
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
-from tqdm import tqdm
 from config.params import params
 
 # --- CONFIGURATION ---
@@ -50,8 +48,8 @@ def load_run_history(run_dir):
                 'val_mae': cp['val_mae'],
                 'val_tau': cp['val_tau'],
             })
-        except Exception as e:
-            pass
+        except (RuntimeError, KeyError, FileNotFoundError) as e:
+            print(f"Skipping {f}: {e}")
 
     history.sort(key=lambda x: x['epoch'])
     return history

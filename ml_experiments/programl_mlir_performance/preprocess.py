@@ -1,11 +1,9 @@
 import os
-import sys
 import json
 import csv
 import torch
 import multiprocessing
 import logging
-from functools import partial
 from pathlib import Path
 from torch_geometric.data import Data
 from tqdm import tqdm
@@ -172,7 +170,7 @@ def run_preprocessing():
         load_vocabulary_from_csv(vocab_p)
 
     with multiprocessing.Pool(processes=num_workers, initializer=init_worker, initargs=(str(vocab_path),)) as pool:
-        results = list(tqdm(
+        list(tqdm(
             pool.imap_unordered(process_single_graph, tasks, chunksize=100),
             total=len(tasks),
             desc="Preprocessing",

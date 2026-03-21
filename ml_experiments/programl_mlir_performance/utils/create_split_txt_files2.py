@@ -3,15 +3,14 @@ import random
 from pathlib import Path
 from config.params import params
 
+TRAIN_RATIO = 0.6
+VAL_RATIO = 0.2
+# Test is remainder (0.2)
 
 def create_dataset_splits(seed=42):
     print("=" * 60)
     print("CREATING DATASET SPLITS (STABLEHLO & LINALG)")
     print("=" * 60)
-
-    TRAIN_RATIO = 0.6
-    VAL_RATIO = 0.2
-    # Test is remainder (0.2)
 
     random.seed(seed)
 

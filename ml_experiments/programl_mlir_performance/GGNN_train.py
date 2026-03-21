@@ -1,8 +1,6 @@
 import os
 import math
-import shutil
 import sys
-import csv
 import time
 import logging
 import json
@@ -17,15 +15,12 @@ import torch.nn.functional as functional
 import torch.optim as optim
 from torch.amp import GradScaler, autocast
 
-from torch_geometric.data import Data, Dataset as PygDataset
+from torch_geometric.data import Dataset as PygDataset
 from torch_geometric.loader import DataLoader as PygDataLoader
 from torch_geometric.nn.conv import MessagePassing
-from torch_geometric.nn import global_add_pool, global_mean_pool
+from torch_geometric.nn import global_add_pool
 
 from scipy.stats import kendalltau, spearmanr
-
-import utils.proto_python.program_graph_pb2 as program_graph_pb2
-import utils.proto_python.util_pb2 as util_pb2
 
 from config.params import params
 
@@ -178,8 +173,8 @@ def compute_baselines_and_stats(metrics_path, split_file_path):
 
     y = np.array(train_metrics)
 
-    min = np.min(y)
-    max = np.max(y)
+    min_val = np.min(y)
+    max_val = np.max(y)
     mean = np.mean(y)
     std = np.std(y)
     median = np.median(y)
@@ -187,8 +182,8 @@ def compute_baselines_and_stats(metrics_path, split_file_path):
     log_blank_line()
     logging.info(f"DATASET STATISTICS (Train Split N={len(y)})")
     logging.info(f"Metric:  {params.model.target_performance_metric}")
-    logging.info(f"Min:     {min:.4f}")
-    logging.info(f"Max:     {max:.4f}")
+    logging.info(f"Min:     {min_val:.4f}")
+    logging.info(f"Max:     {max_val:.4f}")
     logging.info(f"Mean:    {mean:.4f}")
     logging.info(f"Std Dev: {std:.4f}")
     logging.info(f"Median:  {median:.4f}")

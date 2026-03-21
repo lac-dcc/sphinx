@@ -1,6 +1,5 @@
 import json
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from scipy.stats import kendalltau, spearmanr
@@ -23,7 +22,7 @@ def log_blank_line():
 
 
 def load_data(split_file, metrics_data):
-    X = []
+    x = []
     y = []
     skipped = 0
 
@@ -35,7 +34,7 @@ def load_data(split_file, metrics_data):
             if 'trainable_parameters' in metrics_data[name]:
                 trainable_params = metrics_data[name]['trainable_parameters']
                 metric = metrics_data[name][params.model.target_performance_metric]
-                X.append(trainable_params)
+                x.append(trainable_params)
                 y.append(metric)
             else:
                 skipped += 1
@@ -45,7 +44,7 @@ def load_data(split_file, metrics_data):
     if skipped > 0:
         logging.info(f"Warning: Skipped {skipped} entries (missing data in JSON).")
 
-    return np.array(X).reshape(-1, 1), np.array(y)
+    return np.array(x).reshape(-1, 1), np.array(y)
 
 
 def main():

@@ -1,18 +1,16 @@
 import json
 import random
-import os
 from pathlib import Path
 from programl_mlir_performance.config.params import params
 
+TRAIN_RATIO = 0.6
+VAL_RATIO = 0.2
+# Test is remainder (0.2)
 
 def create_dataset_splits(seed=42):
     print("=" * 60)
     print("CREATING DATASET SPLITS")
     print("=" * 60)
-
-    TRAIN_RATIO = 0.6
-    VAL_RATIO = 0.2
-    # Test is remainder (0.2)
 
     random.seed(seed)
 
@@ -45,9 +43,9 @@ def create_dataset_splits(seed=42):
 
     def save_list(filename, data_list):
         path = output_dir / filename
-        with open(path, 'w') as f:
+        with open(path, 'w') as file:
             for item in data_list:
-                f.write(f"{item}\n")
+                file.write(f"{item}\n")
         print(f"Saved {path}")
 
     save_list("train_files.txt", train_set)

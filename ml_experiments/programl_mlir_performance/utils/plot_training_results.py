@@ -30,6 +30,7 @@ FIGURE_TITLE = "Training History and Validation Metrics - Legalized Linalg  - Tr
 # FIGURE_TITLE = "Training History and Validation Metrics - Legalized Linalg  - Training Time - Trained on Linalg"
 
 def highlight_max(ax, x, y, line_color, dot_color, edge_color, label=None, mode="max"):
+    i = 0
     if mode == "max":
         i = numpy.argmax(y)
     elif mode == "min":

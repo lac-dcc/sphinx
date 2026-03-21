@@ -4,7 +4,6 @@ import torch.optim as optim
 import logging
 import os
 import sys
-import numpy as np
 import time
 
 from GGNN_train import (
