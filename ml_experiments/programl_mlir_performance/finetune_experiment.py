@@ -68,7 +68,7 @@ def load_pretrained_surgery(model, checkpoint_path):
     logging.info("Backbone (GNN + MLP) weights loaded successfully.")
 
     # 3. Handle Embedding Initialization based on Experiment
-    new_emb_layer = model.node_text_embedding.weight.data
+    new_emb_layer = model.node_text_embedding.weight
 
     if EXPERIMENT_ID in [1, 2, 3, 4]:
         # Naive / Frozen: Leave as Random Initialization (Default PyTorch)
@@ -78,8 +78,10 @@ def load_pretrained_surgery(model, checkpoint_path):
         # Smart Init: Initialize new embeddings to the MEAN of the old ones
         mean_vector = torch.mean(old_emb_weights, dim=0)
 
-        # Assign this mean vector to every token in the new vocabulary
-        new_emb_layer[:] = mean_vector
+        # Assign this mean vector to every token in the new vocabulary, with some small noise
+        with torch.no_grad():
+            new_emb_layer.copy_(mean_vector.expand_as(new_emb_layer))
+            new_emb_layer.add_(torch.randn_like(new_emb_layer) * 0.01)
         logging.info("Embeddings initialized via SURGERY (Mean-Centered).")
 
     return model
@@ -139,13 +141,15 @@ def main():
         train_dataset,
         batch_size=params.training.graph_level_batch_size,
         shuffle=True,
-        num_workers=params.environment.num_workers
+        num_workers=params.environment.num_workers,
+        pin_memory=True
     )
     val_loader = PygDataLoader(
         val_dataset,
         batch_size=params.training.graph_level_batch_size,
         shuffle=False,
-        num_workers=params.environment.num_workers
+        num_workers=params.environment.num_workers,
+        pin_memory=True
     )
 
     # Compute stats for the NEW dataset
@@ -172,12 +176,18 @@ def main():
         filter(lambda p: p.requires_grad, model.parameters()),
         lr=learning_rate
     )
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        mode='max',
+        factor=0.5,
+        patience=5
+    )
     criterion = nn.MSELoss()
 
     # 7. Start Training
     log_blank_line()
     logging.info("Starting Fine-Tuning Loop...")
-    train_by_epoch(model, train_loader, val_loader, optimizer, criterion, device, t_mean_dev, t_std_dev, run_dir, start_time)
+    train_by_epoch(model, train_loader, val_loader, optimizer, scheduler, criterion, device, t_mean_dev, t_std_dev, run_dir, start_time)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
@@ -192,8 +202,10 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
-
     for exp_id in range(1, 9):
         EXPERIMENT_ID = exp_id
-        main()
+        try:
+            main()
+        except Exception as e:
+            logging.error(f"Experiment {exp_id} failed: {e}")
+            continue

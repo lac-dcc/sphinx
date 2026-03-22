@@ -212,6 +212,7 @@ class ProGraMLGGNNLayer(MessagePassing):
     def __init__(self, hidden_dim, num_edge_types, positional_embedding_dim):
         super(ProGraMLGGNNLayer, self).__init__(aggr='add')
         self.hidden_dim = hidden_dim
+        self.num_edge_types = num_edge_types
 
         self.edge_type_mlps = nn.ModuleList([
             nn.Linear(hidden_dim, hidden_dim) for _ in range(num_edge_types)
@@ -236,12 +237,10 @@ class ProGraMLGGNNLayer(MessagePassing):
         gated_x_j = x_j * position_gate
 
         messages = torch.zeros_like(gated_x_j)
-        for i in range(len(self.edge_type_mlps)):
+        for i in range(self.num_edge_types):
             type_mask = (edge_type == i)
-            # noinspection PyUnresolvedReferences
-            if type_mask.any():
-                mlp_output = self.edge_type_mlps[i](gated_x_j[type_mask])
-                messages[type_mask] = mlp_output.to(messages.dtype)
+            masked_x = gated_x_j[type_mask]
+            messages[type_mask] = self.edge_type_mlps[i](masked_x).to(messages.dtype)
 
         return messages
 
@@ -290,10 +289,10 @@ class ProGraMLNetPyG(nn.Module):
         return out.view(-1)
 
 
-def train_by_epoch(model, train_loader, val_loader, optimizer, criterion, device, t_mean, t_std, run_dir, global_start_time):
+def train_by_epoch(model, train_loader, val_loader, optimizer, scheduler,
+                   criterion, device, t_mean, t_std, run_dir, global_start_time):
     epochs = params.training.epochs
     checkpoint_dir = os.path.dirname(params.paths.checkpoint)
-    best_checkpoint_path = params.paths.checkpoint
     os.makedirs(checkpoint_dir, exist_ok=True)
 
     scaler = GradScaler('cuda')
@@ -310,13 +309,14 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, criterion, device
         # --- TRAIN ---
         model.train()
         total_loss = 0.0
+        total_sq_error = 0.0
         total_graphs = 0
 
         pbar = tqdm_stdout(train_loader, desc=f"Epoch {epoch}/{epochs} [Train]", leave=False)
 
         for batch in pbar:
             batch = batch.to(device)
-            optimizer.zero_grad()
+            optimizer.zero_grad(set_to_none=True)
 
             # Z-Score Normalization: (y - mean) / std
             targets_norm = (batch.y - t_mean) / t_std
@@ -326,8 +326,13 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, criterion, device
                 loss = criterion(preds, targets_norm)
 
             scaler.scale(loss).backward()
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             scaler.step(optimizer)
             scaler.update()
+
+            preds_real = (preds.detach() * t_std) + t_mean
+            total_sq_error += (preds_real - batch.y).pow(2).sum().item()
 
             batch_size = batch.num_graphs
             total_loss += loss.item() * batch_size
@@ -336,14 +341,19 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, criterion, device
             pbar.set_description(f"Epoch {epoch} [Train] Loss: {loss.item():.4f}")
 
         avg_train_loss = total_loss / total_graphs
+        avg_train_rmse = math.sqrt(total_sq_error / total_graphs)
 
         # --- VALIDATE ---
         val_rmse, val_mae, val_r2, val_nrmse, val_tau, val_spearman = evaluate(model, val_loader, device, t_mean, t_std)
+        scheduler.step(val_tau)
+        current_lr = optimizer.param_groups[0]['lr']
 
         # --- LOGGING ---
         log_blank_line()
         logging.info(f"Epoch {epoch}/{epochs} Results:")
-        logging.info(f"Train Norm MSE: {avg_train_loss:.5f}")
+        logging.info(f"Train MSE:  {avg_train_loss:.5f}  (Z-Score Loss)")
+        logging.info(f"Train RMSE: {avg_train_rmse:.5f}")
+        logging.info(f"Current LR: {current_lr:.2e}")
         logging.info(f"Val RMSE:   {val_rmse:.5f}")
         logging.info(f"Val MAE:    {val_mae:.5f}")
         logging.info(f"Val R²:     {val_r2:.4f}   (Explained Var)")
@@ -374,7 +384,10 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, criterion, device
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
             'grad_scaler_state_dict': scaler.state_dict(),
+            'scheduler_state_dict': scheduler.state_dict(),
             'train_mse': avg_train_loss,
+            'train_rmse': avg_train_rmse,
+            'current_lr': current_lr,
             'val_rmse': val_rmse,
             'val_mae': val_mae,
             'val_r2': val_r2,
@@ -511,9 +524,16 @@ def main():
     logging.info(f"Model Initialized. Vocab: {params.model.expected_vocab_size}, Params: {sum(p.numel() for p in model.parameters())}")
 
     optimizer = optim.Adam(model.parameters(), lr=params.training.learning_rate)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        optimizer,
+        mode='max',
+        factor=0.5,
+        patience=5
+    )
     criterion = nn.MSELoss()
 
-    train_by_epoch(model, train_loader, val_loader, optimizer, criterion, device, t_mean_dev, t_std_dev, run_dir, start_time)
+    train_by_epoch(model, train_loader, val_loader, optimizer, scheduler,
+                   criterion, device, t_mean_dev, t_std_dev, run_dir, start_time)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
