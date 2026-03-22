@@ -172,9 +172,10 @@ def main():
 
     # 6. Optimizer Setup
     # Filter ensures we don't try to optimize frozen parameters
-    optimizer = optim.Adam(
+    optimizer = optim.AdamW(
         filter(lambda p: p.requires_grad, model.parameters()),
-        lr=learning_rate
+        lr=learning_rate,
+        weight_decay=1e-4
     )
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,

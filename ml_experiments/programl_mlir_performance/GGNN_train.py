@@ -523,7 +523,11 @@ def main():
     log_blank_line()
     logging.info(f"Model Initialized. Vocab: {params.model.expected_vocab_size}, Params: {sum(p.numel() for p in model.parameters())}")
 
-    optimizer = optim.Adam(model.parameters(), lr=params.training.learning_rate)
+    optimizer = optim.AdamW(
+        model.parameters(),
+        lr=params.training.learning_rate,
+        weight_decay=1e-4
+    )
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
         optimizer,
         mode='max',
