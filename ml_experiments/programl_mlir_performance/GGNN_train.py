@@ -296,10 +296,14 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, scheduler,
     os.makedirs(checkpoint_dir, exist_ok=True)
 
     scaler = GradScaler('cuda')
-    # Track Best Ranking (Kendall Tau) instead of RMSE
-    best_val_tau = -1.0
 
-    best_model_path = os.path.join(run_dir, "best_model.pt")
+    best_val_tau = -float('inf')
+    best_val_rmse = float('inf')
+    best_val_r2 = -float('inf')
+
+    best_tau_model_path = os.path.join(run_dir, "best_tau_model.pt")
+    best_rmse_model_path = os.path.join(run_dir, "best_rmse_model.pt")
+    best_r2_model_path = os.path.join(run_dir, "best_r2_model.pt")
 
     logging.info(f"Starting training for {epochs} epochs...")
 
@@ -375,9 +379,10 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, scheduler,
         # --- CHECKPOINT ---
         if val_tau > best_val_tau:
             best_val_tau = val_tau
-            is_best = True
-        else:
-            is_best = False
+        if val_rmse < best_val_rmse:
+            best_val_rmse = val_rmse
+        if val_r2 > best_val_r2:
+            best_val_r2 = val_r2
 
         checkpoint = {
             'epoch': epoch,
@@ -395,6 +400,8 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, scheduler,
             'val_tau': val_tau,
             'val_spearman': val_spearman,
             'best_val_tau': best_val_tau,
+            'best_val_rmse': best_val_rmse,
+            'best_val_r2': best_val_r2,
             'elapsed_epoch_time': elapsed_epoch_time,
             'elapsed_total_time': elapsed_total_time,
             'batch_size': params.training.graph_level_batch_size,
@@ -408,9 +415,17 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, scheduler,
         epoch_path = os.path.join(run_dir, f"epoch_{epoch}.pt")
         torch.save(checkpoint, epoch_path)
 
-        if is_best:
-            torch.save(checkpoint, best_model_path)
-            logging.info(f"New Best Model Saved! (Tau: {val_tau:.4f})")
+        if val_tau == best_val_tau:
+            torch.save(checkpoint, best_tau_model_path)
+            logging.info(f"New Best Tau Model Saved!  (Tau:  {val_tau:.4f})")
+
+        if val_rmse == best_val_rmse:
+            torch.save(checkpoint, best_rmse_model_path)
+            logging.info(f"New Best RMSE Model Saved! (RMSE: {val_rmse:.5f})")
+
+        if val_r2 == best_val_r2:
+            torch.save(checkpoint, best_r2_model_path)
+            logging.info(f"New Best R² Model Saved!   (R²:   {val_r2:.4f})")
 
 
 def evaluate(model, loader, device, t_mean, t_std):
