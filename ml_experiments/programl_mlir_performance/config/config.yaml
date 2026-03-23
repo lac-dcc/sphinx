@@ -12,15 +12,15 @@ model:
   num_edge_types: 6 # 3 types * 2 for backward counterparts
   max_edge_position: 8 # Max operand/argument position (from MLIR graphs)
   ggnn_iterations: 30 # T=30 for training (ProGraML paper, Page 6, Sec 5.2)
-  expected_vocab_size: 59
-#  expected_vocab_size: 85
+#  expected_vocab_size: 59
+  expected_vocab_size: 85
 #  target_performance_metric: test_accuracy
   target_performance_metric: training_time
 
 # Training hyperparameters (ProGraML paper)
 training:
-  learning_rate: 2.5e-4 # (ProGraML paper, Page 13, Appendix C.2)
-  graph_level_batch_size: 32 # Number of graphs per batch for PyG DataLoader
+  learning_rate: 5.0e-4 # (ProGraML paper, Page 13, Appendix C.2)
+  graph_level_batch_size: 128 # Number of graphs per batch for PyG DataLoader
   epochs: 50 # Max number of epochs to run
 
 # Execution environment
@@ -30,8 +30,8 @@ environment:
 
 # Paths
 paths:
-  vocab: vocab/programl_mlir_vocab_stablehlo.csv
-#  vocab: vocab/programl_mlir_vocab_linalg.csv
+#  vocab: vocab/FTE_programl_mlir_vocab_stablehlo.csv
+  vocab: vocab/FTE_programl_mlir_vocab_linalg.csv
 
   base: /home/douglasvc/Desktop # Configure this for your system
   dataset: ${paths.base}/NASBench_Dataset # Configure this for your system
@@ -40,16 +40,16 @@ paths:
   graphs: ${paths.dataset}/graphs_linalg
 
   splits_txt: splits
-  train_graphs_txt: splits/finetune_experiment/train_files_stablehlo.txt
-  validation_graphs_txt: splits/finetune_experiment/validation_files_stablehlo.txt
-  test_graphs_txt: splits/finetune_experiment/test_files_stablehlo.txt
-#  train_graphs_txt: splits/finetune_experiment/train_files_linalg.txt
-#  validation_graphs_txt: splits/finetune_experiment/validation_files_linalg.txt
-#  test_graphs_txt: splits/finetune_experiment/test_files_linalg.txt
+#  train_graphs_txt: splits/finetune_experiment/train_files_stablehlo.txt
+#  validation_graphs_txt: splits/finetune_experiment/validation_files_stablehlo.txt
+#  test_graphs_txt: splits/finetune_experiment/test_files_stablehlo.txt
+  train_graphs_txt: splits/finetune_experiment/train_files_linalg.txt
+  validation_graphs_txt: splits/finetune_experiment/validation_files_linalg.txt
+  test_graphs_txt: splits/finetune_experiment/test_files_linalg.txt
 
 #  processed: ${paths.dataset}/processed
-  processed: ${paths.dataset}/processed_training_time_stablehlo
-#  processed: ${paths.dataset}/processed_training_time_linalg
+#  processed: ${paths.dataset}/processed_training_time_stablehlo
+  processed: ${paths.dataset}/processed_training_time_linalg
   labels: ${paths.dataset}/all_metrics.json
 
   checkpoint: ${paths.dataset}/checkpoints/best_model.pt
