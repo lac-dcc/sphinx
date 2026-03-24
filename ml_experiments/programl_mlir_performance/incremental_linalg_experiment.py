@@ -19,11 +19,13 @@ from GGNN_train import (
 )
 from config.params import params
 
+import preprocess
+
 # ==============================================================================
 # USER CONFIGURATION
 # ==============================================================================
 
-SPLITS_DIR = params.paths.splits_txt + "/incremental_experiment"
+SPLITS_DIR = params.paths.splits_txt + "/incremental_linalg_experiment"
 
 # Percentages and runs to loop over
 PERCENTAGES = [1, 5, 10, 20, 30, 40, 50, 60]
@@ -59,6 +61,8 @@ def run_baseline_training(train_split_path, val_split_path, percentage, run_num)
         logging.info(f"DATA: {percentage}% | RUN: {run_num}/{NUM_RUNS}")
         logging.info(f"Train Split: {train_split_path}")
         logging.info(f"Run Directory: {run_dir}")
+        log_blank_line()
+        preprocess.run_preprocessing()
         log_blank_line()
 
         # Load Data

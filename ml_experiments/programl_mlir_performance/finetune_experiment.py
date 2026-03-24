@@ -19,13 +19,15 @@ from GGNN_train import (
 )
 from config.params import params
 
+import preprocess
+
 # ==============================================================================
 # USER CONFIGURATION
 # ==============================================================================
 
 # Path to the BEST checkpoint from best (StableHLO) training run
 # PRETRAINED_CHECKPOINT_PATH = os.path.join(os.path.dirname(params.paths.checkpoint), "run_1/best_model.pt")
-PRETRAINED_CHECKPOINT_PATH = os.path.join(os.path.dirname(params.paths.checkpoint), "TrainingTime_20Epochs_StableHLO/best_model.pt")
+PRETRAINED_CHECKPOINT_PATH = os.path.join(os.path.dirname(params.paths.checkpoint), "TrainingTime_40Epochs_StableHLO/best_tau_model.pt")
 
 # SELECT EXPERIMENT:
 EXPERIMENT_NAMES = {
@@ -122,6 +124,10 @@ def main():
     device = torch.device(params.environment.device)
     logging.info(f"Starting Fine-Tuning | EXPERIMENT ID: {EXPERIMENT_ID} - {EXPERIMENT_NAMES[EXPERIMENT_ID]}")
     logging.info(f"Run Directory: {run_dir}")
+
+    log_blank_line()
+    preprocess.run_preprocessing()
+    log_blank_line()
 
     # 2. Data Preparation (Load NEW Linalg Dataset)
     # Ensure params.paths points to the NEW dataset files
