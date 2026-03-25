@@ -28,13 +28,21 @@ import preprocess
 SPLITS_DIR = params.paths.splits_txt + "/incremental_linalg_experiment"
 
 # Percentages and runs to loop over
-PERCENTAGES = [1, 5, 10, 20, 30, 40, 50, 60]
-NUM_RUNS = 3
+PERCENTAGE_RUNS = {
+    1: 3,
+    5: 3,
+    10: 2,
+    20: 2,
+    30: 1,
+    40: 1,
+    50: 1,
+    60: 1,
+}
 
 
 # ==============================================================================
 
-def run_baseline_training(train_split_path, val_split_path, percentage, run_num):
+def run_baseline_training(train_split_path, val_split_path, percentage, run_num, num_runs):
     """
     Trains a model FROM SCRATCH using the specified data splits.
     Monkey-patches the config to load the correct .txt files.
@@ -58,7 +66,7 @@ def run_baseline_training(train_split_path, val_split_path, percentage, run_num)
         device = torch.device(params.environment.device)
         log_blank_line()
         logging.info(f"BASELINE EXPERIMENT | TRAIN FROM SCRATCH")
-        logging.info(f"DATA: {percentage}% | RUN: {run_num}/{NUM_RUNS}")
+        logging.info(f"DATA: {percentage}% | RUN: {run_num}/{num_runs}")
         logging.info(f"Train Split: {train_split_path}")
         logging.info(f"Run Directory: {run_dir}")
         log_blank_line()
@@ -100,6 +108,7 @@ def run_baseline_training(train_split_path, val_split_path, percentage, run_num)
         # INITIALIZE PURE, BLANK-SLATE MODEL
         # No pretrained weights are loaded here. Everything is random init.
         # ------------------------------------------------------------------
+        log_blank_line()
         logging.info("Initializing fresh ProGraMLNetPyG model from scratch...")
         model = ProGraMLNetPyG(vocab_size=params.model.expected_vocab_size, device=device).to(device)
 
@@ -143,10 +152,10 @@ if __name__ == '__main__':
         print(f"ERROR: Fixed validation file not found at {fixed_val_path}")
         sys.exit(1)
 
-    print(f"Starting Baseline Incremental Pipeline. Total runs: {len(PERCENTAGES) * NUM_RUNS}")
+    print(f"Starting Baseline Incremental Pipeline. Total runs: {sum(PERCENTAGE_RUNS.values())}")
 
-    for p in PERCENTAGES:
-        for run in range(1, NUM_RUNS + 1):
+    for p, num_runs in PERCENTAGE_RUNS.items():
+        for run in range(1, num_runs + 1):
             train_filename = f"train_{p}percent_run{run}.txt"
             train_split_path = os.path.join(SPLITS_DIR, train_filename)
 
@@ -154,6 +163,6 @@ if __name__ == '__main__':
                 print(f"WARNING: Split file missing: {train_split_path}. Skipping.")
                 continue
 
-            run_baseline_training(train_split_path, fixed_val_path, p, run)
+            run_baseline_training(train_split_path, fixed_val_path, p, run, num_runs)
 
     print("All baseline incremental training runs completed successfully!")
