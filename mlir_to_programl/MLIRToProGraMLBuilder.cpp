@@ -307,6 +307,8 @@ Node *MLIRToProGraMLBuilder::GetOrCreateConstNode(const mlir::NamedAttribute &at
 
 
 void MLIRToProGraMLBuilder::CreateCallEdges(const Node *source, const FunctionEntryExits &target) {
+    if (!source || !target.first)
+        return;
     (void) AddCallEdge(source, target.first);
     for (const auto &exitNode: target.second)
         (void) AddCallEdge(exitNode, source);
