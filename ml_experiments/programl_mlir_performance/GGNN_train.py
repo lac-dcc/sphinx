@@ -18,7 +18,7 @@ from torch.amp import GradScaler, autocast
 from torch_geometric.data import Dataset as PygDataset
 from torch_geometric.loader import DataLoader as PygDataLoader
 from torch_geometric.nn.conv import MessagePassing
-from torch_geometric.nn import global_add_pool
+from torch_geometric.nn import global_add_pool, global_mean_pool
 
 from scipy.stats import kendalltau, spearmanr
 
@@ -188,13 +188,29 @@ def compute_baselines_and_stats(metrics_path, split_file_path):
     logging.info(f"Std Dev: {std:.4f}")
     logging.info(f"Median:  {median:.4f}")
 
-    mean_pred_mae = np.mean(np.abs(y - mean))
-    median_pred_mae = np.mean(np.abs(y - median))
-    mean_pred_rmse = np.sqrt(np.mean((y - mean) ** 2))
+    mean_preds = np.full_like(y, mean)
+    median_preds = np.full_like(y, median)
 
-    logging.info(f"BASELINE: Mean Predictor MAE:   {mean_pred_mae:.5f}")
-    logging.info(f"BASELINE: Mean Predictor RMSE:  {mean_pred_rmse:.5f} (Target to beat)")
-    logging.info(f"BASELINE: Median Predictor MAE: {median_pred_mae:.5f}")
+    mean_mae = np.mean(np.abs(y - mean_preds))
+    mean_rmse = np.sqrt(np.mean((y - mean_preds) ** 2))
+
+    # R²: mean predictor is the baseline by definition, so this is always 0.0
+    ss_res = np.sum((y - mean_preds) ** 2)
+    ss_tot = np.sum((y - mean) ** 2)
+    mean_r2 = 0.0 if ss_tot == 0 else 1 - (ss_res / ss_tot)
+
+    # Tau/Spearman: constant predictor has no ranking signal, always 0.0
+    mean_tau = 0.0
+    mean_spearman = 0.0
+
+    median_mae = np.mean(np.abs(y - median_preds))
+
+    logging.info(f"BASELINE: Mean Predictor MAE:      {mean_mae:.5f}")
+    logging.info(f"BASELINE: Mean Predictor RMSE:     {mean_rmse:.5f} (Target to beat)")
+    logging.info(f"BASELINE: Mean Predictor R²:       {mean_r2:.4f}")
+    logging.info(f"BASELINE: Mean Predictor Tau:      {mean_tau:.4f}")
+    logging.info(f"BASELINE: Mean Predictor Spearman: {mean_spearman:.4f}")
+    logging.info(f"BASELINE: Median Predictor MAE:    {median_mae:.5f}")
 
     return mean, std
 
@@ -283,7 +299,7 @@ class ProGraMLNetPyG(nn.Module):
         for _ in range(self.ggnn_iterations):
             curr_x = self.ggnn_layer(curr_x, data.edge_index, data.edge_type, edge_pos_embeds)
 
-        graph_embedding = global_add_pool(curr_x, data.batch)
+        graph_embedding = global_mean_pool(curr_x, data.batch)
 
         out = self.readout_mlp(graph_embedding)
         return out.view(-1)

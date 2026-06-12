@@ -135,11 +135,13 @@ def main():
         handlers=[logging.StreamHandler(sys.stdout)]
     )
 
-    run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "TrainingTime_20Epochs_Linalg"
+    # run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "TestAccuracy_60Epochs_StableHLO"
+    run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "TestAccuracy_100Epochs_Linalg"
+    # run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "FT8"
 
     base_checkpoint_dir = os.path.dirname(params.paths.checkpoint)
     run_dir = os.path.join(base_checkpoint_dir, run_folder_name)
-    model_path = os.path.join(run_dir, "best_model.pt")
+    model_path = os.path.join(run_dir, "best_tau_model.pt")
 
     if not os.path.exists(model_path):
         logging.error(f"Model not found at {model_path}")
@@ -148,6 +150,10 @@ def main():
     device = torch.device(params.environment.device)
     logging.info(f"Testing Model: {model_path}")
     logging.info(f"Device: {device}")
+
+    GGNN_train.log_blank_line()
+    GGNN_train.preprocess.run_preprocessing()
+    GGNN_train.log_blank_line()
 
     logging.info("Computing normalization stats from Training Set...")
     t_mean, t_std = GGNN_train.compute_baselines_and_stats(
