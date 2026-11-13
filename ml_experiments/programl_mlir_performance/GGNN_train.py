@@ -381,8 +381,9 @@ def train_by_epoch(model, train_loader, val_loader, optimizer, scheduler,
         logging.info(f"Epoch time: {formatted_epoch_time} ({elapsed_epoch_time:.2f} seconds)")
         logging.info(f"Total time: {formatted_total_time} ({elapsed_total_time:.2f} seconds)")
 
-        logging.info(f"GPU Mem: {torch.cuda.max_memory_allocated() / 1e9:.2f} GB")
-        torch.cuda.reset_peak_memory_stats()
+        if torch.cuda.is_available():
+            logging.info(f"GPU Mem: {torch.cuda.max_memory_allocated() / 1e9:.2f} GB")
+            torch.cuda.reset_peak_memory_stats()
 
         # --- CHECKPOINT ---
         if val_tau > best_val_tau:
