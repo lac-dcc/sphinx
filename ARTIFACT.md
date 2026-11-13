@@ -20,7 +20,7 @@ This table is only an overview of what can be run in a given amount of time. The
 | 5 minutes on a GPU (about 2 hours on a CPU), 25 GB of disk | Level 2 with `--source` | The metrics of Table 2 are recomputed from the trained models and match to the printed precision |
 | 1 GPU-hour, 7 GB of disk | Level 3, fine-tuning of FTE6 on linalg | One column of Table 2 is retrained from the shipped source model |
 | 2.5 GPU-hours, 6 GB of disk | Level 3, `pipeline_9010.py` on NAS-Bench-201 | A whole experiment is retrained end to end: source model, scratch baseline and the eight configurations, for both tasks |
-| about 20 GPU-hours, 32 GB GPU | Level 3, all of Table 2 | |
+| about 20 GPU-hours, 32 GB GPU | Level 3, all of Table 2 | Table 2 is retrained in full: the two source models, the two linalg baselines and the eight configurations, for both tasks |
 
 Retrained models do not reproduce the reported numbers exactly; the claims to check are the gap to the scratch baseline and the broad ordering of the configurations. As a reference, our own reruns on the paper's hardware gave:
 
@@ -188,7 +188,7 @@ Training uses the original scripts. With `SPHINX_DATA` set, the dataset paths, v
 | `SPHINX_BENCHMARK` | `nb101` or `nb201` | `nb101` |
 | `SPHINX_DIALECT` | `stablehlo`, `linalg`, `arith`, `llvm`, `linalg_full` | `stablehlo` |
 | `SPHINX_TARGET` | `training_time` or `test_accuracy` | `training_time` |
-| `SPHINX_POOL` | split pool: `stablehlo` (90%) or `linalg` (10%) | follows the dialect |
+| `SPHINX_POOL` | which split files to use: `stablehlo` (the 90% pool) or `linalg` (the 10% pool) | `stablehlo` for stablehlo, `linalg` for every other dialect |
 | `SPHINX_RUNS` | where run folders and checkpoints are written | `$SPHINX_DATA/runs` |
 | `SPHINX_CACHE` | where preprocessed graphs are cached | `$SPHINX_DATA/processed` |
 | `SPHINX_EPOCHS`, `SPHINX_BATCH_SIZE`, `SPHINX_DEVICE`, `SPHINX_WORKERS` | training overrides | from `config.yaml` |
@@ -242,6 +242,107 @@ Disk: the first run on a dataset writes a preprocessed copy of its graphs to `SP
 Reference times on the paper's hardware (RTX 5090, Threadripper 7970X): pre-training 1h42m (training time, 40 epochs) and 2h33m (test accuracy, 60 epochs); each fine-tuning run 52 to 60 minutes; one NAS-Bench-201 run 5 to 13 minutes. The whole `pipeline_9010.py` takes 2h10m, and one epoch of every run of `incremental_linalg_experiment.py` takes 33 minutes.
 
 The NAS-Bench-101 training scripts do not fix a random seed. The NAS-Bench-201 pipeline and the sweep are seeded, which fixes the initial weights and the order of the data but does not make GPU training bit-reproducible. See the suggested path above for how far a rerun lands from the shipped numbers.
+
+## Adding a dialect or a benchmark
+
+The model does not depend on any dialect. A training run reads four things, and a new dialect or a new set of programs only has to provide them:
+
+| Input | Location | Format |
+|---|---|---|
+| Graphs | `$SPHINX_DATA/<benchmark>/graphs/<dialect>/` | One `<name>.ProgramGraph.pb` per program, a ProGraML `ProgramGraph` protocol buffer as written by `mlir_to_programl`. The model uses the text of each node and the source, target, flow and position of each edge. |
+| Labels | `$SPHINX_DATA/<benchmark>/<labels>.json` | One JSON object: `{"<name>": {"training_time": 925.8, "test_accuracy": 0.90, ...}, ...}`. Any numeric field can be the prediction target. |
+| Vocabulary | `vocab/<file>.csv` | Tab-separated with a header line; the fourth column is the node text. A node text gets the number of its line as its index, and index 0 is kept for texts not in the file. The first three columns (cumulative frequencies and count) are informative. |
+| Splits | `splits/<folder>/{train,validation,test}_files_<pool>.txt` | One program name per line, without extension (`model_12`). |
+
+The steps for a new dialect are:
+
+1. Write the programs in the new dialect as `.mlir` files, one per program, in `<folder>/mlir/`. The `dataset_generation/` folder has the lowering commands we used for linalg, scf/memref/arith and llvm.
+2. Convert them to graphs with `mlir_to_programl <folder>` (see [Optional: the graph generator](#optional-the-graph-generator)), and place the resulting `graphs/` folder at `$SPHINX_DATA/<benchmark>/graphs/<dialect>/`. The generator has no dialect-specific code: it reads operation names, operands, results and regions. Every dialect of upstream MLIR is already registered, and StableHLO is added in `mlir_to_programl/main.cpp`; a dialect from another project needs one more `registry.insert` line there.
+3. Build the vocabulary with `python -m utils.create_vocab <graph_dir> vocab/<file>.csv`.
+4. Get the largest edge position with `python -m utils.find_max_edge_position <graph_dir>`.
+5. Register the dialect in `config/datasets.py`: its vocabulary in `VOCAB` and its edge position in `MAX_EDGE_POSITION`.
+6. Train with `SPHINX_DIALECT=<dialect>`, from scratch (`GGNN_train.py`) or from a model of another dialect (`finetune_experiment.py` with `SPHINX_BACKBONE`).
+
+A new dialect of NAS-Bench-101 or NAS-Bench-201 reuses the labels and the split files of the benchmark. A new benchmark also needs a labels file, split files (`python -m utils.create_split_txt_files <graph_dir> splits/<folder> <pool>` writes a 60/20/20 split) and its entries in `LABELS` and `SPLITS`.
+
+About the split pools: each benchmark of the paper is divided into two disjoint sets of programs, called `stablehlo` (90%, where the source models are trained) and `linalg` (10%, used for every target dialect). The names come from the first experiment and do not restrict the dialect: the arith and llvm models are trained on the `linalg` pool. A dialect that has split files of its own (`train_files_<dialect>.txt`) uses them by default, and `SPHINX_POOL` selects a pool explicitly.
+
+### Worked example
+
+This example adds a dialect and a benchmark using only files that are in the repository, so it needs no download and no GPU, and runs in under a minute. The benchmark, `toy`, is the 16 networks of `sample_programs/`. The dialect, `newdialect`, is their linalg version, treated as if the artifact had never seen it. With 16 programs the models learn nothing useful; the point is to show every step.
+
+Place the graphs and the labels (from `ml_experiments/programl_mlir_performance`):
+
+```bash
+export SPHINX_DATA=/tmp/sphinx_toy
+mkdir -p $SPHINX_DATA/toy/graphs
+cp -r ../../sample_programs/linalg/programl $SPHINX_DATA/toy/graphs/newdialect
+cp -r ../../sample_programs/stablehlo/programl $SPHINX_DATA/toy/graphs/stablehlo
+cp ../../sample_programs/labels.json $SPHINX_DATA/toy/labels.json
+```
+
+Build the vocabulary, the edge position and the split files:
+
+```bash
+python -m utils.create_vocab $SPHINX_DATA/toy/graphs/newdialect vocab/toy_newdialect.csv
+python -m utils.find_max_edge_position $SPHINX_DATA/toy/graphs/newdialect
+python -m utils.create_split_txt_files $SPHINX_DATA/toy/graphs/newdialect splits/toy newdialect
+```
+
+Expected output:
+
+```
+16 graphs, 60 node texts, written to vocab/toy_newdialect.csv
+/tmp/sphinx_toy/toy/graphs/newdialect: 16 graphs, max_edge_position = 6
+splits/toy/train_files_newdialect.txt: 9 programs
+splits/toy/validation_files_newdialect.txt: 3 programs
+splits/toy/test_files_newdialect.txt: 4 programs
+```
+
+Register them by adding these lines at the end of `config/datasets.py`:
+
+```python
+MAX_EDGE_POSITION["newdialect"] = 6
+VOCAB[("toy", "newdialect")] = "vocab/toy_newdialect.csv"
+VOCAB[("toy", "stablehlo")] = "vocab/FTE_programl_mlir_vocab_stablehlo.csv"
+LABELS["toy"] = "labels.json"
+SPLITS["toy"] = "splits/toy"
+```
+
+The third line makes the stablehlo version of the same programs available as a source dialect, with the vocabulary the paper uses for it.
+
+Train a model on the new dialect:
+
+```bash
+export SPHINX_BENCHMARK=toy SPHINX_EPOCHS=2 SPHINX_DEVICE=cpu SPHINX_WORKERS=2
+SPHINX_DIALECT=newdialect python GGNN_train.py
+```
+
+Transfer to it from another dialect: train a source model on stablehlo, then fine-tune it on the new dialect with configuration FTE6. In this toy benchmark both dialects share one set of split files, so the source run names the pool:
+
+```bash
+SPHINX_DIALECT=stablehlo SPHINX_POOL=newdialect python GGNN_train.py
+SPHINX_DIALECT=newdialect SPHINX_FT_IDS=6 SPHINX_BACKBONE=$SPHINX_DATA/runs/run_2/best_tau_model.pt python finetune_experiment.py
+```
+
+Predict another quantity by naming any numeric field of the labels file:
+
+```bash
+SPHINX_DIALECT=newdialect SPHINX_TARGET=trainable_parameters python GGNN_train.py
+```
+
+Each run writes a folder `$SPHINX_DATA/runs/run_<n>` with:
+
+- `train.log`: the settings, the statistics of the training labels, and for every epoch the training loss and the validation RMSE, MAE, R², Kendall's τ and Spearman correlation, followed by the epoch time. These are the files in `results/` that the `reproduce` scripts parse.
+- `best_tau_model.pt`, `best_r2_model.pt`, `best_rmse_model.pt`: the model at the best epoch for each validation metric, and `epoch_<n>.pt` for every epoch.
+
+The first run on a dialect also writes the preprocessed graphs (one PyTorch Geometric `Data` file per program) to `$SPHINX_DATA/processed/<benchmark>_<dialect>_<target>`.
+
+### Other changes
+
+- Model and optimiser settings (embedding sizes, learning rate, batch size, epochs) are in `config/config.yaml`.
+- The eight fine-tuning configurations are defined in `finetune_experiment.py`: `EXPERIMENT_NAMES` lists them, `load_pretrained_surgery` decides how the embeddings of the new vocabulary are initialised, and `freeze_gnn_layers` decides which layers are frozen. A new configuration is a new ID handled in these two functions.
+- The amount of training data is set by the training split file: a shorter list, with the same validation and test files, trains on a subset of the programs.
 
 ## Settings that matter
 

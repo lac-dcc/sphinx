@@ -114,7 +114,7 @@ SPHINX_DIALECT=stablehlo python GGNN_train.py
 SPHINX_DIALECT=linalg SPHINX_BACKBONE=/path/to/best_tau_model.pt python finetune_experiment.py
 ```
 
-[ARTIFACT.md](ARTIFACT.md) lists every variable and the settings of each experiment.
+[ARTIFACT.md](ARTIFACT.md) lists every variable and the settings of each experiment, and shows how to add a new dialect or benchmark, with a worked example that runs on the sample programs.
 
 ## Sample programs
 
@@ -128,6 +128,7 @@ sample_programs/
   linalg/
     mlir/       model_<id>.mlir
     programl/   model_<id>.ProgramGraph.pb
+  labels.json   training time and accuracy of the 16 networks
 ```
 
 They are a quick way to try the generator and to see what the graphs look like.

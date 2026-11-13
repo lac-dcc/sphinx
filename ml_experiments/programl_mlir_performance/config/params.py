@@ -127,8 +127,9 @@ def _apply_environment(loaded: Params) -> None:
         SPHINX_BENCHMARK  nb101 (default) or nb201
         SPHINX_DIALECT    stablehlo (default), linalg, arith, llvm, linalg_full
         SPHINX_TARGET     training_time (default) or test_accuracy
-        SPHINX_POOL       split pool, stablehlo (90%) or linalg (10%);
-                          default follows the dialect
+        SPHINX_POOL       split files to use, stablehlo (the 90% pool) or
+                          linalg (the 10% pool); default: see
+                          config/datasets.py, default_pool
         SPHINX_RUNS       where run folders and checkpoints are written
                           (default: $SPHINX_DATA/runs)
         SPHINX_CACHE      where preprocessed graphs are cached

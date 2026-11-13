@@ -6,6 +6,10 @@ Layout of the published dataset and the model settings of each dialect.
     $SPHINX_DATA/nb201/all_metrics_cifar10-valid.json
     $SPHINX_DATA/nb201/graphs/{stablehlo,linalg,arith,llvm}/
 
+A new dialect or benchmark is added by placing its files in the same layout and
+adding its entries to the dictionaries below (ARTIFACT.md, "Adding a dialect or
+a benchmark").
+
 max_edge_position is a property of the graphs of a dialect; the values below
 were obtained with utils/find_max_edge_position.py. Vocabulary sizes are read
 from the vocabulary files.
@@ -48,20 +52,32 @@ def vocab_size(path):
     return len(tokens)
 
 
+def default_pool(split, dialect):
+    """Split pool used for a dialect when SPHINX_POOL is not set.
+
+    A dialect with split files of its own (train_files_<dialect>.txt) uses them.
+    Otherwise the paper's two pools apply: stablehlo is trained on the 90% pool
+    and every other dialect on the 10% pool, whose files are named linalg.
+    """
+    if os.path.exists(os.path.join(PROJECT, split, f"train_files_{dialect}.txt")):
+        return dialect
+    return "stablehlo" if dialect == "stablehlo" else "linalg"
+
+
 def profile(root, benchmark, dialect, target, pool=None, cache=None, vocab_dialect=None):
     """Settings for one benchmark/dialect/target as plain values.
 
-    pool selects the split files: "stablehlo" is the 90% source pool and
-    "linalg" the 10% target pool, whichever dialect the graphs are in.
+    pool selects the split files (<split>/train_files_<pool>.txt and so on);
+    see default_pool for the choice when it is not given.
     vocab_dialect overrides the vocabulary (used for zero-shot evaluation).
     """
+    split = SPLITS[benchmark]
     if pool is None:
-        pool = "stablehlo" if dialect == "stablehlo" else "linalg"
+        pool = default_pool(split, dialect)
     vdialect = vocab_dialect or dialect
     vocab = VOCAB[(benchmark, vdialect)]
     cache = cache or os.path.join(root, "processed")
     tag = f"{benchmark}_{dialect}_{target}" + (f"_vocab_{vocab_dialect}" if vocab_dialect else "")
-    split = SPLITS[benchmark]
     return {
         "target_performance_metric": target,
         "max_edge_position": MAX_EDGE_POSITION[vdialect],
