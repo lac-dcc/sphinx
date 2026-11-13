@@ -27,21 +27,29 @@ import preprocess
 
 # Path to the BEST checkpoint from best (StableHLO) training run
 # PRETRAINED_CHECKPOINT_PATH = os.path.join(os.path.dirname(params.paths.checkpoint), "run_1/best_model.pt")
-PRETRAINED_CHECKPOINT_PATH = os.path.join(os.path.dirname(params.paths.checkpoint), "TrainingTime_40Epochs_StableHLO/best_tau_model.pt")
+#PRETRAINED_CHECKPOINT_PATH = os.path.join(os.path.dirname(params.paths.checkpoint), "TestAccuracy_60Epochs_StableHLO/best_r2_model.pt")
+PRETRAINED_CHECKPOINT_PATH = os.path.join(os.path.dirname(params.paths.checkpoint), "TrainingTime_40Epochs_StableHLO/best_r2_model.pt")
+# The source checkpoint can also be given through the environment, for example
+# a shipped one: SPHINX_BACKBONE=<results>/1.FineTuning_Batch128_TrainingTime/TrainingTime_40Epochs_StableHLO/best_tau_model.pt
+PRETRAINED_CHECKPOINT_PATH = os.environ.get("SPHINX_BACKBONE", PRETRAINED_CHECKPOINT_PATH)
 
-# SELECT EXPERIMENT:
+# SELECT EXPERIMENT. The IDs are the paper's configuration numbers (FTE1 to FTE8):
+# 1-4 start from random embeddings, 5-8 from mean-centered embeddings.
 EXPERIMENT_NAMES = {
-    1: "Naive Transfer (Load Model + Random Embeddings + Train All)",
-    2: "Frozen GNN (Load Model + Random Embeddings + Freeze All GNN + Train MLP/Embeddings)",
-    3: "Partial Freeze GNN 1 (Load Model + Random Embeddings + Freeze Edge and Position MLPs + Train GRU/MLP/Embeddings)",
-    4: "Partial Freeze GNN 2 (Load Model + Random Embeddings + Freeze Edge MLPs Only + Train GRU/Position MLP/MLP/Embeddings)",
-    5: "Smart Init (Load Model + Mean-Centered Embeddings + Train All)",
-    6: "Frozen Smart Init (Load Model + Mean-Centered Embeddings + Freeze All GNN + Train MLP/Embeddings)",
-    7: "Partial Freeze Smart Init 1 (Load Model + Mean-Centered Embeddings + Freeze Edge and Position MLPs + Train GRU/MLP/Embeddings)",
-    8: "Partial Freeze Smart Init 2 (Load Model + Mean-Centered Embeddings + Freeze Edge MLPs Only + Train GRU/Position MLP/MLP/Embeddings)",
+    1: "Frozen GNN (Load Model + Random Embeddings + Freeze All GNN + Train MLP/Embeddings)",
+    2: "Partial Freeze GNN 1 (Load Model + Random Embeddings + Freeze Edge and Position MLPs + Train GRU/MLP/Embeddings)",
+    3: "Partial Freeze GNN 2 (Load Model + Random Embeddings + Freeze Edge MLPs Only + Train GRU/Position MLP/MLP/Embeddings)",
+    4: "Naive Transfer (Load Model + Random Embeddings + Train All)",
+    5: "Frozen Smart Init (Load Model + Mean-Centered Embeddings + Freeze All GNN + Train MLP/Embeddings)",
+    6: "Partial Freeze Smart Init 1 (Load Model + Mean-Centered Embeddings + Freeze Edge and Position MLPs + Train GRU/MLP/Embeddings)",
+    7: "Partial Freeze Smart Init 2 (Load Model + Mean-Centered Embeddings + Freeze Edge MLPs Only + Train GRU/Position MLP/MLP/Embeddings)",
+    8: "Smart Init (Load Model + Mean-Centered Embeddings + Train All)",
 }
 
-EXPERIMENT_ID = 1
+# Configurations that train every layer (no freezing).
+TRAIN_ALL_IDS = (4, 8)
+
+EXPERIMENT_ID = 4
 
 # ==============================================================================
 
@@ -99,11 +107,11 @@ def freeze_gnn_layers(model):
     for param in model.ggnn_layer.edge_type_mlps.parameters():
         param.requires_grad = False
 
-    if EXPERIMENT_ID in [2, 3, 6, 7]:
+    if EXPERIMENT_ID in [1, 2, 5, 6]:
         for param in model.ggnn_layer.position_gating_mlp.parameters():
             param.requires_grad = False
 
-    if EXPERIMENT_ID in [2, 6]:
+    if EXPERIMENT_ID in [1, 5]:
         for param in model.ggnn_layer.gru_cell.parameters():
             param.requires_grad = False
 
@@ -173,7 +181,7 @@ def main():
     # 5. Apply Experiment-Specific Logic
     learning_rate = params.training.learning_rate
 
-    if EXPERIMENT_ID not in [1, 5]:
+    if EXPERIMENT_ID not in TRAIN_ALL_IDS:
         freeze_gnn_layers(model)
 
     # 6. Optimizer Setup
@@ -209,7 +217,9 @@ def main():
 
 
 if __name__ == '__main__':
-    for exp_id in range(1, 9):
+    # SPHINX_FT_IDS selects configurations by FTE number, e.g. "6" or "6,8".
+    _ids = os.environ.get("SPHINX_FT_IDS")
+    for exp_id in ([int(i) for i in _ids.split(",")] if _ids else range(1, 9)):
         EXPERIMENT_ID = exp_id
         try:
             main()

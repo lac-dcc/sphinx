@@ -23,8 +23,9 @@ OPT_FLAGS = [
 ]
 
 # New folders for this experiment
-TRANSFER_GRAPHS_DIR = os.path.join(os.path.dirname(params.paths.graphs), "mlir_linalg")
-source = Path("/home/douglasvc/Desktop/NASBench_Dataset/mlir")
+# source = Path("/home/douglasvc/Desktop/NASBench_Dataset/mlir")
+source = Path("/home/douglasvc/Downloads/mlir")
+TRANSFER_GRAPHS_DIR = os.path.join(os.path.dirname(source), "mlir_linalg")
 
 
 def setup_logging():
@@ -37,7 +38,7 @@ def setup_logging():
 
 def legalize_graphs(file_list):
     logging.info(f"Step 1: Legalizing {len(file_list)} graphs to Linalg...")
-    logging.info(f"Source: {params.paths.graphs}")
+    logging.info(f"Source: {source}")
     logging.info(f"Destination: {TRANSFER_GRAPHS_DIR}")
 
     os.makedirs(TRANSFER_GRAPHS_DIR, exist_ok=True)
@@ -81,14 +82,10 @@ def legalize_graphs(file_list):
 def main():
     setup_logging()
 
-    # 1. Load Test File List
-    test_split_path = params.paths.validation_graphs_txt
+    logging.info(f"Scanning source folder: {source}")
+    file_list = [f.name for f in source.glob("*.mlir")]
+    logging.info(f"Found {len(file_list)} .mlir files")
 
-    logging.info(f"Reading test split from: {test_split_path}")
-    with open(test_split_path, 'r') as f:
-        file_list = [line.strip() for line in f if line.strip()]
-
-    # 2. Legalize (Convert Dialects)
     legalize_graphs(file_list)
 
 

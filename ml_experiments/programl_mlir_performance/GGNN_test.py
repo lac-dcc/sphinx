@@ -136,8 +136,8 @@ def main():
     )
 
     # run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "TestAccuracy_60Epochs_StableHLO"
-    run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "TestAccuracy_100Epochs_Linalg"
-    # run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "FT8"
+    # run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "TestAccuracy_100Epochs_Linalg"
+    run_folder_name = sys.argv[1] if len(sys.argv) > 1 else "FT4"
 
     base_checkpoint_dir = os.path.dirname(params.paths.checkpoint)
     run_dir = os.path.join(base_checkpoint_dir, run_folder_name)

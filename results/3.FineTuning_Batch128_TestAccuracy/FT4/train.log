@@ -1,0 +1,1506 @@
+2026-04-02 04:12:38.079 - INFO - Logging initialized. Writing to /home/douglasvc/NASBench_Dataset/checkpoints/run_1/train.log
+2026-04-02 04:12:38.079 - INFO - Starting Fine-Tuning | EXPERIMENT ID: 4 - Naive Transfer (Load Model + Random Embeddings + Train All)
+2026-04-02 04:12:38.079 - INFO - Run Directory: /home/douglasvc/NASBench_Dataset/checkpoints/run_1
+
+2026-04-02 04:12:38.079 - INFO - PRE-PROCESSING CHECK
+2026-04-02 04:12:38.079 - INFO - Loading metrics from /home/douglasvc/NASBench_Dataset/all_metrics.json...
+2026-04-02 04:12:38.879 - INFO - Loading vocab from vocab/FTE_programl_mlir_vocab_linalg.csv...
+2026-04-02 04:12:38.879 - INFO - Vocab size: 74
+2026-04-02 04:12:38.879 - INFO - Scanning files directly from directory: /home/douglasvc/NASBench_Dataset/graphs_linalg...
+2026-04-02 04:12:39.166 - INFO - Found 423624 total models.
+2026-04-02 04:12:39.166 - INFO - Skipping 42363 already processed files.
+2026-04-02 04:12:39.166 - INFO - Queuing 0 files for processing...
+2026-04-02 04:12:39.166 - INFO - All files processed. Ready to train.
+
+
+2026-04-02 04:12:39.204 - INFO - Loading New Dataset...
+2026-04-02 04:12:39.209 - INFO - Initialized Dataset from splits/finetune_experiment/train_files_linalg.txt
+2026-04-02 04:12:39.209 - INFO - Found 25417 samples.
+2026-04-02 04:12:39.426 - INFO - Initialized Dataset from splits/finetune_experiment/validation_files_linalg.txt
+2026-04-02 04:12:39.426 - INFO - Found 8472 samples.
+
+2026-04-02 04:12:40.320 - INFO - DATASET STATISTICS (Train Split N=25417)
+2026-04-02 04:12:40.320 - INFO - Metric:  test_accuracy
+2026-04-02 04:12:40.320 - INFO - Min:     0.1001
+2026-04-02 04:12:40.320 - INFO - Max:     0.9409
+2026-04-02 04:12:40.320 - INFO - Mean:    0.8970
+2026-04-02 04:12:40.320 - INFO - Std Dev: 0.0575
+2026-04-02 04:12:40.320 - INFO - Median:  0.9065
+2026-04-02 04:12:40.320 - INFO - BASELINE: Mean Predictor MAE:   0.02418
+2026-04-02 04:12:40.320 - INFO - BASELINE: Mean Predictor RMSE:  0.05754 (Target to beat)
+2026-04-02 04:12:40.320 - INFO - BASELINE: Median Predictor MAE: 0.02259
+
+2026-04-02 04:12:40.513 - INFO - Loading pretrained weights from /home/douglasvc/NASBench_Dataset/checkpoints/TestAccuracy_60Epochs_StableHLO/best_r2_model.pt...
+2026-04-02 04:12:40.518 - INFO - Backbone (GNN + MLP) weights loaded successfully.
+2026-04-02 04:12:40.518 - INFO - Embeddings initialized RANDOMLY (Standard Transfer).
+
+2026-04-02 04:12:40.518 - INFO - Starting Fine-Tuning Loop...
+2026-04-02 04:12:40.518 - INFO - Starting training for 100 epochs...
+
+2026-04-02 04:13:11.823 - INFO - Epoch 1/100 Results:
+2026-04-02 04:13:11.823 - INFO - Train MSE:  22.84003  (Z-Score Loss)
+2026-04-02 04:13:11.823 - INFO - Train RMSE: 0.27509
+2026-04-02 04:13:11.823 - INFO - Current LR: 5.00e-04
+2026-04-02 04:13:11.823 - INFO - Val RMSE:   0.05456
+2026-04-02 04:13:11.823 - INFO - Val MAE:    0.02452
+2026-04-02 04:13:11.823 - INFO - Val R²:     0.0451   (Explained Var)
+2026-04-02 04:13:11.823 - INFO - Val NRMSE:  0.0649   (Error %)
+2026-04-02 04:13:11.823 - INFO - Val Tau:    0.3550   (Ranking Metric)
+2026-04-02 04:13:11.823 - INFO - Val Spear:  0.5137
+2026-04-02 04:13:11.823 - INFO - Epoch time: 31s (31.30 seconds)
+2026-04-02 04:13:11.823 - INFO - Total time: 33s (33.74 seconds)
+2026-04-02 04:13:11.823 - INFO - GPU Mem: 10.95 GB
+2026-04-02 04:13:11.830 - INFO - New Best Tau Model Saved!  (Tau:  0.3550)
+2026-04-02 04:13:11.833 - INFO - New Best RMSE Model Saved! (RMSE: 0.05456)
+2026-04-02 04:13:11.836 - INFO - New Best R² Model Saved!   (R²:   0.0451)
+
+2026-04-02 04:13:42.366 - INFO - Epoch 2/100 Results:
+2026-04-02 04:13:42.366 - INFO - Train MSE:  0.92793  (Z-Score Loss)
+2026-04-02 04:13:42.366 - INFO - Train RMSE: 0.05543
+2026-04-02 04:13:42.366 - INFO - Current LR: 5.00e-04
+2026-04-02 04:13:42.366 - INFO - Val RMSE:   0.05200
+2026-04-02 04:13:42.366 - INFO - Val MAE:    0.02137
+2026-04-02 04:13:42.366 - INFO - Val R²:     0.1324   (Explained Var)
+2026-04-02 04:13:42.366 - INFO - Val NRMSE:  0.0619   (Error %)
+2026-04-02 04:13:42.366 - INFO - Val Tau:    0.5113   (Ranking Metric)
+2026-04-02 04:13:42.366 - INFO - Val Spear:  0.7043
+2026-04-02 04:13:42.366 - INFO - Epoch time: 30s (30.53 seconds)
+2026-04-02 04:13:42.366 - INFO - Total time: 1m 04s (64.29 seconds)
+2026-04-02 04:13:42.366 - INFO - GPU Mem: 10.99 GB
+2026-04-02 04:13:42.373 - INFO - New Best Tau Model Saved!  (Tau:  0.5113)
+2026-04-02 04:13:42.395 - INFO - New Best RMSE Model Saved! (RMSE: 0.05200)
+2026-04-02 04:13:42.398 - INFO - New Best R² Model Saved!   (R²:   0.1324)
+
+2026-04-02 04:14:12.839 - INFO - Epoch 3/100 Results:
+2026-04-02 04:14:12.840 - INFO - Train MSE:  0.86655  (Z-Score Loss)
+2026-04-02 04:14:12.840 - INFO - Train RMSE: 0.05357
+2026-04-02 04:14:12.840 - INFO - Current LR: 5.00e-04
+2026-04-02 04:14:12.840 - INFO - Val RMSE:   0.05258
+2026-04-02 04:14:12.840 - INFO - Val MAE:    0.02782
+2026-04-02 04:14:12.840 - INFO - Val R²:     0.1132   (Explained Var)
+2026-04-02 04:14:12.840 - INFO - Val NRMSE:  0.0625   (Error %)
+2026-04-02 04:14:12.840 - INFO - Val Tau:    0.5102   (Ranking Metric)
+2026-04-02 04:14:12.840 - INFO - Val Spear:  0.7003
+2026-04-02 04:14:12.840 - INFO - Epoch time: 30s (30.44 seconds)
+2026-04-02 04:14:12.840 - INFO - Total time: 1m 34s (94.76 seconds)
+2026-04-02 04:14:12.840 - INFO - GPU Mem: 11.13 GB
+
+2026-04-02 04:14:43.298 - INFO - Epoch 4/100 Results:
+2026-04-02 04:14:43.298 - INFO - Train MSE:  0.80905  (Z-Score Loss)
+2026-04-02 04:14:43.298 - INFO - Train RMSE: 0.05176
+2026-04-02 04:14:43.298 - INFO - Current LR: 5.00e-04
+2026-04-02 04:14:43.298 - INFO - Val RMSE:   0.05082
+2026-04-02 04:14:43.298 - INFO - Val MAE:    0.02046
+2026-04-02 04:14:43.298 - INFO - Val R²:     0.1715   (Explained Var)
+2026-04-02 04:14:43.298 - INFO - Val NRMSE:  0.0604   (Error %)
+2026-04-02 04:14:43.298 - INFO - Val Tau:    0.4769   (Ranking Metric)
+2026-04-02 04:14:43.298 - INFO - Val Spear:  0.6616
+2026-04-02 04:14:43.298 - INFO - Epoch time: 30s (30.45 seconds)
+2026-04-02 04:14:43.298 - INFO - Total time: 2m 05s (125.22 seconds)
+2026-04-02 04:14:43.298 - INFO - GPU Mem: 10.99 GB
+2026-04-02 04:14:43.306 - INFO - New Best RMSE Model Saved! (RMSE: 0.05082)
+2026-04-02 04:14:43.310 - INFO - New Best R² Model Saved!   (R²:   0.1715)
+
+2026-04-02 04:15:13.720 - INFO - Epoch 5/100 Results:
+2026-04-02 04:15:13.720 - INFO - Train MSE:  0.82133  (Z-Score Loss)
+2026-04-02 04:15:13.720 - INFO - Train RMSE: 0.05215
+2026-04-02 04:15:13.720 - INFO - Current LR: 5.00e-04
+2026-04-02 04:15:13.720 - INFO - Val RMSE:   0.05021
+2026-04-02 04:15:13.720 - INFO - Val MAE:    0.01866
+2026-04-02 04:15:13.720 - INFO - Val R²:     0.1912   (Explained Var)
+2026-04-02 04:15:13.720 - INFO - Val NRMSE:  0.0597   (Error %)
+2026-04-02 04:15:13.721 - INFO - Val Tau:    0.4627   (Ranking Metric)
+2026-04-02 04:15:13.721 - INFO - Val Spear:  0.6488
+2026-04-02 04:15:13.721 - INFO - Epoch time: 30s (30.41 seconds)
+2026-04-02 04:15:13.721 - INFO - Total time: 2m 35s (155.64 seconds)
+2026-04-02 04:15:13.721 - INFO - GPU Mem: 11.10 GB
+2026-04-02 04:15:13.728 - INFO - New Best RMSE Model Saved! (RMSE: 0.05021)
+2026-04-02 04:15:13.749 - INFO - New Best R² Model Saved!   (R²:   0.1912)
+
+2026-04-02 04:15:44.450 - INFO - Epoch 6/100 Results:
+2026-04-02 04:15:44.450 - INFO - Train MSE:  0.77204  (Z-Score Loss)
+2026-04-02 04:15:44.450 - INFO - Train RMSE: 0.05056
+2026-04-02 04:15:44.450 - INFO - Current LR: 5.00e-04
+2026-04-02 04:15:44.450 - INFO - Val RMSE:   0.05050
+2026-04-02 04:15:44.450 - INFO - Val MAE:    0.01791
+2026-04-02 04:15:44.450 - INFO - Val R²:     0.1818   (Explained Var)
+2026-04-02 04:15:44.450 - INFO - Val NRMSE:  0.0601   (Error %)
+2026-04-02 04:15:44.450 - INFO - Val Tau:    0.5067   (Ranking Metric)
+2026-04-02 04:15:44.450 - INFO - Val Spear:  0.6983
+2026-04-02 04:15:44.450 - INFO - Epoch time: 30s (30.70 seconds)
+2026-04-02 04:15:44.450 - INFO - Total time: 3m 06s (186.37 seconds)
+2026-04-02 04:15:44.450 - INFO - GPU Mem: 11.14 GB
+
+2026-04-02 04:16:15.012 - INFO - Epoch 7/100 Results:
+2026-04-02 04:16:15.012 - INFO - Train MSE:  0.74984  (Z-Score Loss)
+2026-04-02 04:16:15.012 - INFO - Train RMSE: 0.04983
+2026-04-02 04:16:15.012 - INFO - Current LR: 5.00e-04
+2026-04-02 04:16:15.012 - INFO - Val RMSE:   0.04913
+2026-04-02 04:16:15.012 - INFO - Val MAE:    0.02018
+2026-04-02 04:16:15.012 - INFO - Val R²:     0.2258   (Explained Var)
+2026-04-02 04:16:15.012 - INFO - Val NRMSE:  0.0584   (Error %)
+2026-04-02 04:16:15.012 - INFO - Val Tau:    0.5323   (Ranking Metric)
+2026-04-02 04:16:15.012 - INFO - Val Spear:  0.7264
+2026-04-02 04:16:15.012 - INFO - Epoch time: 30s (30.56 seconds)
+2026-04-02 04:16:15.012 - INFO - Total time: 3m 36s (216.93 seconds)
+2026-04-02 04:16:15.012 - INFO - GPU Mem: 11.09 GB
+2026-04-02 04:16:15.020 - INFO - New Best Tau Model Saved!  (Tau:  0.5323)
+2026-04-02 04:16:15.023 - INFO - New Best RMSE Model Saved! (RMSE: 0.04913)
+2026-04-02 04:16:15.026 - INFO - New Best R² Model Saved!   (R²:   0.2258)
+
+2026-04-02 04:16:45.648 - INFO - Epoch 8/100 Results:
+2026-04-02 04:16:45.649 - INFO - Train MSE:  0.71354  (Z-Score Loss)
+2026-04-02 04:16:45.649 - INFO - Train RMSE: 0.04861
+2026-04-02 04:16:45.649 - INFO - Current LR: 5.00e-04
+2026-04-02 04:16:45.649 - INFO - Val RMSE:   0.05094
+2026-04-02 04:16:45.649 - INFO - Val MAE:    0.01885
+2026-04-02 04:16:45.649 - INFO - Val R²:     0.1676   (Explained Var)
+2026-04-02 04:16:45.649 - INFO - Val NRMSE:  0.0606   (Error %)
+2026-04-02 04:16:45.649 - INFO - Val Tau:    0.5046   (Ranking Metric)
+2026-04-02 04:16:45.649 - INFO - Val Spear:  0.6986
+2026-04-02 04:16:45.649 - INFO - Epoch time: 30s (30.62 seconds)
+2026-04-02 04:16:45.649 - INFO - Total time: 4m 07s (247.57 seconds)
+2026-04-02 04:16:45.649 - INFO - GPU Mem: 10.98 GB
+
+2026-04-02 04:17:16.389 - INFO - Epoch 9/100 Results:
+2026-04-02 04:17:16.389 - INFO - Train MSE:  0.73024  (Z-Score Loss)
+2026-04-02 04:17:16.389 - INFO - Train RMSE: 0.04918
+2026-04-02 04:17:16.389 - INFO - Current LR: 5.00e-04
+2026-04-02 04:17:16.389 - INFO - Val RMSE:   0.04746
+2026-04-02 04:17:16.389 - INFO - Val MAE:    0.01916
+2026-04-02 04:17:16.389 - INFO - Val R²:     0.2775   (Explained Var)
+2026-04-02 04:17:16.389 - INFO - Val NRMSE:  0.0565   (Error %)
+2026-04-02 04:17:16.389 - INFO - Val Tau:    0.5340   (Ranking Metric)
+2026-04-02 04:17:16.389 - INFO - Val Spear:  0.7272
+2026-04-02 04:17:16.389 - INFO - Epoch time: 30s (30.74 seconds)
+2026-04-02 04:17:16.389 - INFO - Total time: 4m 38s (278.31 seconds)
+2026-04-02 04:17:16.390 - INFO - GPU Mem: 11.00 GB
+2026-04-02 04:17:16.397 - INFO - New Best Tau Model Saved!  (Tau:  0.5340)
+2026-04-02 04:17:16.400 - INFO - New Best RMSE Model Saved! (RMSE: 0.04746)
+2026-04-02 04:17:16.404 - INFO - New Best R² Model Saved!   (R²:   0.2775)
+
+2026-04-02 04:17:47.330 - INFO - Epoch 10/100 Results:
+2026-04-02 04:17:47.330 - INFO - Train MSE:  0.71948  (Z-Score Loss)
+2026-04-02 04:17:47.330 - INFO - Train RMSE: 0.04881
+2026-04-02 04:17:47.330 - INFO - Current LR: 5.00e-04
+2026-04-02 04:17:47.330 - INFO - Val RMSE:   0.04781
+2026-04-02 04:17:47.330 - INFO - Val MAE:    0.01668
+2026-04-02 04:17:47.330 - INFO - Val R²:     0.2669   (Explained Var)
+2026-04-02 04:17:47.330 - INFO - Val NRMSE:  0.0569   (Error %)
+2026-04-02 04:17:47.330 - INFO - Val Tau:    0.5476   (Ranking Metric)
+2026-04-02 04:17:47.330 - INFO - Val Spear:  0.7422
+2026-04-02 04:17:47.330 - INFO - Epoch time: 30s (30.93 seconds)
+2026-04-02 04:17:47.330 - INFO - Total time: 5m 09s (309.25 seconds)
+2026-04-02 04:17:47.330 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:17:47.338 - INFO - New Best Tau Model Saved!  (Tau:  0.5476)
+
+2026-04-02 04:18:18.534 - INFO - Epoch 11/100 Results:
+2026-04-02 04:18:18.534 - INFO - Train MSE:  0.67425  (Z-Score Loss)
+2026-04-02 04:18:18.534 - INFO - Train RMSE: 0.04725
+2026-04-02 04:18:18.534 - INFO - Current LR: 5.00e-04
+2026-04-02 04:18:18.534 - INFO - Val RMSE:   0.05021
+2026-04-02 04:18:18.534 - INFO - Val MAE:    0.02389
+2026-04-02 04:18:18.534 - INFO - Val R²:     0.1911   (Explained Var)
+2026-04-02 04:18:18.534 - INFO - Val NRMSE:  0.0597   (Error %)
+2026-04-02 04:18:18.534 - INFO - Val Tau:    0.5078   (Ranking Metric)
+2026-04-02 04:18:18.534 - INFO - Val Spear:  0.6941
+2026-04-02 04:18:18.534 - INFO - Epoch time: 31s (31.20 seconds)
+2026-04-02 04:18:18.534 - INFO - Total time: 5m 40s (340.46 seconds)
+2026-04-02 04:18:18.534 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:18:49.867 - INFO - Epoch 12/100 Results:
+2026-04-02 04:18:49.867 - INFO - Train MSE:  0.72184  (Z-Score Loss)
+2026-04-02 04:18:49.867 - INFO - Train RMSE: 0.04889
+2026-04-02 04:18:49.867 - INFO - Current LR: 5.00e-04
+2026-04-02 04:18:49.867 - INFO - Val RMSE:   0.04920
+2026-04-02 04:18:49.867 - INFO - Val MAE:    0.01921
+2026-04-02 04:18:49.867 - INFO - Val R²:     0.2236   (Explained Var)
+2026-04-02 04:18:49.867 - INFO - Val NRMSE:  0.0585   (Error %)
+2026-04-02 04:18:49.867 - INFO - Val Tau:    0.5605   (Ranking Metric)
+2026-04-02 04:18:49.867 - INFO - Val Spear:  0.7539
+2026-04-02 04:18:49.867 - INFO - Epoch time: 31s (31.33 seconds)
+2026-04-02 04:18:49.867 - INFO - Total time: 6m 11s (371.79 seconds)
+2026-04-02 04:18:49.868 - INFO - GPU Mem: 11.07 GB
+2026-04-02 04:18:49.875 - INFO - New Best Tau Model Saved!  (Tau:  0.5605)
+
+2026-04-02 04:19:21.400 - INFO - Epoch 13/100 Results:
+2026-04-02 04:19:21.400 - INFO - Train MSE:  0.70310  (Z-Score Loss)
+2026-04-02 04:19:21.400 - INFO - Train RMSE: 0.04825
+2026-04-02 04:19:21.400 - INFO - Current LR: 5.00e-04
+2026-04-02 04:19:21.400 - INFO - Val RMSE:   0.04857
+2026-04-02 04:19:21.400 - INFO - Val MAE:    0.01654
+2026-04-02 04:19:21.400 - INFO - Val R²:     0.2434   (Explained Var)
+2026-04-02 04:19:21.400 - INFO - Val NRMSE:  0.0578   (Error %)
+2026-04-02 04:19:21.400 - INFO - Val Tau:    0.5458   (Ranking Metric)
+2026-04-02 04:19:21.400 - INFO - Val Spear:  0.7420
+2026-04-02 04:19:21.400 - INFO - Epoch time: 31s (31.53 seconds)
+2026-04-02 04:19:21.400 - INFO - Total time: 6m 43s (403.32 seconds)
+2026-04-02 04:19:21.401 - INFO - GPU Mem: 11.16 GB
+
+2026-04-02 04:19:53.595 - INFO - Epoch 14/100 Results:
+2026-04-02 04:19:53.595 - INFO - Train MSE:  0.68974  (Z-Score Loss)
+2026-04-02 04:19:53.595 - INFO - Train RMSE: 0.04779
+2026-04-02 04:19:53.595 - INFO - Current LR: 5.00e-04
+2026-04-02 04:19:53.595 - INFO - Val RMSE:   0.04981
+2026-04-02 04:19:53.595 - INFO - Val MAE:    0.02632
+2026-04-02 04:19:53.595 - INFO - Val R²:     0.2041   (Explained Var)
+2026-04-02 04:19:53.595 - INFO - Val NRMSE:  0.0592   (Error %)
+2026-04-02 04:19:53.595 - INFO - Val Tau:    0.5786   (Ranking Metric)
+2026-04-02 04:19:53.595 - INFO - Val Spear:  0.7738
+2026-04-02 04:19:53.595 - INFO - Epoch time: 32s (32.19 seconds)
+2026-04-02 04:19:53.595 - INFO - Total time: 7m 15s (435.52 seconds)
+2026-04-02 04:19:53.595 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:19:53.603 - INFO - New Best Tau Model Saved!  (Tau:  0.5786)
+
+2026-04-02 04:20:25.528 - INFO - Epoch 15/100 Results:
+2026-04-02 04:20:25.529 - INFO - Train MSE:  0.64244  (Z-Score Loss)
+2026-04-02 04:20:25.529 - INFO - Train RMSE: 0.04613
+2026-04-02 04:20:25.529 - INFO - Current LR: 5.00e-04
+2026-04-02 04:20:25.529 - INFO - Val RMSE:   0.04937
+2026-04-02 04:20:25.529 - INFO - Val MAE:    0.01635
+2026-04-02 04:20:25.529 - INFO - Val R²:     0.2181   (Explained Var)
+2026-04-02 04:20:25.529 - INFO - Val NRMSE:  0.0587   (Error %)
+2026-04-02 04:20:25.529 - INFO - Val Tau:    0.5455   (Ranking Metric)
+2026-04-02 04:20:25.529 - INFO - Val Spear:  0.7391
+2026-04-02 04:20:25.529 - INFO - Epoch time: 31s (31.93 seconds)
+2026-04-02 04:20:25.529 - INFO - Total time: 7m 47s (467.45 seconds)
+2026-04-02 04:20:25.529 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:20:57.613 - INFO - Epoch 16/100 Results:
+2026-04-02 04:20:57.613 - INFO - Train MSE:  0.65979  (Z-Score Loss)
+2026-04-02 04:20:57.613 - INFO - Train RMSE: 0.04674
+2026-04-02 04:20:57.613 - INFO - Current LR: 5.00e-04
+2026-04-02 04:20:57.613 - INFO - Val RMSE:   0.04580
+2026-04-02 04:20:57.613 - INFO - Val MAE:    0.01729
+2026-04-02 04:20:57.613 - INFO - Val R²:     0.3271   (Explained Var)
+2026-04-02 04:20:57.613 - INFO - Val NRMSE:  0.0545   (Error %)
+2026-04-02 04:20:57.613 - INFO - Val Tau:    0.5638   (Ranking Metric)
+2026-04-02 04:20:57.613 - INFO - Val Spear:  0.7588
+2026-04-02 04:20:57.613 - INFO - Epoch time: 32s (32.08 seconds)
+2026-04-02 04:20:57.613 - INFO - Total time: 8m 19s (499.53 seconds)
+2026-04-02 04:20:57.613 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:20:57.621 - INFO - New Best RMSE Model Saved! (RMSE: 0.04580)
+2026-04-02 04:20:57.643 - INFO - New Best R² Model Saved!   (R²:   0.3271)
+
+2026-04-02 04:21:29.731 - INFO - Epoch 17/100 Results:
+2026-04-02 04:21:29.731 - INFO - Train MSE:  0.64908  (Z-Score Loss)
+2026-04-02 04:21:29.731 - INFO - Train RMSE: 0.04636
+2026-04-02 04:21:29.731 - INFO - Current LR: 5.00e-04
+2026-04-02 04:21:29.731 - INFO - Val RMSE:   0.04731
+2026-04-02 04:21:29.731 - INFO - Val MAE:    0.01690
+2026-04-02 04:21:29.731 - INFO - Val R²:     0.2819   (Explained Var)
+2026-04-02 04:21:29.731 - INFO - Val NRMSE:  0.0563   (Error %)
+2026-04-02 04:21:29.731 - INFO - Val Tau:    0.5597   (Ranking Metric)
+2026-04-02 04:21:29.731 - INFO - Val Spear:  0.7539
+2026-04-02 04:21:29.731 - INFO - Epoch time: 32s (32.09 seconds)
+2026-04-02 04:21:29.731 - INFO - Total time: 8m 51s (531.65 seconds)
+2026-04-02 04:21:29.732 - INFO - GPU Mem: 11.10 GB
+
+2026-04-02 04:22:02.449 - INFO - Epoch 18/100 Results:
+2026-04-02 04:22:02.449 - INFO - Train MSE:  0.61165  (Z-Score Loss)
+2026-04-02 04:22:02.449 - INFO - Train RMSE: 0.04501
+2026-04-02 04:22:02.449 - INFO - Current LR: 5.00e-04
+2026-04-02 04:22:02.449 - INFO - Val RMSE:   0.04643
+2026-04-02 04:22:02.449 - INFO - Val MAE:    0.01556
+2026-04-02 04:22:02.449 - INFO - Val R²:     0.3086   (Explained Var)
+2026-04-02 04:22:02.449 - INFO - Val NRMSE:  0.0552   (Error %)
+2026-04-02 04:22:02.449 - INFO - Val Tau:    0.5641   (Ranking Metric)
+2026-04-02 04:22:02.449 - INFO - Val Spear:  0.7576
+2026-04-02 04:22:02.449 - INFO - Epoch time: 32s (32.71 seconds)
+2026-04-02 04:22:02.449 - INFO - Total time: 9m 24s (564.37 seconds)
+2026-04-02 04:22:02.449 - INFO - GPU Mem: 11.10 GB
+
+2026-04-02 04:22:34.937 - INFO - Epoch 19/100 Results:
+2026-04-02 04:22:34.937 - INFO - Train MSE:  0.61003  (Z-Score Loss)
+2026-04-02 04:22:34.937 - INFO - Train RMSE: 0.04494
+2026-04-02 04:22:34.937 - INFO - Current LR: 5.00e-04
+2026-04-02 04:22:34.937 - INFO - Val RMSE:   0.04683
+2026-04-02 04:22:34.937 - INFO - Val MAE:    0.02167
+2026-04-02 04:22:34.937 - INFO - Val R²:     0.2964   (Explained Var)
+2026-04-02 04:22:34.938 - INFO - Val NRMSE:  0.0557   (Error %)
+2026-04-02 04:22:34.938 - INFO - Val Tau:    0.5736   (Ranking Metric)
+2026-04-02 04:22:34.938 - INFO - Val Spear:  0.7694
+2026-04-02 04:22:34.938 - INFO - Epoch time: 32s (32.48 seconds)
+2026-04-02 04:22:34.938 - INFO - Total time: 9m 56s (596.86 seconds)
+2026-04-02 04:22:34.938 - INFO - GPU Mem: 11.00 GB
+
+2026-04-02 04:23:07.436 - INFO - Epoch 20/100 Results:
+2026-04-02 04:23:07.436 - INFO - Train MSE:  0.63055  (Z-Score Loss)
+2026-04-02 04:23:07.436 - INFO - Train RMSE: 0.04569
+2026-04-02 04:23:07.436 - INFO - Current LR: 2.50e-04
+2026-04-02 04:23:07.436 - INFO - Val RMSE:   0.06201
+2026-04-02 04:23:07.436 - INFO - Val MAE:    0.03735
+2026-04-02 04:23:07.436 - INFO - Val R²:     -0.2333   (Explained Var)
+2026-04-02 04:23:07.436 - INFO - Val NRMSE:  0.0738   (Error %)
+2026-04-02 04:23:07.436 - INFO - Val Tau:    0.5498   (Ranking Metric)
+2026-04-02 04:23:07.436 - INFO - Val Spear:  0.7449
+2026-04-02 04:23:07.436 - INFO - Epoch time: 32s (32.49 seconds)
+2026-04-02 04:23:07.436 - INFO - Total time: 10m 29s (629.36 seconds)
+2026-04-02 04:23:07.437 - INFO - GPU Mem: 11.10 GB
+
+2026-04-02 04:23:40.211 - INFO - Epoch 21/100 Results:
+2026-04-02 04:23:40.211 - INFO - Train MSE:  0.58240  (Z-Score Loss)
+2026-04-02 04:23:40.211 - INFO - Train RMSE: 0.04392
+2026-04-02 04:23:40.211 - INFO - Current LR: 2.50e-04
+2026-04-02 04:23:40.211 - INFO - Val RMSE:   0.04592
+2026-04-02 04:23:40.211 - INFO - Val MAE:    0.01574
+2026-04-02 04:23:40.211 - INFO - Val R²:     0.3236   (Explained Var)
+2026-04-02 04:23:40.211 - INFO - Val NRMSE:  0.0546   (Error %)
+2026-04-02 04:23:40.211 - INFO - Val Tau:    0.5712   (Ranking Metric)
+2026-04-02 04:23:40.211 - INFO - Val Spear:  0.7669
+2026-04-02 04:23:40.211 - INFO - Epoch time: 32s (32.77 seconds)
+2026-04-02 04:23:40.211 - INFO - Total time: 11m 02s (662.13 seconds)
+2026-04-02 04:23:40.211 - INFO - GPU Mem: 11.09 GB
+
+2026-04-02 04:24:12.877 - INFO - Epoch 22/100 Results:
+2026-04-02 04:24:12.877 - INFO - Train MSE:  0.52866  (Z-Score Loss)
+2026-04-02 04:24:12.877 - INFO - Train RMSE: 0.04184
+2026-04-02 04:24:12.877 - INFO - Current LR: 2.50e-04
+2026-04-02 04:24:12.877 - INFO - Val RMSE:   0.04785
+2026-04-02 04:24:12.877 - INFO - Val MAE:    0.02077
+2026-04-02 04:24:12.877 - INFO - Val R²:     0.2655   (Explained Var)
+2026-04-02 04:24:12.877 - INFO - Val NRMSE:  0.0569   (Error %)
+2026-04-02 04:24:12.877 - INFO - Val Tau:    0.5851   (Ranking Metric)
+2026-04-02 04:24:12.877 - INFO - Val Spear:  0.7808
+2026-04-02 04:24:12.877 - INFO - Epoch time: 32s (32.66 seconds)
+2026-04-02 04:24:12.877 - INFO - Total time: 11m 34s (694.80 seconds)
+2026-04-02 04:24:12.878 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:24:12.885 - INFO - New Best Tau Model Saved!  (Tau:  0.5851)
+
+2026-04-02 04:24:46.346 - INFO - Epoch 23/100 Results:
+2026-04-02 04:24:46.347 - INFO - Train MSE:  0.50835  (Z-Score Loss)
+2026-04-02 04:24:46.347 - INFO - Train RMSE: 0.04103
+2026-04-02 04:24:46.347 - INFO - Current LR: 2.50e-04
+2026-04-02 04:24:46.347 - INFO - Val RMSE:   0.04434
+2026-04-02 04:24:46.347 - INFO - Val MAE:    0.01517
+2026-04-02 04:24:46.347 - INFO - Val R²:     0.3694   (Explained Var)
+2026-04-02 04:24:46.347 - INFO - Val NRMSE:  0.0527   (Error %)
+2026-04-02 04:24:46.347 - INFO - Val Tau:    0.5939   (Ranking Metric)
+2026-04-02 04:24:46.347 - INFO - Val Spear:  0.7888
+2026-04-02 04:24:46.347 - INFO - Epoch time: 33s (33.46 seconds)
+2026-04-02 04:24:46.347 - INFO - Total time: 12m 08s (728.27 seconds)
+2026-04-02 04:24:46.347 - INFO - GPU Mem: 11.15 GB
+2026-04-02 04:24:46.354 - INFO - New Best Tau Model Saved!  (Tau:  0.5939)
+2026-04-02 04:24:46.376 - INFO - New Best RMSE Model Saved! (RMSE: 0.04434)
+2026-04-02 04:24:46.379 - INFO - New Best R² Model Saved!   (R²:   0.3694)
+
+2026-04-02 04:25:19.422 - INFO - Epoch 24/100 Results:
+2026-04-02 04:25:19.423 - INFO - Train MSE:  0.48743  (Z-Score Loss)
+2026-04-02 04:25:19.423 - INFO - Train RMSE: 0.04018
+2026-04-02 04:25:19.423 - INFO - Current LR: 2.50e-04
+2026-04-02 04:25:19.423 - INFO - Val RMSE:   0.04449
+2026-04-02 04:25:19.423 - INFO - Val MAE:    0.01687
+2026-04-02 04:25:19.423 - INFO - Val R²:     0.3650   (Explained Var)
+2026-04-02 04:25:19.423 - INFO - Val NRMSE:  0.0529   (Error %)
+2026-04-02 04:25:19.423 - INFO - Val Tau:    0.6051   (Ranking Metric)
+2026-04-02 04:25:19.423 - INFO - Val Spear:  0.7979
+2026-04-02 04:25:19.423 - INFO - Epoch time: 33s (33.04 seconds)
+2026-04-02 04:25:19.423 - INFO - Total time: 12m 41s (761.34 seconds)
+2026-04-02 04:25:19.423 - INFO - GPU Mem: 11.13 GB
+2026-04-02 04:25:19.431 - INFO - New Best Tau Model Saved!  (Tau:  0.6051)
+
+2026-04-02 04:25:52.794 - INFO - Epoch 25/100 Results:
+2026-04-02 04:25:52.794 - INFO - Train MSE:  0.49349  (Z-Score Loss)
+2026-04-02 04:25:52.794 - INFO - Train RMSE: 0.04043
+2026-04-02 04:25:52.794 - INFO - Current LR: 2.50e-04
+2026-04-02 04:25:52.794 - INFO - Val RMSE:   0.04569
+2026-04-02 04:25:52.794 - INFO - Val MAE:    0.01776
+2026-04-02 04:25:52.794 - INFO - Val R²:     0.3303   (Explained Var)
+2026-04-02 04:25:52.794 - INFO - Val NRMSE:  0.0543   (Error %)
+2026-04-02 04:25:52.794 - INFO - Val Tau:    0.6014   (Ranking Metric)
+2026-04-02 04:25:52.794 - INFO - Val Spear:  0.7953
+2026-04-02 04:25:52.794 - INFO - Epoch time: 33s (33.36 seconds)
+2026-04-02 04:25:52.794 - INFO - Total time: 13m 14s (794.72 seconds)
+2026-04-02 04:25:52.795 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:26:25.928 - INFO - Epoch 26/100 Results:
+2026-04-02 04:26:25.929 - INFO - Train MSE:  0.45856  (Z-Score Loss)
+2026-04-02 04:26:25.929 - INFO - Train RMSE: 0.03897
+2026-04-02 04:26:25.929 - INFO - Current LR: 2.50e-04
+2026-04-02 04:26:25.929 - INFO - Val RMSE:   0.04547
+2026-04-02 04:26:25.929 - INFO - Val MAE:    0.01689
+2026-04-02 04:26:25.929 - INFO - Val R²:     0.3369   (Explained Var)
+2026-04-02 04:26:25.929 - INFO - Val NRMSE:  0.0541   (Error %)
+2026-04-02 04:26:25.929 - INFO - Val Tau:    0.6059   (Ranking Metric)
+2026-04-02 04:26:25.929 - INFO - Val Spear:  0.8001
+2026-04-02 04:26:25.929 - INFO - Epoch time: 33s (33.13 seconds)
+2026-04-02 04:26:25.929 - INFO - Total time: 13m 47s (827.85 seconds)
+2026-04-02 04:26:25.929 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:26:25.936 - INFO - New Best Tau Model Saved!  (Tau:  0.6059)
+
+2026-04-02 04:26:59.671 - INFO - Epoch 27/100 Results:
+2026-04-02 04:26:59.672 - INFO - Train MSE:  0.49505  (Z-Score Loss)
+2026-04-02 04:26:59.672 - INFO - Train RMSE: 0.04049
+2026-04-02 04:26:59.672 - INFO - Current LR: 2.50e-04
+2026-04-02 04:26:59.672 - INFO - Val RMSE:   0.04543
+2026-04-02 04:26:59.672 - INFO - Val MAE:    0.01648
+2026-04-02 04:26:59.672 - INFO - Val R²:     0.3381   (Explained Var)
+2026-04-02 04:26:59.672 - INFO - Val NRMSE:  0.0540   (Error %)
+2026-04-02 04:26:59.672 - INFO - Val Tau:    0.5984   (Ranking Metric)
+2026-04-02 04:26:59.672 - INFO - Val Spear:  0.7938
+2026-04-02 04:26:59.672 - INFO - Epoch time: 33s (33.74 seconds)
+2026-04-02 04:26:59.672 - INFO - Total time: 14m 21s (861.59 seconds)
+2026-04-02 04:26:59.672 - INFO - GPU Mem: 11.11 GB
+
+2026-04-02 04:27:33.065 - INFO - Epoch 28/100 Results:
+2026-04-02 04:27:33.065 - INFO - Train MSE:  0.47238  (Z-Score Loss)
+2026-04-02 04:27:33.065 - INFO - Train RMSE: 0.03955
+2026-04-02 04:27:33.065 - INFO - Current LR: 2.50e-04
+2026-04-02 04:27:33.065 - INFO - Val RMSE:   0.04489
+2026-04-02 04:27:33.065 - INFO - Val MAE:    0.01796
+2026-04-02 04:27:33.065 - INFO - Val R²:     0.3536   (Explained Var)
+2026-04-02 04:27:33.065 - INFO - Val NRMSE:  0.0534   (Error %)
+2026-04-02 04:27:33.065 - INFO - Val Tau:    0.6181   (Ranking Metric)
+2026-04-02 04:27:33.065 - INFO - Val Spear:  0.8099
+2026-04-02 04:27:33.065 - INFO - Epoch time: 33s (33.39 seconds)
+2026-04-02 04:27:33.065 - INFO - Total time: 14m 54s (894.99 seconds)
+2026-04-02 04:27:33.065 - INFO - GPU Mem: 11.10 GB
+2026-04-02 04:27:33.073 - INFO - New Best Tau Model Saved!  (Tau:  0.6181)
+
+2026-04-02 04:28:06.957 - INFO - Epoch 29/100 Results:
+2026-04-02 04:28:06.957 - INFO - Train MSE:  0.46160  (Z-Score Loss)
+2026-04-02 04:28:06.957 - INFO - Train RMSE: 0.03910
+2026-04-02 04:28:06.957 - INFO - Current LR: 2.50e-04
+2026-04-02 04:28:06.957 - INFO - Val RMSE:   0.04469
+2026-04-02 04:28:06.957 - INFO - Val MAE:    0.01981
+2026-04-02 04:28:06.957 - INFO - Val R²:     0.3592   (Explained Var)
+2026-04-02 04:28:06.957 - INFO - Val NRMSE:  0.0532   (Error %)
+2026-04-02 04:28:06.957 - INFO - Val Tau:    0.6222   (Ranking Metric)
+2026-04-02 04:28:06.957 - INFO - Val Spear:  0.8149
+2026-04-02 04:28:06.957 - INFO - Epoch time: 33s (33.88 seconds)
+2026-04-02 04:28:06.957 - INFO - Total time: 15m 28s (928.88 seconds)
+2026-04-02 04:28:06.957 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:28:06.965 - INFO - New Best Tau Model Saved!  (Tau:  0.6222)
+
+2026-04-02 04:28:40.835 - INFO - Epoch 30/100 Results:
+2026-04-02 04:28:40.835 - INFO - Train MSE:  0.44285  (Z-Score Loss)
+2026-04-02 04:28:40.835 - INFO - Train RMSE: 0.03830
+2026-04-02 04:28:40.835 - INFO - Current LR: 2.50e-04
+2026-04-02 04:28:40.835 - INFO - Val RMSE:   0.04461
+2026-04-02 04:28:40.835 - INFO - Val MAE:    0.01802
+2026-04-02 04:28:40.835 - INFO - Val R²:     0.3616   (Explained Var)
+2026-04-02 04:28:40.835 - INFO - Val NRMSE:  0.0531   (Error %)
+2026-04-02 04:28:40.835 - INFO - Val Tau:    0.6250   (Ranking Metric)
+2026-04-02 04:28:40.835 - INFO - Val Spear:  0.8172
+2026-04-02 04:28:40.835 - INFO - Epoch time: 33s (33.87 seconds)
+2026-04-02 04:28:40.835 - INFO - Total time: 16m 02s (962.76 seconds)
+2026-04-02 04:28:40.835 - INFO - GPU Mem: 11.10 GB
+2026-04-02 04:28:40.843 - INFO - New Best Tau Model Saved!  (Tau:  0.6250)
+
+2026-04-02 04:29:14.922 - INFO - Epoch 31/100 Results:
+2026-04-02 04:29:14.922 - INFO - Train MSE:  0.40100  (Z-Score Loss)
+2026-04-02 04:29:14.922 - INFO - Train RMSE: 0.03644
+2026-04-02 04:29:14.922 - INFO - Current LR: 2.50e-04
+2026-04-02 04:29:14.922 - INFO - Val RMSE:   0.04641
+2026-04-02 04:29:14.922 - INFO - Val MAE:    0.02077
+2026-04-02 04:29:14.922 - INFO - Val R²:     0.3090   (Explained Var)
+2026-04-02 04:29:14.922 - INFO - Val NRMSE:  0.0552   (Error %)
+2026-04-02 04:29:14.922 - INFO - Val Tau:    0.6216   (Ranking Metric)
+2026-04-02 04:29:14.922 - INFO - Val Spear:  0.8151
+2026-04-02 04:29:14.922 - INFO - Epoch time: 34s (34.08 seconds)
+2026-04-02 04:29:14.922 - INFO - Total time: 16m 36s (996.84 seconds)
+2026-04-02 04:29:14.923 - INFO - GPU Mem: 11.00 GB
+
+2026-04-02 04:29:48.792 - INFO - Epoch 32/100 Results:
+2026-04-02 04:29:48.792 - INFO - Train MSE:  0.41699  (Z-Score Loss)
+2026-04-02 04:29:48.792 - INFO - Train RMSE: 0.03716
+2026-04-02 04:29:48.792 - INFO - Current LR: 2.50e-04
+2026-04-02 04:29:48.792 - INFO - Val RMSE:   0.04364
+2026-04-02 04:29:48.792 - INFO - Val MAE:    0.01534
+2026-04-02 04:29:48.792 - INFO - Val R²:     0.3890   (Explained Var)
+2026-04-02 04:29:48.792 - INFO - Val NRMSE:  0.0519   (Error %)
+2026-04-02 04:29:48.792 - INFO - Val Tau:    0.6267   (Ranking Metric)
+2026-04-02 04:29:48.792 - INFO - Val Spear:  0.8199
+2026-04-02 04:29:48.792 - INFO - Epoch time: 33s (33.87 seconds)
+2026-04-02 04:29:48.792 - INFO - Total time: 17m 10s (1030.71 seconds)
+2026-04-02 04:29:48.792 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:29:48.799 - INFO - New Best Tau Model Saved!  (Tau:  0.6267)
+2026-04-02 04:29:48.803 - INFO - New Best RMSE Model Saved! (RMSE: 0.04364)
+2026-04-02 04:29:48.806 - INFO - New Best R² Model Saved!   (R²:   0.3890)
+
+2026-04-02 04:30:22.999 - INFO - Epoch 33/100 Results:
+2026-04-02 04:30:22.999 - INFO - Train MSE:  0.39720  (Z-Score Loss)
+2026-04-02 04:30:22.999 - INFO - Train RMSE: 0.03627
+2026-04-02 04:30:22.999 - INFO - Current LR: 2.50e-04
+2026-04-02 04:30:22.999 - INFO - Val RMSE:   0.04469
+2026-04-02 04:30:22.999 - INFO - Val MAE:    0.01697
+2026-04-02 04:30:22.999 - INFO - Val R²:     0.3593   (Explained Var)
+2026-04-02 04:30:22.999 - INFO - Val NRMSE:  0.0532   (Error %)
+2026-04-02 04:30:22.999 - INFO - Val Tau:    0.6269   (Ranking Metric)
+2026-04-02 04:30:22.999 - INFO - Val Spear:  0.8184
+2026-04-02 04:30:22.999 - INFO - Epoch time: 34s (34.19 seconds)
+2026-04-02 04:30:22.999 - INFO - Total time: 17m 44s (1064.92 seconds)
+2026-04-02 04:30:22.999 - INFO - GPU Mem: 11.01 GB
+2026-04-02 04:30:23.007 - INFO - New Best Tau Model Saved!  (Tau:  0.6269)
+
+2026-04-02 04:30:56.962 - INFO - Epoch 34/100 Results:
+2026-04-02 04:30:56.962 - INFO - Train MSE:  0.38355  (Z-Score Loss)
+2026-04-02 04:30:56.962 - INFO - Train RMSE: 0.03564
+2026-04-02 04:30:56.962 - INFO - Current LR: 2.50e-04
+2026-04-02 04:30:56.962 - INFO - Val RMSE:   0.04500
+2026-04-02 04:30:56.962 - INFO - Val MAE:    0.01451
+2026-04-02 04:30:56.962 - INFO - Val R²:     0.3503   (Explained Var)
+2026-04-02 04:30:56.962 - INFO - Val NRMSE:  0.0535   (Error %)
+2026-04-02 04:30:56.962 - INFO - Val Tau:    0.6340   (Ranking Metric)
+2026-04-02 04:30:56.962 - INFO - Val Spear:  0.8259
+2026-04-02 04:30:56.962 - INFO - Epoch time: 33s (33.96 seconds)
+2026-04-02 04:30:56.962 - INFO - Total time: 18m 18s (1098.88 seconds)
+2026-04-02 04:30:56.962 - INFO - GPU Mem: 11.14 GB
+2026-04-02 04:30:56.970 - INFO - New Best Tau Model Saved!  (Tau:  0.6340)
+
+2026-04-02 04:31:31.035 - INFO - Epoch 35/100 Results:
+2026-04-02 04:31:31.035 - INFO - Train MSE:  0.40380  (Z-Score Loss)
+2026-04-02 04:31:31.035 - INFO - Train RMSE: 0.03657
+2026-04-02 04:31:31.035 - INFO - Current LR: 2.50e-04
+2026-04-02 04:31:31.035 - INFO - Val RMSE:   0.04443
+2026-04-02 04:31:31.035 - INFO - Val MAE:    0.01450
+2026-04-02 04:31:31.035 - INFO - Val R²:     0.3669   (Explained Var)
+2026-04-02 04:31:31.035 - INFO - Val NRMSE:  0.0528   (Error %)
+2026-04-02 04:31:31.035 - INFO - Val Tau:    0.6203   (Ranking Metric)
+2026-04-02 04:31:31.035 - INFO - Val Spear:  0.8139
+2026-04-02 04:31:31.035 - INFO - Epoch time: 34s (34.07 seconds)
+2026-04-02 04:31:31.036 - INFO - Total time: 18m 52s (1132.96 seconds)
+2026-04-02 04:31:31.036 - INFO - GPU Mem: 11.13 GB
+
+2026-04-02 04:32:05.923 - INFO - Epoch 36/100 Results:
+2026-04-02 04:32:05.923 - INFO - Train MSE:  0.40452  (Z-Score Loss)
+2026-04-02 04:32:05.923 - INFO - Train RMSE: 0.03660
+2026-04-02 04:32:05.923 - INFO - Current LR: 2.50e-04
+2026-04-02 04:32:05.923 - INFO - Val RMSE:   0.04372
+2026-04-02 04:32:05.923 - INFO - Val MAE:    0.01567
+2026-04-02 04:32:05.923 - INFO - Val R²:     0.3868   (Explained Var)
+2026-04-02 04:32:05.923 - INFO - Val NRMSE:  0.0520   (Error %)
+2026-04-02 04:32:05.923 - INFO - Val Tau:    0.6299   (Ranking Metric)
+2026-04-02 04:32:05.923 - INFO - Val Spear:  0.8221
+2026-04-02 04:32:05.923 - INFO - Epoch time: 34s (34.88 seconds)
+2026-04-02 04:32:05.923 - INFO - Total time: 19m 27s (1167.84 seconds)
+2026-04-02 04:32:05.924 - INFO - GPU Mem: 11.10 GB
+
+2026-04-02 04:32:40.130 - INFO - Epoch 37/100 Results:
+2026-04-02 04:32:40.130 - INFO - Train MSE:  0.37236  (Z-Score Loss)
+2026-04-02 04:32:40.130 - INFO - Train RMSE: 0.03511
+2026-04-02 04:32:40.130 - INFO - Current LR: 2.50e-04
+2026-04-02 04:32:40.130 - INFO - Val RMSE:   0.04439
+2026-04-02 04:32:40.130 - INFO - Val MAE:    0.01582
+2026-04-02 04:32:40.130 - INFO - Val R²:     0.3679   (Explained Var)
+2026-04-02 04:32:40.130 - INFO - Val NRMSE:  0.0528   (Error %)
+2026-04-02 04:32:40.130 - INFO - Val Tau:    0.6387   (Ranking Metric)
+2026-04-02 04:32:40.130 - INFO - Val Spear:  0.8306
+2026-04-02 04:32:40.130 - INFO - Epoch time: 34s (34.20 seconds)
+2026-04-02 04:32:40.130 - INFO - Total time: 20m 02s (1202.05 seconds)
+2026-04-02 04:32:40.131 - INFO - GPU Mem: 11.13 GB
+2026-04-02 04:32:40.139 - INFO - New Best Tau Model Saved!  (Tau:  0.6387)
+
+2026-04-02 04:33:14.746 - INFO - Epoch 38/100 Results:
+2026-04-02 04:33:14.746 - INFO - Train MSE:  0.36776  (Z-Score Loss)
+2026-04-02 04:33:14.746 - INFO - Train RMSE: 0.03490
+2026-04-02 04:33:14.746 - INFO - Current LR: 2.50e-04
+2026-04-02 04:33:14.746 - INFO - Val RMSE:   0.04395
+2026-04-02 04:33:14.746 - INFO - Val MAE:    0.01752
+2026-04-02 04:33:14.746 - INFO - Val R²:     0.3804   (Explained Var)
+2026-04-02 04:33:14.746 - INFO - Val NRMSE:  0.0523   (Error %)
+2026-04-02 04:33:14.746 - INFO - Val Tau:    0.6354   (Ranking Metric)
+2026-04-02 04:33:14.746 - INFO - Val Spear:  0.8279
+2026-04-02 04:33:14.746 - INFO - Epoch time: 34s (34.61 seconds)
+2026-04-02 04:33:14.746 - INFO - Total time: 20m 36s (1236.67 seconds)
+2026-04-02 04:33:14.746 - INFO - GPU Mem: 11.12 GB
+
+2026-04-02 04:33:49.321 - INFO - Epoch 39/100 Results:
+2026-04-02 04:33:49.321 - INFO - Train MSE:  0.39990  (Z-Score Loss)
+2026-04-02 04:33:49.321 - INFO - Train RMSE: 0.03639
+2026-04-02 04:33:49.321 - INFO - Current LR: 2.50e-04
+2026-04-02 04:33:49.321 - INFO - Val RMSE:   0.04470
+2026-04-02 04:33:49.321 - INFO - Val MAE:    0.01794
+2026-04-02 04:33:49.321 - INFO - Val R²:     0.3590   (Explained Var)
+2026-04-02 04:33:49.321 - INFO - Val NRMSE:  0.0532   (Error %)
+2026-04-02 04:33:49.321 - INFO - Val Tau:    0.6248   (Ranking Metric)
+2026-04-02 04:33:49.321 - INFO - Val Spear:  0.8171
+2026-04-02 04:33:49.321 - INFO - Epoch time: 34s (34.57 seconds)
+2026-04-02 04:33:49.321 - INFO - Total time: 21m 11s (1271.24 seconds)
+2026-04-02 04:33:49.322 - INFO - GPU Mem: 11.16 GB
+
+2026-04-02 04:34:23.800 - INFO - Epoch 40/100 Results:
+2026-04-02 04:34:23.800 - INFO - Train MSE:  0.38000  (Z-Score Loss)
+2026-04-02 04:34:23.800 - INFO - Train RMSE: 0.03547
+2026-04-02 04:34:23.800 - INFO - Current LR: 2.50e-04
+2026-04-02 04:34:23.800 - INFO - Val RMSE:   0.04508
+2026-04-02 04:34:23.800 - INFO - Val MAE:    0.01472
+2026-04-02 04:34:23.800 - INFO - Val R²:     0.3482   (Explained Var)
+2026-04-02 04:34:23.800 - INFO - Val NRMSE:  0.0536   (Error %)
+2026-04-02 04:34:23.800 - INFO - Val Tau:    0.6450   (Ranking Metric)
+2026-04-02 04:34:23.800 - INFO - Val Spear:  0.8351
+2026-04-02 04:34:23.800 - INFO - Epoch time: 34s (34.47 seconds)
+2026-04-02 04:34:23.800 - INFO - Total time: 21m 45s (1305.72 seconds)
+2026-04-02 04:34:23.800 - INFO - GPU Mem: 11.17 GB
+2026-04-02 04:34:23.807 - INFO - New Best Tau Model Saved!  (Tau:  0.6450)
+
+2026-04-02 04:34:58.467 - INFO - Epoch 41/100 Results:
+2026-04-02 04:34:58.467 - INFO - Train MSE:  0.34763  (Z-Score Loss)
+2026-04-02 04:34:58.467 - INFO - Train RMSE: 0.03393
+2026-04-02 04:34:58.467 - INFO - Current LR: 2.50e-04
+2026-04-02 04:34:58.467 - INFO - Val RMSE:   0.04509
+2026-04-02 04:34:58.467 - INFO - Val MAE:    0.01508
+2026-04-02 04:34:58.467 - INFO - Val R²:     0.3477   (Explained Var)
+2026-04-02 04:34:58.467 - INFO - Val NRMSE:  0.0536   (Error %)
+2026-04-02 04:34:58.467 - INFO - Val Tau:    0.6500   (Ranking Metric)
+2026-04-02 04:34:58.467 - INFO - Val Spear:  0.8397
+2026-04-02 04:34:58.467 - INFO - Epoch time: 34s (34.66 seconds)
+2026-04-02 04:34:58.467 - INFO - Total time: 22m 20s (1340.39 seconds)
+2026-04-02 04:34:58.467 - INFO - GPU Mem: 11.10 GB
+2026-04-02 04:34:58.475 - INFO - New Best Tau Model Saved!  (Tau:  0.6500)
+
+2026-04-02 04:35:33.218 - INFO - Epoch 42/100 Results:
+2026-04-02 04:35:33.218 - INFO - Train MSE:  0.34641  (Z-Score Loss)
+2026-04-02 04:35:33.218 - INFO - Train RMSE: 0.03387
+2026-04-02 04:35:33.218 - INFO - Current LR: 2.50e-04
+2026-04-02 04:35:33.218 - INFO - Val RMSE:   0.04551
+2026-04-02 04:35:33.218 - INFO - Val MAE:    0.01611
+2026-04-02 04:35:33.218 - INFO - Val R²:     0.3356   (Explained Var)
+2026-04-02 04:35:33.218 - INFO - Val NRMSE:  0.0541   (Error %)
+2026-04-02 04:35:33.218 - INFO - Val Tau:    0.6497   (Ranking Metric)
+2026-04-02 04:35:33.218 - INFO - Val Spear:  0.8388
+2026-04-02 04:35:33.218 - INFO - Epoch time: 34s (34.74 seconds)
+2026-04-02 04:35:33.219 - INFO - Total time: 22m 55s (1375.14 seconds)
+2026-04-02 04:35:33.219 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:36:07.848 - INFO - Epoch 43/100 Results:
+2026-04-02 04:36:07.848 - INFO - Train MSE:  0.36001  (Z-Score Loss)
+2026-04-02 04:36:07.848 - INFO - Train RMSE: 0.03453
+2026-04-02 04:36:07.848 - INFO - Current LR: 2.50e-04
+2026-04-02 04:36:07.848 - INFO - Val RMSE:   0.04555
+2026-04-02 04:36:07.848 - INFO - Val MAE:    0.01716
+2026-04-02 04:36:07.848 - INFO - Val R²:     0.3344   (Explained Var)
+2026-04-02 04:36:07.849 - INFO - Val NRMSE:  0.0542   (Error %)
+2026-04-02 04:36:07.849 - INFO - Val Tau:    0.6453   (Ranking Metric)
+2026-04-02 04:36:07.849 - INFO - Val Spear:  0.8350
+2026-04-02 04:36:07.849 - INFO - Epoch time: 34s (34.63 seconds)
+2026-04-02 04:36:07.849 - INFO - Total time: 23m 29s (1409.77 seconds)
+2026-04-02 04:36:07.849 - INFO - GPU Mem: 10.99 GB
+
+2026-04-02 04:36:42.259 - INFO - Epoch 44/100 Results:
+2026-04-02 04:36:42.259 - INFO - Train MSE:  0.34634  (Z-Score Loss)
+2026-04-02 04:36:42.259 - INFO - Train RMSE: 0.03386
+2026-04-02 04:36:42.259 - INFO - Current LR: 2.50e-04
+2026-04-02 04:36:42.259 - INFO - Val RMSE:   0.04448
+2026-04-02 04:36:42.259 - INFO - Val MAE:    0.01477
+2026-04-02 04:36:42.259 - INFO - Val R²:     0.3654   (Explained Var)
+2026-04-02 04:36:42.259 - INFO - Val NRMSE:  0.0529   (Error %)
+2026-04-02 04:36:42.259 - INFO - Val Tau:    0.6450   (Ranking Metric)
+2026-04-02 04:36:42.259 - INFO - Val Spear:  0.8353
+2026-04-02 04:36:42.259 - INFO - Epoch time: 34s (34.41 seconds)
+2026-04-02 04:36:42.259 - INFO - Total time: 24m 04s (1444.18 seconds)
+2026-04-02 04:36:42.260 - INFO - GPU Mem: 10.99 GB
+
+2026-04-02 04:37:17.603 - INFO - Epoch 45/100 Results:
+2026-04-02 04:37:17.604 - INFO - Train MSE:  0.30762  (Z-Score Loss)
+2026-04-02 04:37:17.604 - INFO - Train RMSE: 0.03191
+2026-04-02 04:37:17.604 - INFO - Current LR: 2.50e-04
+2026-04-02 04:37:17.604 - INFO - Val RMSE:   0.04474
+2026-04-02 04:37:17.604 - INFO - Val MAE:    0.01490
+2026-04-02 04:37:17.604 - INFO - Val R²:     0.3578   (Explained Var)
+2026-04-02 04:37:17.604 - INFO - Val NRMSE:  0.0532   (Error %)
+2026-04-02 04:37:17.604 - INFO - Val Tau:    0.6519   (Ranking Metric)
+2026-04-02 04:37:17.604 - INFO - Val Spear:  0.8411
+2026-04-02 04:37:17.604 - INFO - Epoch time: 35s (35.34 seconds)
+2026-04-02 04:37:17.604 - INFO - Total time: 24m 39s (1479.52 seconds)
+2026-04-02 04:37:17.604 - INFO - GPU Mem: 11.09 GB
+2026-04-02 04:37:17.611 - INFO - New Best Tau Model Saved!  (Tau:  0.6519)
+
+2026-04-02 04:37:52.202 - INFO - Epoch 46/100 Results:
+2026-04-02 04:37:52.202 - INFO - Train MSE:  0.31747  (Z-Score Loss)
+2026-04-02 04:37:52.202 - INFO - Train RMSE: 0.03242
+2026-04-02 04:37:52.202 - INFO - Current LR: 2.50e-04
+2026-04-02 04:37:52.202 - INFO - Val RMSE:   0.04516
+2026-04-02 04:37:52.202 - INFO - Val MAE:    0.01385
+2026-04-02 04:37:52.202 - INFO - Val R²:     0.3456   (Explained Var)
+2026-04-02 04:37:52.202 - INFO - Val NRMSE:  0.0537   (Error %)
+2026-04-02 04:37:52.202 - INFO - Val Tau:    0.6351   (Ranking Metric)
+2026-04-02 04:37:52.202 - INFO - Val Spear:  0.8268
+2026-04-02 04:37:52.202 - INFO - Epoch time: 34s (34.59 seconds)
+2026-04-02 04:37:52.202 - INFO - Total time: 25m 14s (1514.12 seconds)
+2026-04-02 04:37:52.202 - INFO - GPU Mem: 11.16 GB
+
+2026-04-02 04:38:27.143 - INFO - Epoch 47/100 Results:
+2026-04-02 04:38:27.143 - INFO - Train MSE:  0.31631  (Z-Score Loss)
+2026-04-02 04:38:27.143 - INFO - Train RMSE: 0.03236
+2026-04-02 04:38:27.143 - INFO - Current LR: 2.50e-04
+2026-04-02 04:38:27.143 - INFO - Val RMSE:   0.04383
+2026-04-02 04:38:27.143 - INFO - Val MAE:    0.01572
+2026-04-02 04:38:27.143 - INFO - Val R²:     0.3839   (Explained Var)
+2026-04-02 04:38:27.143 - INFO - Val NRMSE:  0.0521   (Error %)
+2026-04-02 04:38:27.143 - INFO - Val Tau:    0.6427   (Ranking Metric)
+2026-04-02 04:38:27.143 - INFO - Val Spear:  0.8349
+2026-04-02 04:38:27.143 - INFO - Epoch time: 34s (34.94 seconds)
+2026-04-02 04:38:27.143 - INFO - Total time: 25m 49s (1549.06 seconds)
+2026-04-02 04:38:27.143 - INFO - GPU Mem: 10.92 GB
+
+2026-04-02 04:39:02.054 - INFO - Epoch 48/100 Results:
+2026-04-02 04:39:02.054 - INFO - Train MSE:  0.29782  (Z-Score Loss)
+2026-04-02 04:39:02.054 - INFO - Train RMSE: 0.03140
+2026-04-02 04:39:02.054 - INFO - Current LR: 2.50e-04
+2026-04-02 04:39:02.054 - INFO - Val RMSE:   0.04464
+2026-04-02 04:39:02.054 - INFO - Val MAE:    0.01601
+2026-04-02 04:39:02.054 - INFO - Val R²:     0.3608   (Explained Var)
+2026-04-02 04:39:02.054 - INFO - Val NRMSE:  0.0531   (Error %)
+2026-04-02 04:39:02.054 - INFO - Val Tau:    0.6462   (Ranking Metric)
+2026-04-02 04:39:02.054 - INFO - Val Spear:  0.8369
+2026-04-02 04:39:02.054 - INFO - Epoch time: 34s (34.91 seconds)
+2026-04-02 04:39:02.054 - INFO - Total time: 26m 23s (1583.98 seconds)
+2026-04-02 04:39:02.055 - INFO - GPU Mem: 10.98 GB
+
+2026-04-02 04:39:37.568 - INFO - Epoch 49/100 Results:
+2026-04-02 04:39:37.568 - INFO - Train MSE:  0.29791  (Z-Score Loss)
+2026-04-02 04:39:37.568 - INFO - Train RMSE: 0.03141
+2026-04-02 04:39:37.568 - INFO - Current LR: 2.50e-04
+2026-04-02 04:39:37.568 - INFO - Val RMSE:   0.04552
+2026-04-02 04:39:37.568 - INFO - Val MAE:    0.01773
+2026-04-02 04:39:37.568 - INFO - Val R²:     0.3354   (Explained Var)
+2026-04-02 04:39:37.568 - INFO - Val NRMSE:  0.0541   (Error %)
+2026-04-02 04:39:37.568 - INFO - Val Tau:    0.6546   (Ranking Metric)
+2026-04-02 04:39:37.568 - INFO - Val Spear:  0.8439
+2026-04-02 04:39:37.568 - INFO - Epoch time: 35s (35.51 seconds)
+2026-04-02 04:39:37.568 - INFO - Total time: 26m 59s (1619.49 seconds)
+2026-04-02 04:39:37.568 - INFO - GPU Mem: 11.17 GB
+2026-04-02 04:39:37.576 - INFO - New Best Tau Model Saved!  (Tau:  0.6546)
+
+2026-04-02 04:40:12.256 - INFO - Epoch 50/100 Results:
+2026-04-02 04:40:12.256 - INFO - Train MSE:  0.27938  (Z-Score Loss)
+2026-04-02 04:40:12.256 - INFO - Train RMSE: 0.03041
+2026-04-02 04:40:12.256 - INFO - Current LR: 2.50e-04
+2026-04-02 04:40:12.256 - INFO - Val RMSE:   0.04399
+2026-04-02 04:40:12.256 - INFO - Val MAE:    0.01464
+2026-04-02 04:40:12.256 - INFO - Val R²:     0.3792   (Explained Var)
+2026-04-02 04:40:12.256 - INFO - Val NRMSE:  0.0523   (Error %)
+2026-04-02 04:40:12.256 - INFO - Val Tau:    0.6538   (Ranking Metric)
+2026-04-02 04:40:12.256 - INFO - Val Spear:  0.8431
+2026-04-02 04:40:12.256 - INFO - Epoch time: 34s (34.68 seconds)
+2026-04-02 04:40:12.256 - INFO - Total time: 27m 34s (1654.18 seconds)
+2026-04-02 04:40:12.257 - INFO - GPU Mem: 11.09 GB
+
+2026-04-02 04:40:47.488 - INFO - Epoch 51/100 Results:
+2026-04-02 04:40:47.489 - INFO - Train MSE:  0.28227  (Z-Score Loss)
+2026-04-02 04:40:47.489 - INFO - Train RMSE: 0.03058
+2026-04-02 04:40:47.489 - INFO - Current LR: 2.50e-04
+2026-04-02 04:40:47.489 - INFO - Val RMSE:   0.04676
+2026-04-02 04:40:47.489 - INFO - Val MAE:    0.01618
+2026-04-02 04:40:47.489 - INFO - Val R²:     0.2985   (Explained Var)
+2026-04-02 04:40:47.489 - INFO - Val NRMSE:  0.0556   (Error %)
+2026-04-02 04:40:47.489 - INFO - Val Tau:    0.6427   (Ranking Metric)
+2026-04-02 04:40:47.489 - INFO - Val Spear:  0.8332
+2026-04-02 04:40:47.489 - INFO - Epoch time: 35s (35.23 seconds)
+2026-04-02 04:40:47.489 - INFO - Total time: 28m 09s (1689.41 seconds)
+2026-04-02 04:40:47.489 - INFO - GPU Mem: 11.12 GB
+
+2026-04-02 04:41:22.293 - INFO - Epoch 52/100 Results:
+2026-04-02 04:41:22.294 - INFO - Train MSE:  0.27644  (Z-Score Loss)
+2026-04-02 04:41:22.294 - INFO - Train RMSE: 0.03025
+2026-04-02 04:41:22.294 - INFO - Current LR: 2.50e-04
+2026-04-02 04:41:22.294 - INFO - Val RMSE:   0.04684
+2026-04-02 04:41:22.294 - INFO - Val MAE:    0.01699
+2026-04-02 04:41:22.294 - INFO - Val R²:     0.2962   (Explained Var)
+2026-04-02 04:41:22.294 - INFO - Val NRMSE:  0.0557   (Error %)
+2026-04-02 04:41:22.294 - INFO - Val Tau:    0.6595   (Ranking Metric)
+2026-04-02 04:41:22.294 - INFO - Val Spear:  0.8484
+2026-04-02 04:41:22.294 - INFO - Epoch time: 34s (34.80 seconds)
+2026-04-02 04:41:22.294 - INFO - Total time: 28m 44s (1724.21 seconds)
+2026-04-02 04:41:22.294 - INFO - GPU Mem: 11.11 GB
+2026-04-02 04:41:22.302 - INFO - New Best Tau Model Saved!  (Tau:  0.6595)
+
+2026-04-02 04:41:57.516 - INFO - Epoch 53/100 Results:
+2026-04-02 04:41:57.516 - INFO - Train MSE:  0.28834  (Z-Score Loss)
+2026-04-02 04:41:57.516 - INFO - Train RMSE: 0.03090
+2026-04-02 04:41:57.516 - INFO - Current LR: 2.50e-04
+2026-04-02 04:41:57.516 - INFO - Val RMSE:   0.04492
+2026-04-02 04:41:57.516 - INFO - Val MAE:    0.01662
+2026-04-02 04:41:57.516 - INFO - Val R²:     0.3527   (Explained Var)
+2026-04-02 04:41:57.516 - INFO - Val NRMSE:  0.0534   (Error %)
+2026-04-02 04:41:57.516 - INFO - Val Tau:    0.6500   (Ranking Metric)
+2026-04-02 04:41:57.517 - INFO - Val Spear:  0.8394
+2026-04-02 04:41:57.517 - INFO - Epoch time: 35s (35.21 seconds)
+2026-04-02 04:41:57.517 - INFO - Total time: 29m 19s (1759.44 seconds)
+2026-04-02 04:41:57.517 - INFO - GPU Mem: 11.13 GB
+
+2026-04-02 04:42:32.997 - INFO - Epoch 54/100 Results:
+2026-04-02 04:42:32.997 - INFO - Train MSE:  0.27756  (Z-Score Loss)
+2026-04-02 04:42:32.997 - INFO - Train RMSE: 0.03032
+2026-04-02 04:42:32.997 - INFO - Current LR: 2.50e-04
+2026-04-02 04:42:32.997 - INFO - Val RMSE:   0.04534
+2026-04-02 04:42:32.997 - INFO - Val MAE:    0.01718
+2026-04-02 04:42:32.997 - INFO - Val R²:     0.3405   (Explained Var)
+2026-04-02 04:42:32.997 - INFO - Val NRMSE:  0.0539   (Error %)
+2026-04-02 04:42:32.997 - INFO - Val Tau:    0.6576   (Ranking Metric)
+2026-04-02 04:42:32.997 - INFO - Val Spear:  0.8463
+2026-04-02 04:42:32.997 - INFO - Epoch time: 35s (35.48 seconds)
+2026-04-02 04:42:32.998 - INFO - Total time: 29m 54s (1794.92 seconds)
+2026-04-02 04:42:32.998 - INFO - GPU Mem: 11.19 GB
+
+2026-04-02 04:43:08.198 - INFO - Epoch 55/100 Results:
+2026-04-02 04:43:08.198 - INFO - Train MSE:  0.26033  (Z-Score Loss)
+2026-04-02 04:43:08.198 - INFO - Train RMSE: 0.02936
+2026-04-02 04:43:08.198 - INFO - Current LR: 2.50e-04
+2026-04-02 04:43:08.198 - INFO - Val RMSE:   0.04441
+2026-04-02 04:43:08.198 - INFO - Val MAE:    0.01497
+2026-04-02 04:43:08.198 - INFO - Val R²:     0.3673   (Explained Var)
+2026-04-02 04:43:08.198 - INFO - Val NRMSE:  0.0528   (Error %)
+2026-04-02 04:43:08.198 - INFO - Val Tau:    0.6578   (Ranking Metric)
+2026-04-02 04:43:08.199 - INFO - Val Spear:  0.8464
+2026-04-02 04:43:08.199 - INFO - Epoch time: 35s (35.20 seconds)
+2026-04-02 04:43:08.199 - INFO - Total time: 30m 30s (1830.12 seconds)
+2026-04-02 04:43:08.199 - INFO - GPU Mem: 11.11 GB
+
+2026-04-02 04:43:43.539 - INFO - Epoch 56/100 Results:
+2026-04-02 04:43:43.539 - INFO - Train MSE:  0.27350  (Z-Score Loss)
+2026-04-02 04:43:43.539 - INFO - Train RMSE: 0.03009
+2026-04-02 04:43:43.539 - INFO - Current LR: 2.50e-04
+2026-04-02 04:43:43.539 - INFO - Val RMSE:   0.04761
+2026-04-02 04:43:43.539 - INFO - Val MAE:    0.01799
+2026-04-02 04:43:43.539 - INFO - Val R²:     0.2730   (Explained Var)
+2026-04-02 04:43:43.539 - INFO - Val NRMSE:  0.0566   (Error %)
+2026-04-02 04:43:43.539 - INFO - Val Tau:    0.6543   (Ranking Metric)
+2026-04-02 04:43:43.539 - INFO - Val Spear:  0.8442
+2026-04-02 04:43:43.539 - INFO - Epoch time: 35s (35.34 seconds)
+2026-04-02 04:43:43.539 - INFO - Total time: 31m 05s (1865.46 seconds)
+2026-04-02 04:43:43.539 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:44:18.990 - INFO - Epoch 57/100 Results:
+2026-04-02 04:44:18.990 - INFO - Train MSE:  0.26171  (Z-Score Loss)
+2026-04-02 04:44:18.990 - INFO - Train RMSE: 0.02944
+2026-04-02 04:44:18.990 - INFO - Current LR: 2.50e-04
+2026-04-02 04:44:18.990 - INFO - Val RMSE:   0.04464
+2026-04-02 04:44:18.990 - INFO - Val MAE:    0.01395
+2026-04-02 04:44:18.990 - INFO - Val R²:     0.3608   (Explained Var)
+2026-04-02 04:44:18.990 - INFO - Val NRMSE:  0.0531   (Error %)
+2026-04-02 04:44:18.990 - INFO - Val Tau:    0.6566   (Ranking Metric)
+2026-04-02 04:44:18.990 - INFO - Val Spear:  0.8449
+2026-04-02 04:44:18.990 - INFO - Epoch time: 35s (35.45 seconds)
+2026-04-02 04:44:18.990 - INFO - Total time: 31m 40s (1900.91 seconds)
+2026-04-02 04:44:18.990 - INFO - GPU Mem: 11.21 GB
+
+2026-04-02 04:44:54.115 - INFO - Epoch 58/100 Results:
+2026-04-02 04:44:54.115 - INFO - Train MSE:  0.26218  (Z-Score Loss)
+2026-04-02 04:44:54.115 - INFO - Train RMSE: 0.02946
+2026-04-02 04:44:54.115 - INFO - Current LR: 2.50e-04
+2026-04-02 04:44:54.115 - INFO - Val RMSE:   0.04479
+2026-04-02 04:44:54.115 - INFO - Val MAE:    0.01544
+2026-04-02 04:44:54.116 - INFO - Val R²:     0.3563   (Explained Var)
+2026-04-02 04:44:54.116 - INFO - Val NRMSE:  0.0533   (Error %)
+2026-04-02 04:44:54.116 - INFO - Val Tau:    0.6606   (Ranking Metric)
+2026-04-02 04:44:54.116 - INFO - Val Spear:  0.8486
+2026-04-02 04:44:54.116 - INFO - Epoch time: 35s (35.12 seconds)
+2026-04-02 04:44:54.116 - INFO - Total time: 32m 16s (1936.04 seconds)
+2026-04-02 04:44:54.116 - INFO - GPU Mem: 10.94 GB
+2026-04-02 04:44:54.123 - INFO - New Best Tau Model Saved!  (Tau:  0.6606)
+
+2026-04-02 04:45:30.157 - INFO - Epoch 59/100 Results:
+2026-04-02 04:45:30.157 - INFO - Train MSE:  0.28790  (Z-Score Loss)
+2026-04-02 04:45:30.157 - INFO - Train RMSE: 0.03088
+2026-04-02 04:45:30.157 - INFO - Current LR: 2.50e-04
+2026-04-02 04:45:30.157 - INFO - Val RMSE:   0.04320
+2026-04-02 04:45:30.157 - INFO - Val MAE:    0.01529
+2026-04-02 04:45:30.157 - INFO - Val R²:     0.4013   (Explained Var)
+2026-04-02 04:45:30.157 - INFO - Val NRMSE:  0.0514   (Error %)
+2026-04-02 04:45:30.157 - INFO - Val Tau:    0.6494   (Ranking Metric)
+2026-04-02 04:45:30.157 - INFO - Val Spear:  0.8394
+2026-04-02 04:45:30.157 - INFO - Epoch time: 36s (36.03 seconds)
+2026-04-02 04:45:30.157 - INFO - Total time: 32m 52s (1972.08 seconds)
+2026-04-02 04:45:30.158 - INFO - GPU Mem: 11.15 GB
+2026-04-02 04:45:30.165 - INFO - New Best RMSE Model Saved! (RMSE: 0.04320)
+2026-04-02 04:45:30.168 - INFO - New Best R² Model Saved!   (R²:   0.4013)
+
+2026-04-02 04:46:05.677 - INFO - Epoch 60/100 Results:
+2026-04-02 04:46:05.678 - INFO - Train MSE:  0.25573  (Z-Score Loss)
+2026-04-02 04:46:05.678 - INFO - Train RMSE: 0.02910
+2026-04-02 04:46:05.678 - INFO - Current LR: 2.50e-04
+2026-04-02 04:46:05.678 - INFO - Val RMSE:   0.04616
+2026-04-02 04:46:05.678 - INFO - Val MAE:    0.01843
+2026-04-02 04:46:05.678 - INFO - Val R²:     0.3166   (Explained Var)
+2026-04-02 04:46:05.678 - INFO - Val NRMSE:  0.0549   (Error %)
+2026-04-02 04:46:05.678 - INFO - Val Tau:    0.6582   (Ranking Metric)
+2026-04-02 04:46:05.678 - INFO - Val Spear:  0.8470
+2026-04-02 04:46:05.678 - INFO - Epoch time: 35s (35.51 seconds)
+2026-04-02 04:46:05.678 - INFO - Total time: 33m 27s (2007.60 seconds)
+2026-04-02 04:46:05.678 - INFO - GPU Mem: 11.09 GB
+
+2026-04-02 04:46:40.913 - INFO - Epoch 61/100 Results:
+2026-04-02 04:46:40.913 - INFO - Train MSE:  0.25919  (Z-Score Loss)
+2026-04-02 04:46:40.913 - INFO - Train RMSE: 0.02930
+2026-04-02 04:46:40.913 - INFO - Current LR: 2.50e-04
+2026-04-02 04:46:40.913 - INFO - Val RMSE:   0.04309
+2026-04-02 04:46:40.913 - INFO - Val MAE:    0.01363
+2026-04-02 04:46:40.913 - INFO - Val R²:     0.4042   (Explained Var)
+2026-04-02 04:46:40.913 - INFO - Val NRMSE:  0.0513   (Error %)
+2026-04-02 04:46:40.913 - INFO - Val Tau:    0.6599   (Ranking Metric)
+2026-04-02 04:46:40.913 - INFO - Val Spear:  0.8478
+2026-04-02 04:46:40.913 - INFO - Epoch time: 35s (35.23 seconds)
+2026-04-02 04:46:40.913 - INFO - Total time: 34m 02s (2042.83 seconds)
+2026-04-02 04:46:40.913 - INFO - GPU Mem: 11.15 GB
+2026-04-02 04:46:40.921 - INFO - New Best RMSE Model Saved! (RMSE: 0.04309)
+2026-04-02 04:46:40.924 - INFO - New Best R² Model Saved!   (R²:   0.4042)
+
+2026-04-02 04:47:16.664 - INFO - Epoch 62/100 Results:
+2026-04-02 04:47:16.664 - INFO - Train MSE:  0.25738  (Z-Score Loss)
+2026-04-02 04:47:16.664 - INFO - Train RMSE: 0.02920
+2026-04-02 04:47:16.664 - INFO - Current LR: 2.50e-04
+2026-04-02 04:47:16.664 - INFO - Val RMSE:   0.04402
+2026-04-02 04:47:16.664 - INFO - Val MAE:    0.01465
+2026-04-02 04:47:16.664 - INFO - Val R²:     0.3783   (Explained Var)
+2026-04-02 04:47:16.665 - INFO - Val NRMSE:  0.0524   (Error %)
+2026-04-02 04:47:16.665 - INFO - Val Tau:    0.6560   (Ranking Metric)
+2026-04-02 04:47:16.665 - INFO - Val Spear:  0.8446
+2026-04-02 04:47:16.665 - INFO - Epoch time: 35s (35.74 seconds)
+2026-04-02 04:47:16.665 - INFO - Total time: 34m 38s (2078.59 seconds)
+2026-04-02 04:47:16.665 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:47:52.272 - INFO - Epoch 63/100 Results:
+2026-04-02 04:47:52.272 - INFO - Train MSE:  0.25949  (Z-Score Loss)
+2026-04-02 04:47:52.272 - INFO - Train RMSE: 0.02931
+2026-04-02 04:47:52.272 - INFO - Current LR: 2.50e-04
+2026-04-02 04:47:52.272 - INFO - Val RMSE:   0.04418
+2026-04-02 04:47:52.272 - INFO - Val MAE:    0.01574
+2026-04-02 04:47:52.272 - INFO - Val R²:     0.3738   (Explained Var)
+2026-04-02 04:47:52.272 - INFO - Val NRMSE:  0.0526   (Error %)
+2026-04-02 04:47:52.272 - INFO - Val Tau:    0.6673   (Ranking Metric)
+2026-04-02 04:47:52.272 - INFO - Val Spear:  0.8540
+2026-04-02 04:47:52.272 - INFO - Epoch time: 35s (35.60 seconds)
+2026-04-02 04:47:52.272 - INFO - Total time: 35m 14s (2114.19 seconds)
+2026-04-02 04:47:52.272 - INFO - GPU Mem: 11.00 GB
+2026-04-02 04:47:52.279 - INFO - New Best Tau Model Saved!  (Tau:  0.6673)
+
+2026-04-02 04:48:27.980 - INFO - Epoch 64/100 Results:
+2026-04-02 04:48:27.980 - INFO - Train MSE:  0.23066  (Z-Score Loss)
+2026-04-02 04:48:27.980 - INFO - Train RMSE: 0.02764
+2026-04-02 04:48:27.980 - INFO - Current LR: 2.50e-04
+2026-04-02 04:48:27.980 - INFO - Val RMSE:   0.04686
+2026-04-02 04:48:27.980 - INFO - Val MAE:    0.01824
+2026-04-02 04:48:27.980 - INFO - Val R²:     0.2957   (Explained Var)
+2026-04-02 04:48:27.980 - INFO - Val NRMSE:  0.0557   (Error %)
+2026-04-02 04:48:27.980 - INFO - Val Tau:    0.6586   (Ranking Metric)
+2026-04-02 04:48:27.980 - INFO - Val Spear:  0.8480
+2026-04-02 04:48:27.980 - INFO - Epoch time: 35s (35.70 seconds)
+2026-04-02 04:48:27.980 - INFO - Total time: 35m 49s (2149.90 seconds)
+2026-04-02 04:48:27.981 - INFO - GPU Mem: 11.10 GB
+
+2026-04-02 04:49:03.704 - INFO - Epoch 65/100 Results:
+2026-04-02 04:49:03.704 - INFO - Train MSE:  0.24072  (Z-Score Loss)
+2026-04-02 04:49:03.704 - INFO - Train RMSE: 0.02824
+2026-04-02 04:49:03.704 - INFO - Current LR: 2.50e-04
+2026-04-02 04:49:03.704 - INFO - Val RMSE:   0.04528
+2026-04-02 04:49:03.704 - INFO - Val MAE:    0.01902
+2026-04-02 04:49:03.704 - INFO - Val R²:     0.3423   (Explained Var)
+2026-04-02 04:49:03.704 - INFO - Val NRMSE:  0.0539   (Error %)
+2026-04-02 04:49:03.704 - INFO - Val Tau:    0.6553   (Ranking Metric)
+2026-04-02 04:49:03.704 - INFO - Val Spear:  0.8433
+2026-04-02 04:49:03.704 - INFO - Epoch time: 35s (35.72 seconds)
+2026-04-02 04:49:03.704 - INFO - Total time: 36m 25s (2185.63 seconds)
+2026-04-02 04:49:03.704 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:49:39.435 - INFO - Epoch 66/100 Results:
+2026-04-02 04:49:39.435 - INFO - Train MSE:  0.23782  (Z-Score Loss)
+2026-04-02 04:49:39.435 - INFO - Train RMSE: 0.02806
+2026-04-02 04:49:39.435 - INFO - Current LR: 2.50e-04
+2026-04-02 04:49:39.435 - INFO - Val RMSE:   0.04374
+2026-04-02 04:49:39.435 - INFO - Val MAE:    0.01504
+2026-04-02 04:49:39.435 - INFO - Val R²:     0.3864   (Explained Var)
+2026-04-02 04:49:39.435 - INFO - Val NRMSE:  0.0520   (Error %)
+2026-04-02 04:49:39.435 - INFO - Val Tau:    0.6573   (Ranking Metric)
+2026-04-02 04:49:39.435 - INFO - Val Spear:  0.8461
+2026-04-02 04:49:39.435 - INFO - Epoch time: 35s (35.73 seconds)
+2026-04-02 04:49:39.435 - INFO - Total time: 37m 01s (2221.36 seconds)
+2026-04-02 04:49:39.436 - INFO - GPU Mem: 11.11 GB
+
+2026-04-02 04:50:15.266 - INFO - Epoch 67/100 Results:
+2026-04-02 04:50:15.266 - INFO - Train MSE:  0.23266  (Z-Score Loss)
+2026-04-02 04:50:15.266 - INFO - Train RMSE: 0.02776
+2026-04-02 04:50:15.266 - INFO - Current LR: 2.50e-04
+2026-04-02 04:50:15.266 - INFO - Val RMSE:   0.04513
+2026-04-02 04:50:15.266 - INFO - Val MAE:    0.01461
+2026-04-02 04:50:15.266 - INFO - Val R²:     0.3467   (Explained Var)
+2026-04-02 04:50:15.266 - INFO - Val NRMSE:  0.0537   (Error %)
+2026-04-02 04:50:15.266 - INFO - Val Tau:    0.6571   (Ranking Metric)
+2026-04-02 04:50:15.266 - INFO - Val Spear:  0.8465
+2026-04-02 04:50:15.266 - INFO - Epoch time: 35s (35.83 seconds)
+2026-04-02 04:50:15.266 - INFO - Total time: 37m 37s (2257.19 seconds)
+2026-04-02 04:50:15.266 - INFO - GPU Mem: 11.14 GB
+
+2026-04-02 04:50:51.094 - INFO - Epoch 68/100 Results:
+2026-04-02 04:50:51.094 - INFO - Train MSE:  0.23751  (Z-Score Loss)
+2026-04-02 04:50:51.094 - INFO - Train RMSE: 0.02805
+2026-04-02 04:50:51.094 - INFO - Current LR: 2.50e-04
+2026-04-02 04:50:51.094 - INFO - Val RMSE:   0.04523
+2026-04-02 04:50:51.094 - INFO - Val MAE:    0.01374
+2026-04-02 04:50:51.094 - INFO - Val R²:     0.3436   (Explained Var)
+2026-04-02 04:50:51.094 - INFO - Val NRMSE:  0.0538   (Error %)
+2026-04-02 04:50:51.094 - INFO - Val Tau:    0.6549   (Ranking Metric)
+2026-04-02 04:50:51.094 - INFO - Val Spear:  0.8437
+2026-04-02 04:50:51.094 - INFO - Epoch time: 35s (35.82 seconds)
+2026-04-02 04:50:51.094 - INFO - Total time: 38m 13s (2293.02 seconds)
+2026-04-02 04:50:51.095 - INFO - GPU Mem: 11.15 GB
+
+2026-04-02 04:51:26.670 - INFO - Epoch 69/100 Results:
+2026-04-02 04:51:26.670 - INFO - Train MSE:  0.23428  (Z-Score Loss)
+2026-04-02 04:51:26.670 - INFO - Train RMSE: 0.02785
+2026-04-02 04:51:26.670 - INFO - Current LR: 1.25e-04
+2026-04-02 04:51:26.670 - INFO - Val RMSE:   0.04359
+2026-04-02 04:51:26.670 - INFO - Val MAE:    0.01439
+2026-04-02 04:51:26.670 - INFO - Val R²:     0.3906   (Explained Var)
+2026-04-02 04:51:26.670 - INFO - Val NRMSE:  0.0518   (Error %)
+2026-04-02 04:51:26.670 - INFO - Val Tau:    0.6638   (Ranking Metric)
+2026-04-02 04:51:26.670 - INFO - Val Spear:  0.8515
+2026-04-02 04:51:26.670 - INFO - Epoch time: 35s (35.57 seconds)
+2026-04-02 04:51:26.670 - INFO - Total time: 38m 48s (2328.59 seconds)
+2026-04-02 04:51:26.670 - INFO - GPU Mem: 11.11 GB
+
+2026-04-02 04:52:02.596 - INFO - Epoch 70/100 Results:
+2026-04-02 04:52:02.596 - INFO - Train MSE:  0.18941  (Z-Score Loss)
+2026-04-02 04:52:02.596 - INFO - Train RMSE: 0.02504
+2026-04-02 04:52:02.596 - INFO - Current LR: 1.25e-04
+2026-04-02 04:52:02.596 - INFO - Val RMSE:   0.04289
+2026-04-02 04:52:02.596 - INFO - Val MAE:    0.01384
+2026-04-02 04:52:02.596 - INFO - Val R²:     0.4098   (Explained Var)
+2026-04-02 04:52:02.596 - INFO - Val NRMSE:  0.0510   (Error %)
+2026-04-02 04:52:02.597 - INFO - Val Tau:    0.6743   (Ranking Metric)
+2026-04-02 04:52:02.597 - INFO - Val Spear:  0.8604
+2026-04-02 04:52:02.597 - INFO - Epoch time: 35s (35.92 seconds)
+2026-04-02 04:52:02.597 - INFO - Total time: 39m 24s (2364.52 seconds)
+2026-04-02 04:52:02.597 - INFO - GPU Mem: 10.98 GB
+2026-04-02 04:52:02.604 - INFO - New Best Tau Model Saved!  (Tau:  0.6743)
+2026-04-02 04:52:02.607 - INFO - New Best RMSE Model Saved! (RMSE: 0.04289)
+2026-04-02 04:52:02.612 - INFO - New Best R² Model Saved!   (R²:   0.4098)
+
+2026-04-02 04:52:38.112 - INFO - Epoch 71/100 Results:
+2026-04-02 04:52:38.112 - INFO - Train MSE:  0.17128  (Z-Score Loss)
+2026-04-02 04:52:38.112 - INFO - Train RMSE: 0.02382
+2026-04-02 04:52:38.112 - INFO - Current LR: 1.25e-04
+2026-04-02 04:52:38.112 - INFO - Val RMSE:   0.04367
+2026-04-02 04:52:38.112 - INFO - Val MAE:    0.01469
+2026-04-02 04:52:38.112 - INFO - Val R²:     0.3884   (Explained Var)
+2026-04-02 04:52:38.112 - INFO - Val NRMSE:  0.0519   (Error %)
+2026-04-02 04:52:38.112 - INFO - Val Tau:    0.6760   (Ranking Metric)
+2026-04-02 04:52:38.112 - INFO - Val Spear:  0.8614
+2026-04-02 04:52:38.112 - INFO - Epoch time: 35s (35.50 seconds)
+2026-04-02 04:52:38.112 - INFO - Total time: 40m 00s (2400.03 seconds)
+2026-04-02 04:52:38.113 - INFO - GPU Mem: 11.08 GB
+2026-04-02 04:52:38.120 - INFO - New Best Tau Model Saved!  (Tau:  0.6760)
+
+2026-04-02 04:53:13.954 - INFO - Epoch 72/100 Results:
+2026-04-02 04:53:13.954 - INFO - Train MSE:  0.16892  (Z-Score Loss)
+2026-04-02 04:53:13.954 - INFO - Train RMSE: 0.02365
+2026-04-02 04:53:13.954 - INFO - Current LR: 1.25e-04
+2026-04-02 04:53:13.954 - INFO - Val RMSE:   0.04384
+2026-04-02 04:53:13.954 - INFO - Val MAE:    0.01423
+2026-04-02 04:53:13.954 - INFO - Val R²:     0.3835   (Explained Var)
+2026-04-02 04:53:13.954 - INFO - Val NRMSE:  0.0521   (Error %)
+2026-04-02 04:53:13.954 - INFO - Val Tau:    0.6751   (Ranking Metric)
+2026-04-02 04:53:13.954 - INFO - Val Spear:  0.8610
+2026-04-02 04:53:13.954 - INFO - Epoch time: 35s (35.83 seconds)
+2026-04-02 04:53:13.954 - INFO - Total time: 40m 35s (2435.88 seconds)
+2026-04-02 04:53:13.954 - INFO - GPU Mem: 11.10 GB
+
+2026-04-02 04:53:50.725 - INFO - Epoch 73/100 Results:
+2026-04-02 04:53:50.725 - INFO - Train MSE:  0.15341  (Z-Score Loss)
+2026-04-02 04:53:50.725 - INFO - Train RMSE: 0.02254
+2026-04-02 04:53:50.726 - INFO - Current LR: 1.25e-04
+2026-04-02 04:53:50.726 - INFO - Val RMSE:   0.04343
+2026-04-02 04:53:50.726 - INFO - Val MAE:    0.01372
+2026-04-02 04:53:50.726 - INFO - Val R²:     0.3949   (Explained Var)
+2026-04-02 04:53:50.726 - INFO - Val NRMSE:  0.0517   (Error %)
+2026-04-02 04:53:50.726 - INFO - Val Tau:    0.6779   (Ranking Metric)
+2026-04-02 04:53:50.726 - INFO - Val Spear:  0.8632
+2026-04-02 04:53:50.726 - INFO - Epoch time: 36s (36.77 seconds)
+2026-04-02 04:53:50.726 - INFO - Total time: 41m 12s (2472.65 seconds)
+2026-04-02 04:53:50.726 - INFO - GPU Mem: 11.09 GB
+2026-04-02 04:53:50.734 - INFO - New Best Tau Model Saved!  (Tau:  0.6779)
+
+2026-04-02 04:54:26.736 - INFO - Epoch 74/100 Results:
+2026-04-02 04:54:26.736 - INFO - Train MSE:  0.15222  (Z-Score Loss)
+2026-04-02 04:54:26.736 - INFO - Train RMSE: 0.02245
+2026-04-02 04:54:26.736 - INFO - Current LR: 1.25e-04
+2026-04-02 04:54:26.736 - INFO - Val RMSE:   0.04360
+2026-04-02 04:54:26.736 - INFO - Val MAE:    0.01423
+2026-04-02 04:54:26.736 - INFO - Val R²:     0.3902   (Explained Var)
+2026-04-02 04:54:26.736 - INFO - Val NRMSE:  0.0519   (Error %)
+2026-04-02 04:54:26.736 - INFO - Val Tau:    0.6764   (Ranking Metric)
+2026-04-02 04:54:26.736 - INFO - Val Spear:  0.8624
+2026-04-02 04:54:26.737 - INFO - Epoch time: 36s (36.00 seconds)
+2026-04-02 04:54:26.737 - INFO - Total time: 41m 48s (2508.66 seconds)
+2026-04-02 04:54:26.737 - INFO - GPU Mem: 11.10 GB
+
+2026-04-02 04:55:02.879 - INFO - Epoch 75/100 Results:
+2026-04-02 04:55:02.879 - INFO - Train MSE:  0.14712  (Z-Score Loss)
+2026-04-02 04:55:02.879 - INFO - Train RMSE: 0.02207
+2026-04-02 04:55:02.879 - INFO - Current LR: 1.25e-04
+2026-04-02 04:55:02.879 - INFO - Val RMSE:   0.04364
+2026-04-02 04:55:02.879 - INFO - Val MAE:    0.01357
+2026-04-02 04:55:02.879 - INFO - Val R²:     0.3892   (Explained Var)
+2026-04-02 04:55:02.879 - INFO - Val NRMSE:  0.0519   (Error %)
+2026-04-02 04:55:02.879 - INFO - Val Tau:    0.6814   (Ranking Metric)
+2026-04-02 04:55:02.879 - INFO - Val Spear:  0.8663
+2026-04-02 04:55:02.879 - INFO - Epoch time: 36s (36.14 seconds)
+2026-04-02 04:55:02.879 - INFO - Total time: 42m 24s (2544.80 seconds)
+2026-04-02 04:55:02.879 - INFO - GPU Mem: 11.10 GB
+2026-04-02 04:55:02.887 - INFO - New Best Tau Model Saved!  (Tau:  0.6814)
+
+2026-04-02 04:55:38.935 - INFO - Epoch 76/100 Results:
+2026-04-02 04:55:38.936 - INFO - Train MSE:  0.14950  (Z-Score Loss)
+2026-04-02 04:55:38.936 - INFO - Train RMSE: 0.02225
+2026-04-02 04:55:38.936 - INFO - Current LR: 1.25e-04
+2026-04-02 04:55:38.936 - INFO - Val RMSE:   0.04304
+2026-04-02 04:55:38.936 - INFO - Val MAE:    0.01567
+2026-04-02 04:55:38.936 - INFO - Val R²:     0.4056   (Explained Var)
+2026-04-02 04:55:38.936 - INFO - Val NRMSE:  0.0512   (Error %)
+2026-04-02 04:55:38.936 - INFO - Val Tau:    0.6785   (Ranking Metric)
+2026-04-02 04:55:38.936 - INFO - Val Spear:  0.8641
+2026-04-02 04:55:38.936 - INFO - Epoch time: 36s (36.05 seconds)
+2026-04-02 04:55:38.936 - INFO - Total time: 43m 00s (2580.86 seconds)
+2026-04-02 04:55:38.936 - INFO - GPU Mem: 11.00 GB
+
+2026-04-02 04:56:15.316 - INFO - Epoch 77/100 Results:
+2026-04-02 04:56:15.316 - INFO - Train MSE:  0.13852  (Z-Score Loss)
+2026-04-02 04:56:15.317 - INFO - Train RMSE: 0.02142
+2026-04-02 04:56:15.317 - INFO - Current LR: 1.25e-04
+2026-04-02 04:56:15.317 - INFO - Val RMSE:   0.04326
+2026-04-02 04:56:15.317 - INFO - Val MAE:    0.01394
+2026-04-02 04:56:15.317 - INFO - Val R²:     0.3998   (Explained Var)
+2026-04-02 04:56:15.317 - INFO - Val NRMSE:  0.0515   (Error %)
+2026-04-02 04:56:15.317 - INFO - Val Tau:    0.6811   (Ranking Metric)
+2026-04-02 04:56:15.317 - INFO - Val Spear:  0.8654
+2026-04-02 04:56:15.317 - INFO - Epoch time: 36s (36.38 seconds)
+2026-04-02 04:56:15.317 - INFO - Total time: 43m 37s (2617.24 seconds)
+2026-04-02 04:56:15.317 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 04:56:51.963 - INFO - Epoch 78/100 Results:
+2026-04-02 04:56:51.963 - INFO - Train MSE:  0.14311  (Z-Score Loss)
+2026-04-02 04:56:51.963 - INFO - Train RMSE: 0.02177
+2026-04-02 04:56:51.963 - INFO - Current LR: 1.25e-04
+2026-04-02 04:56:51.963 - INFO - Val RMSE:   0.04437
+2026-04-02 04:56:51.963 - INFO - Val MAE:    0.01484
+2026-04-02 04:56:51.963 - INFO - Val R²:     0.3685   (Explained Var)
+2026-04-02 04:56:51.963 - INFO - Val NRMSE:  0.0528   (Error %)
+2026-04-02 04:56:51.963 - INFO - Val Tau:    0.6837   (Ranking Metric)
+2026-04-02 04:56:51.963 - INFO - Val Spear:  0.8682
+2026-04-02 04:56:51.963 - INFO - Epoch time: 36s (36.64 seconds)
+2026-04-02 04:56:51.963 - INFO - Total time: 44m 13s (2653.88 seconds)
+2026-04-02 04:56:51.963 - INFO - GPU Mem: 11.09 GB
+2026-04-02 04:56:51.971 - INFO - New Best Tau Model Saved!  (Tau:  0.6837)
+
+2026-04-02 04:57:28.128 - INFO - Epoch 79/100 Results:
+2026-04-02 04:57:28.128 - INFO - Train MSE:  0.13297  (Z-Score Loss)
+2026-04-02 04:57:28.128 - INFO - Train RMSE: 0.02098
+2026-04-02 04:57:28.128 - INFO - Current LR: 1.25e-04
+2026-04-02 04:57:28.128 - INFO - Val RMSE:   0.04348
+2026-04-02 04:57:28.128 - INFO - Val MAE:    0.01418
+2026-04-02 04:57:28.128 - INFO - Val R²:     0.3935   (Explained Var)
+2026-04-02 04:57:28.128 - INFO - Val NRMSE:  0.0517   (Error %)
+2026-04-02 04:57:28.128 - INFO - Val Tau:    0.6829   (Ranking Metric)
+2026-04-02 04:57:28.128 - INFO - Val Spear:  0.8673
+2026-04-02 04:57:28.128 - INFO - Epoch time: 36s (36.16 seconds)
+2026-04-02 04:57:28.128 - INFO - Total time: 44m 50s (2690.05 seconds)
+2026-04-02 04:57:28.128 - INFO - GPU Mem: 11.09 GB
+
+2026-04-02 04:58:04.316 - INFO - Epoch 80/100 Results:
+2026-04-02 04:58:04.316 - INFO - Train MSE:  0.13540  (Z-Score Loss)
+2026-04-02 04:58:04.316 - INFO - Train RMSE: 0.02118
+2026-04-02 04:58:04.316 - INFO - Current LR: 1.25e-04
+2026-04-02 04:58:04.316 - INFO - Val RMSE:   0.04464
+2026-04-02 04:58:04.316 - INFO - Val MAE:    0.01415
+2026-04-02 04:58:04.316 - INFO - Val R²:     0.3608   (Explained Var)
+2026-04-02 04:58:04.316 - INFO - Val NRMSE:  0.0531   (Error %)
+2026-04-02 04:58:04.316 - INFO - Val Tau:    0.6848   (Ranking Metric)
+2026-04-02 04:58:04.316 - INFO - Val Spear:  0.8691
+2026-04-02 04:58:04.316 - INFO - Epoch time: 36s (36.18 seconds)
+2026-04-02 04:58:04.316 - INFO - Total time: 45m 26s (2726.24 seconds)
+2026-04-02 04:58:04.316 - INFO - GPU Mem: 11.10 GB
+2026-04-02 04:58:04.324 - INFO - New Best Tau Model Saved!  (Tau:  0.6848)
+
+2026-04-02 04:58:40.556 - INFO - Epoch 81/100 Results:
+2026-04-02 04:58:40.556 - INFO - Train MSE:  0.13810  (Z-Score Loss)
+2026-04-02 04:58:40.556 - INFO - Train RMSE: 0.02139
+2026-04-02 04:58:40.556 - INFO - Current LR: 1.25e-04
+2026-04-02 04:58:40.556 - INFO - Val RMSE:   0.04428
+2026-04-02 04:58:40.557 - INFO - Val MAE:    0.01415
+2026-04-02 04:58:40.557 - INFO - Val R²:     0.3711   (Explained Var)
+2026-04-02 04:58:40.557 - INFO - Val NRMSE:  0.0527   (Error %)
+2026-04-02 04:58:40.557 - INFO - Val Tau:    0.6819   (Ranking Metric)
+2026-04-02 04:58:40.557 - INFO - Val Spear:  0.8666
+2026-04-02 04:58:40.557 - INFO - Epoch time: 36s (36.23 seconds)
+2026-04-02 04:58:40.557 - INFO - Total time: 46m 02s (2762.48 seconds)
+2026-04-02 04:58:40.557 - INFO - GPU Mem: 11.12 GB
+
+2026-04-02 04:59:17.087 - INFO - Epoch 82/100 Results:
+2026-04-02 04:59:17.087 - INFO - Train MSE:  0.13422  (Z-Score Loss)
+2026-04-02 04:59:17.087 - INFO - Train RMSE: 0.02108
+2026-04-02 04:59:17.087 - INFO - Current LR: 1.25e-04
+2026-04-02 04:59:17.087 - INFO - Val RMSE:   0.04382
+2026-04-02 04:59:17.087 - INFO - Val MAE:    0.01518
+2026-04-02 04:59:17.087 - INFO - Val R²:     0.3840   (Explained Var)
+2026-04-02 04:59:17.087 - INFO - Val NRMSE:  0.0521   (Error %)
+2026-04-02 04:59:17.087 - INFO - Val Tau:    0.6852   (Ranking Metric)
+2026-04-02 04:59:17.087 - INFO - Val Spear:  0.8690
+2026-04-02 04:59:17.087 - INFO - Epoch time: 36s (36.53 seconds)
+2026-04-02 04:59:17.087 - INFO - Total time: 46m 39s (2799.01 seconds)
+2026-04-02 04:59:17.088 - INFO - GPU Mem: 11.13 GB
+2026-04-02 04:59:17.095 - INFO - New Best Tau Model Saved!  (Tau:  0.6852)
+
+2026-04-02 04:59:53.418 - INFO - Epoch 83/100 Results:
+2026-04-02 04:59:53.419 - INFO - Train MSE:  0.12369  (Z-Score Loss)
+2026-04-02 04:59:53.419 - INFO - Train RMSE: 0.02024
+2026-04-02 04:59:53.419 - INFO - Current LR: 1.25e-04
+2026-04-02 04:59:53.419 - INFO - Val RMSE:   0.04466
+2026-04-02 04:59:53.419 - INFO - Val MAE:    0.01502
+2026-04-02 04:59:53.419 - INFO - Val R²:     0.3601   (Explained Var)
+2026-04-02 04:59:53.419 - INFO - Val NRMSE:  0.0531   (Error %)
+2026-04-02 04:59:53.419 - INFO - Val Tau:    0.6847   (Ranking Metric)
+2026-04-02 04:59:53.419 - INFO - Val Spear:  0.8688
+2026-04-02 04:59:53.419 - INFO - Epoch time: 36s (36.32 seconds)
+2026-04-02 04:59:53.419 - INFO - Total time: 47m 15s (2835.34 seconds)
+2026-04-02 04:59:53.419 - INFO - GPU Mem: 11.09 GB
+
+2026-04-02 05:00:29.557 - INFO - Epoch 84/100 Results:
+2026-04-02 05:00:29.557 - INFO - Train MSE:  0.12218  (Z-Score Loss)
+2026-04-02 05:00:29.557 - INFO - Train RMSE: 0.02011
+2026-04-02 05:00:29.557 - INFO - Current LR: 1.25e-04
+2026-04-02 05:00:29.557 - INFO - Val RMSE:   0.04380
+2026-04-02 05:00:29.557 - INFO - Val MAE:    0.01427
+2026-04-02 05:00:29.557 - INFO - Val R²:     0.3845   (Explained Var)
+2026-04-02 05:00:29.557 - INFO - Val NRMSE:  0.0521   (Error %)
+2026-04-02 05:00:29.557 - INFO - Val Tau:    0.6847   (Ranking Metric)
+2026-04-02 05:00:29.557 - INFO - Val Spear:  0.8685
+2026-04-02 05:00:29.557 - INFO - Epoch time: 36s (36.13 seconds)
+2026-04-02 05:00:29.558 - INFO - Total time: 47m 51s (2871.48 seconds)
+2026-04-02 05:00:29.558 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 05:01:06.001 - INFO - Epoch 85/100 Results:
+2026-04-02 05:01:06.001 - INFO - Train MSE:  0.11735  (Z-Score Loss)
+2026-04-02 05:01:06.001 - INFO - Train RMSE: 0.01971
+2026-04-02 05:01:06.001 - INFO - Current LR: 1.25e-04
+2026-04-02 05:01:06.001 - INFO - Val RMSE:   0.04407
+2026-04-02 05:01:06.001 - INFO - Val MAE:    0.01349
+2026-04-02 05:01:06.001 - INFO - Val R²:     0.3770   (Explained Var)
+2026-04-02 05:01:06.001 - INFO - Val NRMSE:  0.0524   (Error %)
+2026-04-02 05:01:06.001 - INFO - Val Tau:    0.6865   (Ranking Metric)
+2026-04-02 05:01:06.001 - INFO - Val Spear:  0.8697
+2026-04-02 05:01:06.001 - INFO - Epoch time: 36s (36.44 seconds)
+2026-04-02 05:01:06.001 - INFO - Total time: 48m 27s (2907.92 seconds)
+2026-04-02 05:01:06.001 - INFO - GPU Mem: 11.10 GB
+2026-04-02 05:01:06.009 - INFO - New Best Tau Model Saved!  (Tau:  0.6865)
+
+2026-04-02 05:01:42.535 - INFO - Epoch 86/100 Results:
+2026-04-02 05:01:42.535 - INFO - Train MSE:  0.12903  (Z-Score Loss)
+2026-04-02 05:01:42.535 - INFO - Train RMSE: 0.02067
+2026-04-02 05:01:42.535 - INFO - Current LR: 1.25e-04
+2026-04-02 05:01:42.535 - INFO - Val RMSE:   0.04482
+2026-04-02 05:01:42.536 - INFO - Val MAE:    0.01391
+2026-04-02 05:01:42.536 - INFO - Val R²:     0.3556   (Explained Var)
+2026-04-02 05:01:42.536 - INFO - Val NRMSE:  0.0533   (Error %)
+2026-04-02 05:01:42.536 - INFO - Val Tau:    0.6868   (Ranking Metric)
+2026-04-02 05:01:42.536 - INFO - Val Spear:  0.8698
+2026-04-02 05:01:42.536 - INFO - Epoch time: 36s (36.53 seconds)
+2026-04-02 05:01:42.536 - INFO - Total time: 49m 04s (2944.46 seconds)
+2026-04-02 05:01:42.536 - INFO - GPU Mem: 11.10 GB
+2026-04-02 05:01:42.544 - INFO - New Best Tau Model Saved!  (Tau:  0.6868)
+
+2026-04-02 05:02:19.150 - INFO - Epoch 87/100 Results:
+2026-04-02 05:02:19.150 - INFO - Train MSE:  0.12348  (Z-Score Loss)
+2026-04-02 05:02:19.150 - INFO - Train RMSE: 0.02022
+2026-04-02 05:02:19.150 - INFO - Current LR: 1.25e-04
+2026-04-02 05:02:19.150 - INFO - Val RMSE:   0.04507
+2026-04-02 05:02:19.150 - INFO - Val MAE:    0.01408
+2026-04-02 05:02:19.150 - INFO - Val R²:     0.3483   (Explained Var)
+2026-04-02 05:02:19.150 - INFO - Val NRMSE:  0.0536   (Error %)
+2026-04-02 05:02:19.151 - INFO - Val Tau:    0.6887   (Ranking Metric)
+2026-04-02 05:02:19.151 - INFO - Val Spear:  0.8716
+2026-04-02 05:02:19.151 - INFO - Epoch time: 36s (36.61 seconds)
+2026-04-02 05:02:19.151 - INFO - Total time: 49m 41s (2981.07 seconds)
+2026-04-02 05:02:19.151 - INFO - GPU Mem: 11.13 GB
+2026-04-02 05:02:19.159 - INFO - New Best Tau Model Saved!  (Tau:  0.6887)
+
+2026-04-02 05:02:55.791 - INFO - Epoch 88/100 Results:
+2026-04-02 05:02:55.791 - INFO - Train MSE:  0.12993  (Z-Score Loss)
+2026-04-02 05:02:55.791 - INFO - Train RMSE: 0.02074
+2026-04-02 05:02:55.791 - INFO - Current LR: 1.25e-04
+2026-04-02 05:02:55.791 - INFO - Val RMSE:   0.04307
+2026-04-02 05:02:55.791 - INFO - Val MAE:    0.01366
+2026-04-02 05:02:55.791 - INFO - Val R²:     0.4048   (Explained Var)
+2026-04-02 05:02:55.791 - INFO - Val NRMSE:  0.0512   (Error %)
+2026-04-02 05:02:55.791 - INFO - Val Tau:    0.6893   (Ranking Metric)
+2026-04-02 05:02:55.791 - INFO - Val Spear:  0.8721
+2026-04-02 05:02:55.791 - INFO - Epoch time: 36s (36.63 seconds)
+2026-04-02 05:02:55.792 - INFO - Total time: 50m 17s (3017.71 seconds)
+2026-04-02 05:02:55.792 - INFO - GPU Mem: 11.09 GB
+2026-04-02 05:02:55.800 - INFO - New Best Tau Model Saved!  (Tau:  0.6893)
+
+2026-04-02 05:03:31.960 - INFO - Epoch 89/100 Results:
+2026-04-02 05:03:31.961 - INFO - Train MSE:  0.11644  (Z-Score Loss)
+2026-04-02 05:03:31.961 - INFO - Train RMSE: 0.01964
+2026-04-02 05:03:31.961 - INFO - Current LR: 1.25e-04
+2026-04-02 05:03:31.961 - INFO - Val RMSE:   0.04354
+2026-04-02 05:03:31.961 - INFO - Val MAE:    0.01312
+2026-04-02 05:03:31.961 - INFO - Val R²:     0.3918   (Explained Var)
+2026-04-02 05:03:31.961 - INFO - Val NRMSE:  0.0518   (Error %)
+2026-04-02 05:03:31.961 - INFO - Val Tau:    0.6889   (Ranking Metric)
+2026-04-02 05:03:31.961 - INFO - Val Spear:  0.8722
+2026-04-02 05:03:31.961 - INFO - Epoch time: 36s (36.16 seconds)
+2026-04-02 05:03:31.961 - INFO - Total time: 50m 53s (3053.88 seconds)
+2026-04-02 05:03:31.961 - INFO - GPU Mem: 11.15 GB
+
+2026-04-02 05:04:08.838 - INFO - Epoch 90/100 Results:
+2026-04-02 05:04:08.839 - INFO - Train MSE:  0.11586  (Z-Score Loss)
+2026-04-02 05:04:08.839 - INFO - Train RMSE: 0.01959
+2026-04-02 05:04:08.839 - INFO - Current LR: 1.25e-04
+2026-04-02 05:04:08.839 - INFO - Val RMSE:   0.04438
+2026-04-02 05:04:08.839 - INFO - Val MAE:    0.01449
+2026-04-02 05:04:08.839 - INFO - Val R²:     0.3682   (Explained Var)
+2026-04-02 05:04:08.839 - INFO - Val NRMSE:  0.0528   (Error %)
+2026-04-02 05:04:08.839 - INFO - Val Tau:    0.6860   (Ranking Metric)
+2026-04-02 05:04:08.839 - INFO - Val Spear:  0.8696
+2026-04-02 05:04:08.839 - INFO - Epoch time: 36s (36.87 seconds)
+2026-04-02 05:04:08.839 - INFO - Total time: 51m 30s (3090.76 seconds)
+2026-04-02 05:04:08.839 - INFO - GPU Mem: 11.09 GB
+
+2026-04-02 05:04:45.152 - INFO - Epoch 91/100 Results:
+2026-04-02 05:04:45.153 - INFO - Train MSE:  0.10797  (Z-Score Loss)
+2026-04-02 05:04:45.153 - INFO - Train RMSE: 0.01891
+2026-04-02 05:04:45.153 - INFO - Current LR: 1.25e-04
+2026-04-02 05:04:45.153 - INFO - Val RMSE:   0.04332
+2026-04-02 05:04:45.153 - INFO - Val MAE:    0.01400
+2026-04-02 05:04:45.153 - INFO - Val R²:     0.3979   (Explained Var)
+2026-04-02 05:04:45.153 - INFO - Val NRMSE:  0.0515   (Error %)
+2026-04-02 05:04:45.153 - INFO - Val Tau:    0.6876   (Ranking Metric)
+2026-04-02 05:04:45.153 - INFO - Val Spear:  0.8707
+2026-04-02 05:04:45.153 - INFO - Epoch time: 36s (36.31 seconds)
+2026-04-02 05:04:45.153 - INFO - Total time: 52m 07s (3127.07 seconds)
+2026-04-02 05:04:45.153 - INFO - GPU Mem: 11.09 GB
+
+2026-04-02 05:05:21.380 - INFO - Epoch 92/100 Results:
+2026-04-02 05:05:21.381 - INFO - Train MSE:  0.11421  (Z-Score Loss)
+2026-04-02 05:05:21.381 - INFO - Train RMSE: 0.01945
+2026-04-02 05:05:21.381 - INFO - Current LR: 1.25e-04
+2026-04-02 05:05:21.381 - INFO - Val RMSE:   0.04428
+2026-04-02 05:05:21.381 - INFO - Val MAE:    0.01464
+2026-04-02 05:05:21.381 - INFO - Val R²:     0.3710   (Explained Var)
+2026-04-02 05:05:21.381 - INFO - Val NRMSE:  0.0527   (Error %)
+2026-04-02 05:05:21.381 - INFO - Val Tau:    0.6903   (Ranking Metric)
+2026-04-02 05:05:21.381 - INFO - Val Spear:  0.8732
+2026-04-02 05:05:21.381 - INFO - Epoch time: 36s (36.22 seconds)
+2026-04-02 05:05:21.381 - INFO - Total time: 52m 43s (3163.30 seconds)
+2026-04-02 05:05:21.381 - INFO - GPU Mem: 11.08 GB
+2026-04-02 05:05:21.388 - INFO - New Best Tau Model Saved!  (Tau:  0.6903)
+
+2026-04-02 05:05:57.369 - INFO - Epoch 93/100 Results:
+2026-04-02 05:05:57.370 - INFO - Train MSE:  0.10994  (Z-Score Loss)
+2026-04-02 05:05:57.370 - INFO - Train RMSE: 0.01908
+2026-04-02 05:05:57.370 - INFO - Current LR: 1.25e-04
+2026-04-02 05:05:57.370 - INFO - Val RMSE:   0.04440
+2026-04-02 05:05:57.370 - INFO - Val MAE:    0.01385
+2026-04-02 05:05:57.370 - INFO - Val R²:     0.3677   (Explained Var)
+2026-04-02 05:05:57.370 - INFO - Val NRMSE:  0.0528   (Error %)
+2026-04-02 05:05:57.370 - INFO - Val Tau:    0.6861   (Ranking Metric)
+2026-04-02 05:05:57.370 - INFO - Val Spear:  0.8699
+2026-04-02 05:05:57.370 - INFO - Epoch time: 35s (35.98 seconds)
+2026-04-02 05:05:57.370 - INFO - Total time: 53m 19s (3199.29 seconds)
+2026-04-02 05:05:57.370 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 05:06:33.867 - INFO - Epoch 94/100 Results:
+2026-04-02 05:06:33.867 - INFO - Train MSE:  0.11220  (Z-Score Loss)
+2026-04-02 05:06:33.867 - INFO - Train RMSE: 0.01928
+2026-04-02 05:06:33.867 - INFO - Current LR: 1.25e-04
+2026-04-02 05:06:33.867 - INFO - Val RMSE:   0.04472
+2026-04-02 05:06:33.867 - INFO - Val MAE:    0.01415
+2026-04-02 05:06:33.867 - INFO - Val R²:     0.3584   (Explained Var)
+2026-04-02 05:06:33.867 - INFO - Val NRMSE:  0.0532   (Error %)
+2026-04-02 05:06:33.867 - INFO - Val Tau:    0.6918   (Ranking Metric)
+2026-04-02 05:06:33.867 - INFO - Val Spear:  0.8742
+2026-04-02 05:06:33.867 - INFO - Epoch time: 36s (36.49 seconds)
+2026-04-02 05:06:33.867 - INFO - Total time: 53m 55s (3235.79 seconds)
+2026-04-02 05:06:33.868 - INFO - GPU Mem: 11.14 GB
+2026-04-02 05:06:33.875 - INFO - New Best Tau Model Saved!  (Tau:  0.6918)
+
+2026-04-02 05:07:09.919 - INFO - Epoch 95/100 Results:
+2026-04-02 05:07:09.919 - INFO - Train MSE:  0.11055  (Z-Score Loss)
+2026-04-02 05:07:09.919 - INFO - Train RMSE: 0.01913
+2026-04-02 05:07:09.919 - INFO - Current LR: 1.25e-04
+2026-04-02 05:07:09.919 - INFO - Val RMSE:   0.04386
+2026-04-02 05:07:09.919 - INFO - Val MAE:    0.01378
+2026-04-02 05:07:09.920 - INFO - Val R²:     0.3828   (Explained Var)
+2026-04-02 05:07:09.920 - INFO - Val NRMSE:  0.0522   (Error %)
+2026-04-02 05:07:09.920 - INFO - Val Tau:    0.6915   (Ranking Metric)
+2026-04-02 05:07:09.920 - INFO - Val Spear:  0.8741
+2026-04-02 05:07:09.920 - INFO - Epoch time: 36s (36.04 seconds)
+2026-04-02 05:07:09.920 - INFO - Total time: 54m 31s (3271.84 seconds)
+2026-04-02 05:07:09.920 - INFO - GPU Mem: 11.00 GB
+
+2026-04-02 05:07:46.606 - INFO - Epoch 96/100 Results:
+2026-04-02 05:07:46.606 - INFO - Train MSE:  0.11203  (Z-Score Loss)
+2026-04-02 05:07:46.606 - INFO - Train RMSE: 0.01926
+2026-04-02 05:07:46.606 - INFO - Current LR: 1.25e-04
+2026-04-02 05:07:46.606 - INFO - Val RMSE:   0.04348
+2026-04-02 05:07:46.606 - INFO - Val MAE:    0.01405
+2026-04-02 05:07:46.606 - INFO - Val R²:     0.3936   (Explained Var)
+2026-04-02 05:07:46.606 - INFO - Val NRMSE:  0.0517   (Error %)
+2026-04-02 05:07:46.606 - INFO - Val Tau:    0.6907   (Ranking Metric)
+2026-04-02 05:07:46.606 - INFO - Val Spear:  0.8731
+2026-04-02 05:07:46.606 - INFO - Epoch time: 36s (36.68 seconds)
+2026-04-02 05:07:46.606 - INFO - Total time: 55m 08s (3308.53 seconds)
+2026-04-02 05:07:46.607 - INFO - GPU Mem: 11.15 GB
+
+2026-04-02 05:08:22.648 - INFO - Epoch 97/100 Results:
+2026-04-02 05:08:22.648 - INFO - Train MSE:  0.10365  (Z-Score Loss)
+2026-04-02 05:08:22.648 - INFO - Train RMSE: 0.01853
+2026-04-02 05:08:22.648 - INFO - Current LR: 1.25e-04
+2026-04-02 05:08:22.648 - INFO - Val RMSE:   0.04368
+2026-04-02 05:08:22.648 - INFO - Val MAE:    0.01428
+2026-04-02 05:08:22.648 - INFO - Val R²:     0.3881   (Explained Var)
+2026-04-02 05:08:22.648 - INFO - Val NRMSE:  0.0520   (Error %)
+2026-04-02 05:08:22.648 - INFO - Val Tau:    0.6904   (Ranking Metric)
+2026-04-02 05:08:22.648 - INFO - Val Spear:  0.8738
+2026-04-02 05:08:22.648 - INFO - Epoch time: 36s (36.04 seconds)
+2026-04-02 05:08:22.648 - INFO - Total time: 55m 44s (3344.57 seconds)
+2026-04-02 05:08:22.648 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 05:08:59.252 - INFO - Epoch 98/100 Results:
+2026-04-02 05:08:59.253 - INFO - Train MSE:  0.10477  (Z-Score Loss)
+2026-04-02 05:08:59.253 - INFO - Train RMSE: 0.01863
+2026-04-02 05:08:59.253 - INFO - Current LR: 1.25e-04
+2026-04-02 05:08:59.253 - INFO - Val RMSE:   0.04408
+2026-04-02 05:08:59.253 - INFO - Val MAE:    0.01469
+2026-04-02 05:08:59.253 - INFO - Val R²:     0.3768   (Explained Var)
+2026-04-02 05:08:59.253 - INFO - Val NRMSE:  0.0524   (Error %)
+2026-04-02 05:08:59.253 - INFO - Val Tau:    0.6920   (Ranking Metric)
+2026-04-02 05:08:59.253 - INFO - Val Spear:  0.8748
+2026-04-02 05:08:59.253 - INFO - Epoch time: 36s (36.60 seconds)
+2026-04-02 05:08:59.253 - INFO - Total time: 56m 21s (3381.17 seconds)
+2026-04-02 05:08:59.253 - INFO - GPU Mem: 11.12 GB
+2026-04-02 05:08:59.260 - INFO - New Best Tau Model Saved!  (Tau:  0.6920)
+
+2026-04-02 05:09:35.365 - INFO - Epoch 99/100 Results:
+2026-04-02 05:09:35.365 - INFO - Train MSE:  0.09866  (Z-Score Loss)
+2026-04-02 05:09:35.365 - INFO - Train RMSE: 0.01808
+2026-04-02 05:09:35.365 - INFO - Current LR: 1.25e-04
+2026-04-02 05:09:35.365 - INFO - Val RMSE:   0.04446
+2026-04-02 05:09:35.365 - INFO - Val MAE:    0.01334
+2026-04-02 05:09:35.365 - INFO - Val R²:     0.3659   (Explained Var)
+2026-04-02 05:09:35.365 - INFO - Val NRMSE:  0.0529   (Error %)
+2026-04-02 05:09:35.365 - INFO - Val Tau:    0.6914   (Ranking Metric)
+2026-04-02 05:09:35.365 - INFO - Val Spear:  0.8739
+2026-04-02 05:09:35.365 - INFO - Epoch time: 36s (36.10 seconds)
+2026-04-02 05:09:35.365 - INFO - Total time: 56m 57s (3417.29 seconds)
+2026-04-02 05:09:35.366 - INFO - GPU Mem: 11.08 GB
+
+2026-04-02 05:10:12.153 - INFO - Epoch 100/100 Results:
+2026-04-02 05:10:12.153 - INFO - Train MSE:  0.10532  (Z-Score Loss)
+2026-04-02 05:10:12.153 - INFO - Train RMSE: 0.01868
+2026-04-02 05:10:12.153 - INFO - Current LR: 1.25e-04
+2026-04-02 05:10:12.153 - INFO - Val RMSE:   0.04347
+2026-04-02 05:10:12.153 - INFO - Val MAE:    0.01495
+2026-04-02 05:10:12.153 - INFO - Val R²:     0.3938   (Explained Var)
+2026-04-02 05:10:12.153 - INFO - Val NRMSE:  0.0517   (Error %)
+2026-04-02 05:10:12.153 - INFO - Val Tau:    0.6956   (Ranking Metric)
+2026-04-02 05:10:12.153 - INFO - Val Spear:  0.8772
+2026-04-02 05:10:12.153 - INFO - Epoch time: 36s (36.78 seconds)
+2026-04-02 05:10:12.153 - INFO - Total time: 57m 34s (3454.07 seconds)
+2026-04-02 05:10:12.153 - INFO - GPU Mem: 11.20 GB
+2026-04-02 05:10:12.161 - INFO - New Best Tau Model Saved!  (Tau:  0.6956)
+
+2026-04-02 05:10:12.163 - INFO - Total Execution time: 57m 34s (3454.08 seconds)
+
+

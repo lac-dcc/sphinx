@@ -106,12 +106,67 @@ def load_params() -> Params:
 
     resolved_config = _resolve_config_variables(config_data)
 
-    return Params(
+    loaded = Params(
         model=ModelParams(**resolved_config['model']),
         training=TrainingParams(**resolved_config['training']),
         environment=EnvironmentParams(**resolved_config['environment']),
         paths=PathParams(**resolved_config['paths'])
     )
+    _apply_environment(loaded)
+    return loaded
+
+
+def _apply_environment(loaded: Params) -> None:
+    """Override config.yaml from environment variables.
+
+    With SPHINX_DATA set, the dataset paths, vocabulary and per-dialect model
+    settings are derived from the published dataset layout (config/datasets.py)
+    instead of config.yaml:
+
+        SPHINX_DATA       directory holding the extracted dataset archives
+        SPHINX_BENCHMARK  nb101 (default) or nb201
+        SPHINX_DIALECT    stablehlo (default), linalg, arith, llvm, linalg_full
+        SPHINX_TARGET     training_time (default) or test_accuracy
+        SPHINX_POOL       split pool, stablehlo (90%) or linalg (10%);
+                          default follows the dialect
+        SPHINX_RUNS       where run folders and checkpoints are written
+                          (default: $SPHINX_DATA/runs)
+        SPHINX_CACHE      where preprocessed graphs are cached
+                          (default: $SPHINX_DATA/processed)
+
+    Independent of SPHINX_DATA: SPHINX_DEVICE, SPHINX_WORKERS, SPHINX_EPOCHS,
+    SPHINX_BATCH_SIZE, SPHINX_ITERATIONS (GGNN message-passing iterations).
+    SPHINX_POOLING (add or mean) is read by the model in GGNN_train.py.
+    """
+    env = os.environ
+    if env.get("SPHINX_DEVICE"):
+        loaded.environment.device = env["SPHINX_DEVICE"]
+    if env.get("SPHINX_WORKERS"):
+        loaded.environment.num_workers = int(env["SPHINX_WORKERS"])
+    if env.get("SPHINX_EPOCHS"):
+        loaded.training.epochs = int(env["SPHINX_EPOCHS"])
+    if env.get("SPHINX_ITERATIONS"):
+        loaded.model.ggnn_iterations = int(env["SPHINX_ITERATIONS"])
+    if env.get("SPHINX_BATCH_SIZE"):
+        loaded.training.graph_level_batch_size = int(env["SPHINX_BATCH_SIZE"])
+
+    root = env.get("SPHINX_DATA")
+    if not root:
+        return
+    from config import datasets
+    settings = datasets.profile(
+        root,
+        env.get("SPHINX_BENCHMARK", "nb101"),
+        env.get("SPHINX_DIALECT", "stablehlo"),
+        env.get("SPHINX_TARGET", "training_time"),
+        pool=env.get("SPHINX_POOL"),
+        cache=env.get("SPHINX_CACHE"),
+    )
+    datasets.apply(loaded, settings)
+    runs = env.get("SPHINX_RUNS", os.path.join(root, "runs"))
+    loaded.paths.base = root
+    loaded.paths.checkpoint = os.path.join(runs, "best_model.pt")
+    loaded.paths.logs = os.path.join(runs, "ggnn_run_info.log")
 
 
 params = load_params()
